@@ -1,0 +1,1065 @@
+{
+ "name": "Hallmark",
+ "repo": "https://github.com/Nutlope/hallmark",
+ "branch": "main",
+ "props": [
+  {
+   "k": "type",
+   "v": "agent skill",
+   "tag": true
+  },
+  {
+   "k": "licence",
+   "v": "MIT"
+  },
+  {
+   "k": "version",
+   "v": "2.0.0"
+  },
+  {
+   "k": "source",
+   "v": "[Nutlope/hallmark](https://github.com/Nutlope/hallmark) · [usehallmark.com](https://www.usehallmark.com)"
+  }
+ ],
+ "problem": [
+  "If you build websites with an AI coding tool, you get the same generic page every time, whatever the business.",
+  "The result is instantly recognisable as AI-made: same layouts, same gradients, same filler."
+ ],
+ "idea": "Write [[habits|each AI-design habit]] as [[rule|a numbered rule]] that code can check, and make the finished page pass every rule before you see it.",
+ "demo": {
+  "type": "compare",
+  "items": [
+   {
+    "label": "Farm records",
+    "before": {
+     "src": "site/assets/cmp/fieldbook-bare-full.webp",
+     "caption": "Without Hallmark: **26 issues**"
+    },
+    "after": {
+     "src": "site/assets/cmp/fieldbook-hallmark-full.webp",
+     "caption": "With Hallmark: **0 issues**"
+    }
+   },
+   {
+    "label": "Bank reconciliation",
+    "before": {
+     "src": "site/assets/cmp/closewise-bare-full.webp",
+     "caption": "Without Hallmark: **11 issues**"
+    },
+    "after": {
+     "src": "site/assets/cmp/closewise-hallmark-full.webp",
+     "caption": "With Hallmark: **0 issues**"
+    }
+   },
+   {
+    "label": "Webhook API",
+    "before": {
+     "src": "site/assets/cmp/relay-bare-full.webp",
+     "caption": "Without Hallmark: **18 issues**"
+    },
+    "after": {
+     "src": "site/assets/cmp/relay-hallmark-full.webp",
+     "caption": "With Hallmark: **0 issues**"
+    }
+   }
+  ]
+ },
+ "map": {
+  "name": "hallmark",
+  "children": [
+   {
+    "name": "skills/hallmark",
+    "children": [
+     {
+      "name": "SKILL.md",
+      "path": "skills/hallmark/SKILL.md",
+      "overview": [
+       "Start here: the agent reads this first on every build",
+       "The Floor: the never-break rules, summarised",
+       "Flow: the 7 numbered stages, pre-flight to final check",
+       "Commands: <prompt>, redesign, audit",
+       "Variants: single components, app screens, a quick mode"
+      ]
+     },
+     {
+      "name": "references",
+      "children": [
+       {
+        "name": "gates.md",
+        "path": "skills/hallmark/references/gates.md",
+        "overview": [
+         "§1 How strict each rule is, and how results are graded",
+         "§2 How to break a Reflex rule on the record",
+         "§3 The agent's self-score before the final check",
+         "§4 The 87 rules in 6 areas: number, tier, tell, fix",
+         "§5 Craft checks that never block",
+         "§6 How the fresh reviews run"
+        ]
+       },
+       {
+        "name": "themes/",
+        "path": "skills/hallmark/references/themes",
+        "overview": [
+         "Theme: a visual material (palette, fonts, surfaces). Never the layout.",
+         "50 × <name>.md, ≤8 KB each",
+         "Sections: Tokens, Type, Surfaces, Range, Controls, Motion, Voice, Do-nots, Build hint",
+         "50 × <name>.jpg: a finished page in that theme",
+         "index.json: keywords + genre used for dealing"
+        ]
+       },
+       {
+        "name": "anatomy.md",
+        "path": "skills/hallmark/references/anatomy.md",
+        "overview": [
+         "Anatomy: how real sites for each job are built",
+         "One section per job: subscribe, book, visit, attend, buy, try, sign up, hire, join, listen",
+         "Each: where the action sits, which sections real sites have",
+         "How pages end"
+        ]
+       },
+       {
+        "name": "macrostructures/",
+        "path": "skills/hallmark/references/macrostructures",
+        "overview": [
+         "Macrostructure: a page's overall shape",
+         "One file per shape: Bento Grid, Letter, Workbench…",
+         "Each: rules for heading, body, divider, button, image, reveal",
+         "When to use, when to avoid, sample opening lines"
+        ]
+       },
+       {
+        "name": "review-hero.md",
+        "path": "skills/hallmark/references/review-hero.md",
+        "overview": [
+         "Hero: the first screen of a page",
+         "Prompt for the fresh reviewer: an AI with no memory of the build",
+         "First word: ship or fix",
+         "Up to 5 findings, from 6 checklist questions"
+        ]
+       },
+       {
+        "name": "review-finish.md",
+        "path": "skills/hallmark/references/review-finish.md",
+        "overview": [
+         "Prompt for the fresh reviewer of the whole page",
+         "First word: ship, fix, rebuild, or retake the screenshots",
+         "Up to 8 findings, ranked by cost",
+         "Final check: does the page match its stated idea?"
+        ]
+       }
+      ]
+     },
+     {
+      "name": "scripts",
+      "children": [
+       {
+        "name": "sloplint.mjs",
+        "path": "skills/hallmark/scripts/sloplint.mjs",
+        "overview": [
+         "sloplint: Hallmark's checker. Reports every broken rule",
+         "One check per machine-checkable gate",
+         "Reads HTML, CSS, JSX, Vue, Svelte",
+         "Flags: --render, --genre, --scope, --stage",
+         "Output: FAIL / REFLEX / WARN with file:line and fix"
+        ]
+       },
+       {
+        "name": "sloplint-render.mjs",
+        "path": "skills/hallmark/scripts/sloplint-render.mjs",
+        "overview": [
+         "Opens the page in Chrome (puppeteer)",
+         "8 widths: 320, 375, 414, 768, 1024, 1280, 1440, 1920",
+         "Checks that need the real screen: overflow, fold, sizes",
+         "Saves screenshots for the reviewers"
+        ]
+       },
+       {
+        "name": "theme.mjs",
+        "path": "skills/hallmark/scripts/theme.mjs",
+        "overview": [
+         "deal: 3 themes from keywords + genre + log",
+         "draw: page shape, hero, nav, footer",
+         "scaffold: writes tokens.css + base.css",
+         "photos: picks library photos by subject",
+         "log: records the build"
+        ]
+       },
+       {
+        "name": "photos.json",
+        "path": "skills/hallmark/scripts/photos.json",
+        "overview": [
+         "755 Wikimedia Commons photos",
+         "Each: link, page, author, licence",
+         "Links only, no image files"
+        ]
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "how": {
+  "lanes": [
+   "You",
+   "AI agent",
+   "Scripts",
+   "Fresh reviewer"
+  ],
+  "phases": [
+   {
+    "title": "Understand",
+    "overview": "Reads your project, asks once for real [[material]]."
+   },
+   {
+    "title": "Decide",
+    "overview": "Scripts [[deal|deal a theme]] and [[draw|draw a structure]]; the agent picks and shows its plan."
+   },
+   {
+    "title": "Build",
+    "overview": "Starter files, then the hero first, checked and reviewed before the rest."
+   },
+   {
+    "title": "Verify",
+    "overview": "Full check at 8 widths until clean, then a fresh final review."
+   }
+  ],
+  "steps": [
+   {
+    "phase": 0,
+    "lane": 0,
+    "title": "Ask for a page",
+    "detail": "e.g. /hallmark a booking page for my clinic",
+    "in": "one-line request",
+    "out": "skill loads",
+    "files": [
+     "skills/hallmark/SKILL.md#L1-L8"
+    ]
+   },
+   {
+    "phase": 0,
+    "lane": 1,
+    "title": "Pre-flight",
+    "detail": "Reads your project: fonts, colours, framework, design.md.",
+    "in": "project folder",
+    "out": "what to keep",
+    "files": [
+     "skills/hallmark/SKILL.md#L54-L58"
+    ]
+   },
+   {
+    "phase": 0,
+    "lane": 1,
+    "title": "Ask 4 questions",
+    "detail": "Material, audience, use, tone. Reply “go ahead” to skip.",
+    "in": "your answers",
+    "out": "brief + genre",
+    "files": [
+     "skills/hallmark/SKILL.md#L60-L70"
+    ]
+   },
+   {
+    "phase": 0,
+    "lane": 1,
+    "title": "Name the job",
+    "detail": "The job is what a visitor comes to do: book, buy, subscribe… It decides where the main button goes and how the page ends.",
+    "in": "brief",
+    "out": "job + material list",
+    "files": [
+     "skills/hallmark/SKILL.md#L74-L76",
+     "skills/hallmark/references/anatomy.md"
+    ]
+   },
+   {
+    "phase": 1,
+    "lane": 2,
+    "title": "deal",
+    "script": true,
+    "detail": "Scores 50 themes on your words, skips recent ones, returns 3.",
+    "in": "request + genre + log",
+    "out": "3 themes",
+    "files": [
+     "skills/hallmark/scripts/theme.mjs#L221-L271",
+     "skills/hallmark/references/themes"
+    ]
+   },
+   {
+    "phase": 1,
+    "lane": 1,
+    "title": "Pick theme",
+    "detail": "Looks at the 3 theme pictures, picks one.",
+    "in": "3 themes",
+    "out": "1 theme",
+    "files": [
+     "skills/hallmark/SKILL.md#L86-L100"
+    ]
+   },
+   {
+    "phase": 1,
+    "lane": 2,
+    "title": "draw",
+    "script": true,
+    "detail": "Randomly deals page shape, hero, nav, footer.",
+    "in": "theme + job",
+    "out": "page structure",
+    "files": [
+     "skills/hallmark/scripts/theme.mjs#L158-L220",
+     "skills/hallmark/references/macrostructures"
+    ]
+   },
+   {
+    "phase": 1,
+    "lane": 1,
+    "title": "Picks block",
+    "detail": "Shows every decision once. Your chance to redirect.",
+    "in": "theme + structure",
+    "out": "decision summary",
+    "files": [
+     "skills/hallmark/SKILL.md#L110-L127"
+    ]
+   },
+   {
+    "phase": 2,
+    "lane": 2,
+    "title": "scaffold",
+    "script": true,
+    "detail": "Writes starter CSS: tokens.css, base.css.",
+    "in": "theme",
+    "out": "starter files",
+    "files": [
+     "skills/hallmark/scripts/theme.mjs#L505-L582"
+    ]
+   },
+   {
+    "phase": 2,
+    "lane": 1,
+    "title": "Build hero",
+    "detail": "First screen only: ≤7-word headline, 1 sentence, 1–2 buttons.",
+    "in": "starter files",
+    "out": "hero",
+    "files": [
+     "skills/hallmark/SKILL.md#L131-L134"
+    ]
+   },
+   {
+    "phase": 2,
+    "lane": 2,
+    "title": "sloplint (hero)",
+    "script": true,
+    "detail": "Checks the hero at 375 and 1280 px.",
+    "in": "hero",
+    "out": "FAIL / REFLEX list",
+    "files": [
+     "skills/hallmark/scripts/sloplint-render.mjs#L169-L177"
+    ]
+   },
+   {
+    "phase": 2,
+    "lane": 3,
+    "title": "Hero review",
+    "detail": "Sees only screenshots. Verdict: ship, fix, rebuild.",
+    "in": "screenshots",
+    "out": "verdict",
+    "files": [
+     "skills/hallmark/references/review-hero.md",
+     "skills/hallmark/references/gates.md#L237-L243"
+    ]
+   },
+   {
+    "phase": 2,
+    "lane": 1,
+    "title": "Build rest",
+    "detail": "6–9 sections from the job's anatomy.",
+    "in": "approved hero",
+    "out": "full page",
+    "files": [
+     "skills/hallmark/SKILL.md#L134-L140"
+    ]
+   },
+   {
+    "phase": 3,
+    "lane": 2,
+    "title": "sloplint --render",
+    "script": true,
+    "loop": true,
+    "detail": "8 widths, 320–1920 px. Repeats until 0 FAIL.",
+    "in": "page",
+    "out": "clean report",
+    "files": [
+     "skills/hallmark/SKILL.md#L142-L150",
+     "skills/hallmark/scripts/sloplint-render.mjs#L6"
+    ]
+   },
+   {
+    "phase": 3,
+    "lane": 3,
+    "title": "Finish review",
+    "detail": "Fresh look at the whole page. Final verdict.",
+    "in": "screenshots + source",
+    "out": "verdict",
+    "files": [
+     "skills/hallmark/references/review-finish.md"
+    ]
+   },
+   {
+    "phase": 3,
+    "lane": 0,
+    "title": "Get the page",
+    "detail": "HTML/CSS, check results, and a list of photo slots: placeholders where your own photos replace library stand-ins.",
+    "out": "finished page",
+    "files": [
+     "skills/hallmark/SKILL.md#L147-L148"
+    ]
+   }
+  ]
+ },
+ "why": [
+  "**Checkable, not vibes:** each tell is a numbered rule with a fix.",
+  "**Code, not opinion:** sloplint tests the rendered page at 8 widths. A pass can't be faked.",
+  "**Forced variety:** deal and draw skip recent builds, so pages don't converge.",
+  "**Strict where it matters:** Floor rules never bend; Reflex rules bend only with a written reason.",
+  "**Unbiased review:** the final reviewer never saw the build.",
+  "**No invented proof:** no fake metrics, logos or testimonials."
+ ],
+ "use": {
+  "agentTitle": "Install Hallmark in Claude Code",
+  "agentPrompt": "Install the Hallmark design skill (github.com/Nutlope/hallmark) on this computer. Explain each step in one plain sentence. Ask before installing anything not listed.\n\n1. Check Node.js is 18 or newer (node -v). If not, help me install it.\n2. Run: npx skills add nutlope/hallmark -g --agent claude-code\n3. Optional, for the browser checks: npm i -g puppeteer-core, and confirm Google Chrome is installed.\n4. Confirm the install worked: when I type / in Claude Code, /hallmark should appear. If it doesn't, tell me to restart Claude Code.",
+  "envs": [
+   {
+    "name": "Claude Code",
+    "commands": [
+     [
+      "/hallmark <page>",
+      "Build a page (Codex: $hallmark)"
+     ],
+     [
+      "go ahead",
+      "Skip the 4 questions"
+     ],
+     [
+      "/hallmark <page>, custom",
+      "Design without themes"
+     ],
+     [
+      "/hallmark redesign <path>",
+      "Rebuild, keep content and links"
+     ],
+     [
+      "/hallmark audit <path>",
+      "Report only"
+     ],
+     [
+      "lock the system",
+      "Save the look to design.md, so later pages match"
+     ]
+    ]
+   },
+   {
+    "name": "Terminal",
+    "commands": [
+     [
+      "npx skills add nutlope/hallmark -g",
+      "Install for every agent and project (once)"
+     ],
+     [
+      "npm i -g puppeteer-core",
+      "Optional: browser checks (once)"
+     ],
+     [
+      "node ~/.claude/skills/hallmark/scripts/sloplint.mjs <file> --render",
+      "Check any HTML page"
+     ]
+    ]
+   }
+  ]
+ },
+ "terms": {
+  "habits": {
+   "title": "87 habits it bans",
+   "body": "Each is a tell: a visible sign a page is AI-made. **Floor**: never allowed. **Reflex**: allowed with a written reason.",
+   "list": {
+    "tones": {
+     "Floor": "bad",
+     "Reflex": "warn"
+    },
+    "items": [
+     {
+      "id": "2a",
+      "tag": "Floor",
+      "group": "Colour and surface",
+      "text": "Purple-to-blue, purple-to-pink or cyan-on-dark gradient anywhere, background-clip: text included"
+     },
+     {
+      "id": "2b",
+      "tag": "Reflex",
+      "group": "Colour and surface",
+      "text": "Gradient text in any other hue"
+     },
+     {
+      "id": "7a",
+      "tag": "Floor",
+      "group": "Colour and surface",
+      "text": "#000, #fff, oklch(0% …) or oklch(100% …) as a colour outside the token block"
+     },
+     {
+      "id": "7b",
+      "tag": "Reflex",
+      "group": "Colour and surface",
+      "text": "A surface token that resolves to a pure absolute"
+     },
+     {
+      "id": "22",
+      "tag": "Reflex",
+      "group": "Colour and surface",
+      "text": "Zero-chroma neutrals on a page with an anchor hue"
+     },
+     {
+      "id": "23",
+      "tag": "Reflex",
+      "group": "Colour and surface",
+      "text": "Accent past ~5% of any viewport without a declared posture; the render tier fails past 8% (at 30%)"
+     },
+     {
+      "id": "29",
+      "tag": "Reflex",
+      "group": "Colour and surface",
+      "text": "Glow and wash: aurora or mesh blobs behind text, floating blurred orbs, a chromatic radial halo or…"
+     },
+     {
+      "id": "65",
+      "tag": "Reflex",
+      "group": "Colour and surface",
+      "text": "The named look on a custom or unthemed build: cream paper (L 90 or over, hue 55 to 105), a high-contrast…"
+     },
+     {
+      "id": "74",
+      "tag": "Reflex",
+      "group": "Colour and surface",
+      "text": "The stock swatch: a framework's default palette (Tailwind's indigo-500, violet-600, slate-900 and kin) as…"
+     },
+     {
+      "id": "1",
+      "tag": "Reflex",
+      "group": "Type",
+      "text": "Inter, Roboto, Open Sans, Poppins, Lato or a system face as the display"
+     },
+     {
+      "id": "25",
+      "tag": "Reflex",
+      "group": "Type",
+      "text": "Running prose max-width outside 45 to 75ch, or rendered lines of about 88 characters or more over three…"
+     },
+     {
+      "id": "37",
+      "tag": "Reflex",
+      "group": "Type",
+      "text": "More than three font families"
+     },
+     {
+      "id": "38i",
+      "tag": "Floor",
+      "group": "Type",
+      "text": "One italic word inside an otherwise roman heading"
+     },
+     {
+      "id": "55a",
+      "tag": "Floor",
+      "group": "Type",
+      "text": "An uppercase display head that can wrap with line-height under 1.0"
+     },
+     {
+      "id": "55b",
+      "tag": "Reflex",
+      "group": "Type",
+      "text": "A single-line caps lockup under 1.02"
+     },
+     {
+      "id": "64",
+      "tag": "Reflex",
+      "group": "Type",
+      "text": "Mono as costume: monospace on labels, captions, meta rows, table heads or small type when neither display…"
+     },
+     {
+      "id": "75",
+      "tag": "Reflex",
+      "group": "Type",
+      "text": "Text that strains: running text under 12px, functional text under 11px, multi-line prose leaded under 1.3"
+     },
+     {
+      "id": "67",
+      "tag": "Floor",
+      "group": "Type",
+      "text": "The tracked-caps label: a label, caption, table head, nav link, tag, chip or any text at 15px or under set…"
+     },
+     {
+      "id": "3",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "Card tells: three equal columns of icon-above-heading tiles, an icon in a rounded tile above a heading, a…"
+     },
+     {
+      "id": "4",
+      "tag": "Floor",
+      "group": "Structure and layout",
+      "text": "A card inside a card"
+     },
+     {
+      "id": "6a",
+      "tag": "Floor",
+      "group": "Structure and layout",
+      "text": "A hero sized in vh"
+     },
+     {
+      "id": "6b",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "A hero 92dvh or taller with no stamped hero: posture, or title, lede, action and mark all on one centred axis"
+     },
+     {
+      "id": "8",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "The AI template (hero, three features, call to action, footer), or the same shape as one of the last three…"
+     },
+     {
+      "id": "9",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "Every section separated the same way with the same gap"
+     },
+     {
+      "id": "24a",
+      "tag": "Floor",
+      "group": "Structure and layout",
+      "text": "A raw padding, margin or gap length where a --space-* token exists"
+     },
+     {
+      "id": "24b",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "Off-scale spacing"
+     },
+     {
+      "id": "34",
+      "tag": "Floor",
+      "group": "Structure and layout",
+      "text": "Horizontal scroll at any width 320 to 1920; overflow-x missing on html and body; 100vw widths"
+     },
+     {
+      "id": "44a",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "Hero content off centre for its posture, measured on what is painted (nav to first content, against last…"
+     },
+     {
+      "id": "44b",
+      "tag": "Floor",
+      "group": "Structure and layout",
+      "text": "Headline, lede, primary action and the visual's focal point not all visible at 1280 x 800 without scrolling"
+     },
+     {
+      "id": "44c",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "At 1440 x 900 the next section starts above y 760 or below y 900, or the hero visual's centre is more than…"
+     },
+     {
+      "id": "44d",
+      "tag": "Floor",
+      "group": "Structure and layout",
+      "text": "At 1920 x 1080 the container has no max-width, gutters under 120px, a grid gains columns, or the hero no…"
+     },
+     {
+      "id": "50",
+      "tag": "Floor",
+      "group": "Structure and layout",
+      "text": "An image-bearing grid track on bare 1fr; a display head without overflow-wrap: break-word; min-width: 0"
+     },
+     {
+      "id": "53",
+      "tag": "Floor",
+      "group": "Structure and layout",
+      "text": "CSS-only radio tabs at position: absolute; top: 0 with no JS guard (the page jumps on every click)"
+     },
+     {
+      "id": "56",
+      "tag": "Floor",
+      "group": "Structure and layout",
+      "text": "Two position: sticky; top: 0 elements (a section head sliding under the nav)"
+     },
+     {
+      "id": "58",
+      "tag": "Floor",
+      "group": "Structure and layout",
+      "text": "More than about 80 words in any 900px window at 1440, or a hero with more than two text blocks before its…"
+     },
+     {
+      "id": "59",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "A gap under 120px between sections at 1440 (64px where the paper changes), or every gap the same"
+     },
+     {
+      "id": "71",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "The crowded head: two or more h2 to h4 nearer what precedes them than what they head (the space above…"
+     },
+     {
+      "id": "72",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "The cramped box: text in a filled or side-bordered box over 100 x 30px closer than max(8px, 0.5em) to its…"
+     },
+     {
+      "id": "77",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "The thin section: below the hero, a body spanning under three quarters of the container at 1440 that is…"
+     },
+     {
+      "id": "78",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "Section heads too small: the median h2 below the hero renders under 40px at 1440"
+     },
+     {
+      "id": "79",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "The dead band: at 1440 x 900, more than 160px of nothing between the hero's lowest content and the fold or…"
+     },
+     {
+      "id": "80",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "The drawn illustration: an inline SVG or CSS figure of an object, plant, animal, person, product,…"
+     },
+     {
+      "id": "81",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "The empty picture: a data-slot, or a gradient block 300 x 200px or larger, showing nothing but its wash:…"
+     },
+     {
+      "id": "82",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "The counting device: 24 or more identical marks (ticks, dots, bars, squares) standing for a quantity, one…"
+     },
+     {
+      "id": "83",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "The photo wall: below the hero, photographs cover more than about a third of the page at 1440 (45% on a…"
+     },
+     {
+      "id": "84",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "The fake product: the page shows a built mock of a product that exists and could be reached (a URL, a…"
+     },
+     {
+      "id": "85",
+      "tag": "Reflex",
+      "group": "Structure and layout",
+      "text": "The stock close: the last section before the footer, or the footer, is an email sign-up (a form of one or…"
+     },
+     {
+      "id": "19",
+      "tag": "Floor",
+      "group": "Chrome and copy",
+      "text": "Copy tells: placeholder names (Jane Doe), startup clichés (Acme, Nexus), buzzwords (seamless, robust,…"
+     },
+     {
+      "id": "20",
+      "tag": "Floor",
+      "group": "Chrome and copy",
+      "text": "The Hallmark stamp missing from the first lines of CSS (build form or checked form)"
+     },
+     {
+      "id": "42",
+      "tag": "Reflex",
+      "group": "Chrome and copy",
+      "text": "Chrome by reflex: the AI nav (wordmark left, inline links, button right, hairline under) or the AI footer…"
+     },
+     {
+      "id": "46a",
+      "tag": "Floor",
+      "group": "Chrome and copy",
+      "text": "An invented metric, testimonial, logo wall or case-study count"
+     },
+     {
+      "id": "46b",
+      "tag": "Reflex",
+      "group": "Chrome and copy",
+      "text": "A bare figure as the hero's only headline"
+     },
+     {
+      "id": "47a",
+      "tag": "Floor",
+      "group": "Chrome and copy",
+      "text": "A hand-drawn browser bar (traffic lights, URL pill) or OS window title bar"
+     },
+     {
+      "id": "47b",
+      "tag": "Reflex",
+      "group": "Chrome and copy",
+      "text": "A phone, laptop, terminal or editor frame"
+     },
+     {
+      "id": "47c",
+      "tag": "Reflex",
+      "group": "Chrome and copy",
+      "text": "Imitation material: a hero \"product UI\" of styled divs outside a data-slot, a many-vertex clip-path…"
+     },
+     {
+      "id": "54",
+      "tag": "Floor",
+      "group": "Chrome and copy",
+      "text": "The eyebrow: short inert type before a heading that announces it, in any geometry (stacked, beside, pill,…"
+     },
+     {
+      "id": "63",
+      "tag": "Floor",
+      "group": "Chrome and copy",
+      "text": "Template punctuation: meta strings joined with middle dots (A · B · C), an arrow glued to link or button…"
+     },
+     {
+      "id": "66",
+      "tag": "Reflex",
+      "group": "Chrome and copy",
+      "text": "Decoration text: rotated vertical text with nothing to say, scroll cues, a version badge or BETA pill in…"
+     },
+     {
+      "id": "68",
+      "tag": "Reflex",
+      "group": "Chrome and copy",
+      "text": "The wireframe page: more than five empty data-slots on one page (a slot holding an image or a built sample…"
+     },
+     {
+      "id": "69",
+      "tag": "Reflex",
+      "group": "Chrome and copy",
+      "text": "The echo: one fact (a price, a time, a date, a count) printed in four or more sections (repeats inside one…"
+     },
+     {
+      "id": "70",
+      "tag": "Floor",
+      "group": "Chrome and copy",
+      "text": "The fake send: a form or control that prints success (\"Sent\", \"Reserved\", \"You're on the list\", \"Thanks\")…"
+     },
+     {
+      "id": "10a",
+      "tag": "Floor",
+      "group": "Motion and interaction",
+      "text": "transition: all; animating width, height, top or left"
+     },
+     {
+      "id": "10b",
+      "tag": "Reflex",
+      "group": "Motion and interaction",
+      "text": "Transitioning margin or padding"
+     },
+     {
+      "id": "11",
+      "tag": "Reflex",
+      "group": "Motion and interaction",
+      "text": "Hover effects: the same lift or scale on every card, more than one effect on one element, an image scaling…"
+     },
+     {
+      "id": "12",
+      "tag": "Reflex",
+      "group": "Motion and interaction",
+      "text": "Bounce or overshoot easing on UI state"
+     },
+     {
+      "id": "15",
+      "tag": "Floor",
+      "group": "Motion and interaction",
+      "text": "A focus ring that fades in"
+     },
+     {
+      "id": "16",
+      "tag": "Reflex",
+      "group": "Motion and interaction",
+      "text": "A celebratory toast for an effect the user already sees"
+     },
+     {
+      "id": "17",
+      "tag": "Floor",
+      "group": "Motion and interaction",
+      "text": "Tooltip focus delay equal to hover delay"
+     },
+     {
+      "id": "18",
+      "tag": "Floor",
+      "group": "Motion and interaction",
+      "text": "Auto-rotating content with no pause on hover and focus"
+     },
+     {
+      "id": "26a",
+      "tag": "Floor",
+      "group": "Motion and interaction",
+      "text": "An interactive element with no :focus-visible, a ring under 3:1 against what it is drawn over, or an…"
+     },
+     {
+      "id": "26b",
+      "tag": "Reflex",
+      "group": "Motion and interaction",
+      "text": "Missing :active or :disabled"
+     },
+     {
+      "id": "27",
+      "tag": "Floor",
+      "group": "Motion and interaction",
+      "text": "A keyframe or transform transition without a prefers-reduced-motion: reduce fallback (transition: all over…"
+     },
+     {
+      "id": "28a",
+      "tag": "Floor",
+      "group": "Motion and interaction",
+      "text": "A video autoplaying without muted; loading=\"lazy\" on the LCP element"
+     },
+     {
+      "id": "28b",
+      "tag": "Reflex",
+      "group": "Motion and interaction",
+      "text": "Video without poster or a priority hint"
+     },
+     {
+      "id": "39a",
+      "tag": "Floor",
+      "group": "Motion and interaction",
+      "text": "Input states that break: border width shifting between states, a focus ring built from border, an input…"
+     },
+     {
+      "id": "39b",
+      "tag": "Reflex",
+      "group": "Motion and interaction",
+      "text": "Control height outside 44 to 52px on a marketing page"
+     },
+     {
+      "id": "62",
+      "tag": "Floor",
+      "group": "Motion and interaction",
+      "text": "Content hidden at rest: a reveal class setting opacity: 0 or visibility: hidden that depends on JavaScript…"
+     },
+     {
+      "id": "30a",
+      "tag": "Floor",
+      "group": "Assets and access",
+      "text": "An emoji standing in for an icon"
+     },
+     {
+      "id": "30b",
+      "tag": "Reflex",
+      "group": "Assets and access",
+      "text": "Two icon libraries on one page"
+     },
+     {
+      "id": "33",
+      "tag": "Floor",
+      "group": "Assets and access",
+      "text": "A decorative <svg>, <canvas> or CSS-art element with neither aria-hidden=\"true\" nor a label"
+     },
+     {
+      "id": "76",
+      "tag": "Floor",
+      "group": "Assets and access",
+      "text": "A broken image: an <img> with no source or one that does not load; a library photo with no credit on the…"
+     },
+     {
+      "id": "73",
+      "tag": "Floor",
+      "group": "Assets and access",
+      "text": "Text painted under another element: an opaque box, an image or another run of text covers a line of it…"
+     },
+     {
+      "id": "40",
+      "tag": "Floor",
+      "group": "Assets and access",
+      "text": "Text, icon, focus ring or a field's edge under its contrast threshold against its computed background…"
+     },
+     {
+      "id": "41",
+      "tag": "Floor",
+      "group": "Assets and access",
+      "text": "Button text within 5% L and 0.05 chroma of its fill; --color-accent-ink missing where the accent carries…"
+     },
+     {
+      "id": "48",
+      "tag": "Floor",
+      "group": "Assets and access",
+      "text": "A colour or font-family literal outside the token block"
+     },
+     {
+      "id": "49a",
+      "tag": "Floor",
+      "group": "Assets and access",
+      "text": "A button label or primary nav link wrapping at any width 320 to 1920"
+     },
+     {
+      "id": "49b",
+      "tag": "Reflex",
+      "group": "Assets and access",
+      "text": "A footer link, tab or breadcrumb wrapping"
+     }
+    ]
+   },
+   "path": "skills/hallmark/references/gates.md#L49-L172"
+  },
+  "rule": {
+   "title": "Gate: one numbered rule",
+   "body": "Each names one tell, its fix, its tier and who checks it. Example:",
+   "kv": [
+    [
+     "Number",
+     "54"
+    ],
+    [
+     "Tier",
+     "Floor, never waivable"
+    ],
+    [
+     "Checked by",
+     "sloplint, in the code"
+    ],
+    [
+     "Tell",
+     "The eyebrow: a small label before a heading that announces it, e.g. TRUSTED BY over logos"
+    ],
+    [
+     "Allowed",
+     "Figure captions, table heads, form labels, nav or tab labels, bylines, dates"
+    ],
+    [
+     "Fix",
+     "Delete the label, or make it the heading"
+    ],
+    [
+     "Report",
+     "`FAIL 54 :9 eyebrow before <h1>`"
+    ]
+   ],
+   "more": [
+    "habits",
+    "See all 87 rules"
+   ]
+  },
+  "material": {
+   "title": "Material",
+   "body": "Real things the page can show: your photos, screenshots, numbers, quotes. Never invented."
+  },
+  "deal": {
+   "title": "Deal",
+   "body": "theme.mjs scores 50 themes on your words and genre, skips recently used ones, offers 3.",
+   "path": "skills/hallmark/scripts/theme.mjs#L221-L271"
+  },
+  "draw": {
+   "title": "Draw",
+   "body": "theme.mjs randomly picks the page shape, hero, nav and footer, avoiding recent builds.",
+   "path": "skills/hallmark/scripts/theme.mjs#L158-L220"
+  }
+ }
+}

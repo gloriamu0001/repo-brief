@@ -1,0 +1,4 @@
+interface:
+  display_name: Repo Brief
+  short_description: One-page interactive brief of any GitHub repo
+  default_prompt: "/repo-brief https://github.com/owner/repo"

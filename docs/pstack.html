@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>pstack Repo Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Repo Brief: Obsidian-style note. One 720px reading column, outline pane on the right, callouts, internal links, hover previews. */
+:root{
+  --bg:#FFFFFF; --bg2:#F6F6F6; --tx:#222222; --tx2:#5C5C5C; --tx3:#ABABAB; --bd:#E3E3E3; --bd2:#CFCFCF;
+  --ac:#7C5CEA; --ac-bg:rgba(124,92,234,.09); --c-abs:#0FA3B1; --c-tip:#0FA3B1;
+  --bad:#E93147; --warn:#E07A00; --good:#08A94E; --code-bg:#F3F3F3;
+  --f:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --m:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --sh:0 8px 28px rgba(0,0,0,.14); color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1E1E1E; --bg2:#262626; --tx:#DADADA; --tx2:#A3A3A3; --tx3:#666666; --bd:#333333; --bd2:#454545;
+  --ac:#A68AF9; --ac-bg:rgba(166,138,249,.12); --c-abs:#3FC5D0; --c-tip:#3FC5D0;
+  --bad:#FB464C; --warn:#E9973F; --good:#44CF6E; --code-bg:#2A2A2A; --sh:0 8px 28px rgba(0,0,0,.5); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#1E1E1E; --bg2:#262626; --tx:#DADADA; --tx2:#A3A3A3; --tx3:#666666; --bd:#333333; --bd2:#454545;
+  --ac:#A68AF9; --ac-bg:rgba(166,138,249,.12); --c-abs:#3FC5D0; --c-tip:#3FC5D0;
+  --bad:#FB464C; --warn:#E9973F; --good:#44CF6E; --code-bg:#2A2A2A; --sh:0 8px 28px rgba(0,0,0,.5); color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--tx);font-family:var(--f);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 80px}
+h1,h2,h3{margin:0;line-height:1.25;font-weight:700;text-wrap:balance}
+p{margin:0}
+a{color:var(--ac);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font-family:var(--m);font-size:.86em;background:var(--code-bg);border-radius:4px;padding:.1em .35em}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.t-bad{color:var(--bad)} .t-warn{color:var(--warn)} .t-good{color:var(--good)}
+
+.layout{max-width:980px;margin:0 auto;display:grid;grid-template-columns:minmax(0,720px) 200px;gap:60px;justify-content:center}
+@media (max-width:1000px){.layout{grid-template-columns:minmax(0,720px)}.outline{display:none}}
+.note{display:flex;flex-direction:column;gap:14px;min-width:0}
+.note h1{font-size:34px;letter-spacing:-.01em}
+.note h2{font-size:22px;margin-top:30px;padding-top:4px;scroll-margin-top:20px}
+.note ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+.note li::marker{color:var(--tx3)}
+.small{font-size:13.5px}
+
+.props{display:grid;grid-template-columns:110px minmax(0,1fr);gap:4px 12px;font-size:14px;padding:8px 0 14px;border-bottom:1px solid var(--bd);margin:0}
+.props dt{color:var(--tx2)}
+.props dd{margin:0;min-width:0}
+.tagp{display:inline-block;background:var(--ac-bg);color:var(--ac);border-radius:10px;padding:0 8px;font-size:13px}
+
+.wl{appearance:none;border:none;background:none;padding:0;margin:0;color:var(--ac);cursor:pointer;font:inherit}
+.wl:hover{text-decoration:underline}
+
+.callout{border-radius:6px;padding:12px 16px;background:color-mix(in srgb,var(--cc) 9%,transparent);display:flex;flex-direction:column;gap:8px}
+.callout .ct{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--cc);font-size:15px}
+.callout .ct svg{width:16px;height:16px;flex:none}
+.callout.abs{--cc:var(--c-abs)} .callout.tip{--cc:var(--c-tip)}
+.callout p{font-size:15.5px}
+
+.outline{position:sticky;top:40px;align-self:start;font-size:13.5px}
+.outline p{color:var(--tx3);font-size:12px;font-weight:600;margin-bottom:6px}
+.outline a{display:block;color:var(--tx2);padding:3px 0 3px 10px;border-left:1px solid var(--bd)}
+.outline a.on{color:var(--tx);border-left-color:var(--ac)}
+.outline a:hover{text-decoration:none;color:var(--tx)}
+
+.btn{appearance:none;border:1px solid var(--bd2);background:var(--bg);color:var(--tx);border-radius:6px;padding:5px 12px;font-size:14px;font-weight:500;cursor:pointer}
+.btn:hover{background:var(--bg2)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.seg{display:flex;gap:4px;flex-wrap:wrap}
+.seg button{appearance:none;border:1px solid var(--bd);background:none;border-radius:10px;padding:1px 9px;font-size:12px;color:var(--tx2);cursor:pointer}
+.seg button.on{border-color:var(--ac);color:var(--ac)}
+
+/* swimlane: lanes are rows, phases are columns */
+.slw{position:relative}
+.slx{overflow-x:auto;padding-bottom:6px}
+.slx::-webkit-scrollbar{height:8px}
+.slx::-webkit-scrollbar-track{background:var(--bg2);border-radius:4px}
+.slx::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:4px}
+.slx::-webkit-scrollbar-thumb:hover{background:var(--tx3)}
+.slw.more::after{content:"";position:absolute;top:0;right:0;bottom:14px;width:48px;background:linear-gradient(to right,transparent,var(--bg));pointer-events:none}
+.sl{display:grid;border-top:1px solid var(--bd)}
+.sl>div:first-child,.sl .ln{position:sticky;left:0;z-index:1;background:var(--bg)}
+.sl>div{padding:8px;border-bottom:1px solid var(--bd);min-width:0}
+.sl .ph{border-bottom:1px solid var(--bd2);display:flex;flex-direction:column;gap:2px}
+.sl .ph b{font-size:13.5px}
+.sl .ph span{font-size:12.5px;color:var(--tx2);line-height:1.4}
+.sl .ph+.ph,.sl .cell+.cell{border-left:1px dashed var(--bd)}
+.sl .ln{font-size:12.5px;color:var(--tx2);font-weight:600;padding-top:11px}
+.sl .cell{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.st{overflow-wrap:anywhere;min-width:0;appearance:none;cursor:pointer;text-align:left;background:var(--bg);border:1px solid var(--bd2);border-radius:5px;padding:3px 7px;font-size:12.5px;line-height:1.3;display:flex;gap:5px;align-items:baseline;max-width:100%}
+.st i{font-style:normal;color:var(--tx3);font-size:11px;font-variant-numeric:tabular-nums;white-space:nowrap;flex:none}
+.st.script{font-family:var(--m);font-size:11.5px}
+.st .lp{color:var(--warn);font-family:var(--f)}
+.st:hover{border-color:var(--tx2)}
+.st.on{border-color:var(--ac);background:var(--ac-bg)}
+.slm{display:none}
+@media (max-width:640px){
+  .slw{display:none}
+  .slm{display:flex;flex-direction:column;gap:14px}
+  .slm .ph b{font-size:14px} .slm .ph span{display:block;font-size:13px;color:var(--tx2)}
+  .slm .steps{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+  .slm .st{width:100%}
+  .slm .st em{font-style:normal;margin-left:auto;color:var(--tx3);font-family:var(--f);font-size:11px}
+}
+
+/* demo */
+.frame{height:520px;overflow-y:auto;position:relative;border:1px solid var(--bd);border-radius:6px;background:var(--bg2)}
+.layer{position:sticky;top:0;height:520px;overflow:hidden}
+.layer img{position:absolute;left:0;top:0;width:100%;max-width:100%;display:block;will-change:transform}
+.layer img.b{clip-path:inset(0 0 0 50%)}
+.dtag{position:absolute;top:12px;z-index:3;font-size:12px;font-weight:600;background:var(--bg);color:var(--tx);border:1px solid var(--bd2);border-radius:10px;padding:2px 9px;white-space:nowrap}
+.dtag.l{right:calc(50% + 8px)} .dtag.r{left:calc(50% + 8px)}
+.hd{position:absolute;top:0;bottom:0;left:50%;width:28px;margin-left:-14px;z-index:4;cursor:ew-resize;touch-action:none;display:flex;justify-content:center}
+.hd::before{content:"";width:2px;height:100%;background:var(--ac)}
+.hd .knob{position:absolute;top:50%;width:30px;height:24px;margin-top:-12px;border-radius:12px;background:var(--ac);color:var(--bg);font-size:13px;font-weight:700;line-height:24px;text-align:center;box-shadow:0 0 0 3px var(--bg)}
+.gal{border:1px solid var(--bd);border-radius:6px;overflow:auto;max-height:520px;background:var(--bg2)}
+.gal img{display:block;width:100%;max-width:100%}
+.gcap{font-size:13.5px;color:var(--tx2)}
+.pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.pair>div{min-width:0}
+@media (max-width:640px){.pair{grid-template-columns:minmax(0,1fr)}}
+.code{background:var(--code-bg);border-radius:6px;padding:10px 12px;font-family:var(--m);font-size:12px;line-height:1.6;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
+.clabel{font-size:12px;color:var(--tx3);font-weight:600;margin-bottom:4px}
+@media (max-width:560px){.frame,.layer{height:420px}}
+
+/* table */
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+td{padding:7px 10px;border-bottom:1px solid var(--bd);vertical-align:top}
+td:first-child{width:58%}
+td code{white-space:normal;overflow-wrap:anywhere}
+.cp{appearance:none;border:none;background:none;color:var(--tx3);cursor:pointer;font-size:12px;margin-left:4px}
+.cp:hover{color:var(--ac)}
+.pre{white-space:pre-wrap;font-family:var(--m);font-size:12px;background:var(--code-bg);border-radius:6px;padding:10px 12px}
+
+/* tree */
+.tree{font-size:14px}
+.tree ul{list-style:none;margin:0 0 0 6px;padding-left:14px;border-left:1px solid var(--bd)}
+.tree>ul{border:none;padding:0;margin:0}
+.tr{display:flex;gap:8px;align-items:baseline;padding:2px 6px;border-radius:4px;min-width:0;cursor:pointer}
+.tr:hover{background:var(--bg2)}
+.tr .chev{width:10px;flex:none;color:var(--tx3);font-size:10px;transition:transform .15s}
+.tr.open .chev{transform:rotate(90deg)}
+.tr .nm{font-family:var(--m);font-size:13px;color:var(--tx);overflow-wrap:anywhere;min-width:0}
+.tr.dir .nm{font-weight:500}
+.tr.leaf .nm{color:var(--ac)}
+
+/* popover */
+.pop{position:fixed;z-index:50;width:min(340px,calc(100vw - 32px));background:var(--bg);border:1px solid var(--bd2);border-radius:8px;box-shadow:var(--sh);padding:12px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.pop.wide{width:min(460px,calc(100vw - 32px))}
+.pop h4{margin:0;font-size:15px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.pop h4 small{font-weight:400;color:var(--tx3);font-size:12px}
+.pop .x{appearance:none;border:none;background:none;color:var(--tx3);cursor:pointer;font-size:16px;line-height:1;padding:0}
+.pop ul{margin:0;padding-left:18px}
+.pop .fl{display:flex;flex-wrap:wrap;gap:4px 10px;font-family:var(--m);font-size:12px}
+.pop .back{appearance:none;border:none;background:none;padding:0;color:var(--tx3);font-size:12px;cursor:pointer;align-self:flex-start}
+.pop .muted{color:var(--tx2);font-size:13.5px}
+.rk{display:grid;grid-template-columns:80px minmax(0,1fr);gap:4px 10px;margin:0;font-size:13.5px}
+.rk dt{color:var(--tx2)}
+.rk dd{margin:0}
+.hl{max-height:min(55vh,420px);overflow:auto;padding-right:4px}
+.hl h5{margin:10px 0 2px;font-size:12px;color:var(--tx3);font-weight:600}
+.hl div{display:grid;grid-template-columns:34px minmax(0,1fr);gap:8px;font-size:13px;line-height:1.4;padding:2px 0}
+.hl b{font-family:var(--m);font-size:11.5px;font-weight:500}
+@media (max-width:600px){.pop{left:max(16px,env(safe-area-inset-left,0px))!important;right:max(16px,env(safe-area-inset-right,0px));top:auto!important;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:auto!important}}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:6px 12px;border-radius:6px;font-size:13.5px;z-index:60}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="layout">
+  <article class="note" id="note"></article>
+  <nav class="outline" aria-label="Outline"><p>Outline</p><div id="outline"></div></nav>
+</div>
+<div class="pop" id="pop" role="dialog" aria-labelledby="pop-t" hidden></div>
+<div class="toast" id="toast" hidden></div>
+
+<script type="application/json" id="brief">{"name": "pstack", "repo": "https://github.com/cursor/plugins", "branch": "2776ddd2355d6d6c8747d3964600f28daf62f049", "props": [{"k": "type", "v": "agent plugin", "tag": true}, {"k": "licence", "v": "MIT"}, {"k": "version", "v": "0.15.36"}, {"k": "source", "v": "[cursor/plugins › pstack](https://github.com/cursor/plugins/tree/main/pstack) · by Lauren Tan ([poteto](https://x.com/poteto))"}, {"k": "questions", "v": "[Ask an AI about this repo (DeepWiki)](https://deepwiki.com/cursor/plugins)"}], "problem": ["If you run AI coding agents, they write a lot of code fast, and much of it is low-quality slop.", "Each result still has to be checked by hand, so running more agents only adds more unchecked work to review."], "idea": "Route every task to [[playbook|a written playbook]] whose steps the agent copies into its todo list, and hold each step to [[principles|24 named engineering principles]] and to [[proof|proof from a real run]], not the agent's own word.", "demo": {"type": "code", "items": [{"label": "Bug fix", "inputLabel": "You type", "input": "/poteto-mode the export writes duplicate\nrows when a retry lands mid-run. repro\nfirst, then fix and verify.", "outputLabel": "Steps it copies into its todo list", "output": "1. Reproduce it yourself on the matching\n   surface via the control skill\n   (Non-negotiables), even when a debug or\n   instrumentation protocol says to ask the\n   user to reproduce. …\n2. Binary-search the cause. Form the\n   candidate hypotheses, then rule them out\n   until one survives. …\n3. Plan the fix. If it crosses a function\n   boundary, architect first. Delegate\n   implementation to a subagent using your\n   configured bug-fix model (default\n   grok-4.7-xhigh-fast) with a specific\n   scope.\n4. Verify on the same surface. The original\n   repro now passes. \"Inconclusive\" or\n   wrong-surface is not a pass. Flag it.\n   Unit tests show branch behavior, not bug\n   absence.\n5. Stage the commits so the failing repro\n   lands before the fix in git history. …\n6. Run Opening a PR.\n\nReply: what was broken, root cause, fix, how\nyou verified. Paste failing-then-passing\nrepro output verbatim."}, {"label": "Decision log", "inputLabel": "Columns", "input": "ts  phase  decision  why  evidence  result", "outputLabel": "Example rows", "output": "09:02  frame\n  decision  counted the work first, about\n            100 components and roughly 75\n            hours\n  why       wanted to know the size before\n            starting a long run\n  evidence  commit 3a9f1c2\n  result    found 5 things to sort out\n            before starting\n\n09:40  harness\n  decision  took screenshots of the old\n            version before changing anything\n  why       so we can compare old against\n            new and catch any visual change\n  evidence  scripts/snapshot.sh, baseline/\n  result    saved 120 reference screenshots\n\n11:15  widget\n  decision  moved the widget styles over\n            without changing how it looks\n  why       keep the change small and the\n            result identical\n  evidence  commit 7c21e0a, pixel-diff 0\n  result    looks identical, tests pass\n\n12:30  widget\n  decision  threw out a helper's work\n            because its screenshots were\n            blank\n  why       checked the real files instead\n            of trusting its summary\n  evidence  worktree reset\n  result    reverted, tightened the\n            instructions for next time"}]}, "map": {"name": "pstack", "children": [{"name": ".cursor-plugin/plugin.json", "path": ".cursor-plugin/plugin.json", "overview": ["Cursor's plugin manifest: name, version 0.15.36, MIT", "Ships two folders: skills/ and agents/", "Claude Code installs a generated copy from harness/pstack/claude-code at the repo root"]}, {"name": "skills", "children": [{"name": "poteto-mode", "children": [{"name": "SKILL.md", "path": "skills/poteto-mode/SKILL.md", "overview": ["Start here: the one skill you call; it runs every task and calls the others", "poteto-mode: the one skill you call. It runs the task and calls the other skills", "Non-negotiables: 19 triggers, e.g. code crossing a function boundary → architect", "Principles: one-line index of all 24, by group", "Autonomy: just do reversible work; always pause before force-push, deploys, data deletion, customer messages", "Subagents: default models per role, fresh agent per new task", "Writing the reply, Comments, list of the 23 playbooks"]}, {"name": "playbooks/", "path": "skills/poteto-mode/playbooks", "overview": ["23 files, one per kind of task", "Each: who owns what, numbered steps, and what the reply must contain", "bug-fix.md: reproduce, binary-search the cause, plan, verify, stage commits, open PR", "opening-a-pr.md: runs at the end of every other playbook. Worktree, small ordered commits, PR title and body rules"]}, {"name": "references/bugbot-triage.md", "path": "skills/poteto-mode/references/bugbot-triage.md", "overview": ["How to treat automated review comments: fix, dismiss or ask", "6 recurring false-alarm patterns it may dismiss with a reason"]}, {"name": "scripts/", "path": "skills/poteto-mode/scripts", "overview": ["watch-pr/: watches a GitHub pull request and reports whether it can merge", "check-plan.mjs: rejects a written plan missing its required sections (used by Multi-phase plan)", "worktree-audit.sh: lists extra working copies of the repo and which are safe to delete"]}]}, {"name": "setup-pstack/", "path": "skills/setup-pstack", "overview": ["Asks how much model effort to spend: unlimited, large, medium, small", "Roles: each kind of job (code, judgment and prose, review panels) gets a model", "Writes ~/.cursor/rules/pstack-models.mdc, read by every skill", "Defaults: grok-4.7-xhigh-fast for code, claude-opus-5-5-xhigh for judgment", "Offers to generate a project verification skill"]}, {"name": "how/", "path": "skills/how", "overview": ["how: explains how a part of the code works now", "Big question: 2 to 4 read-only explorer agents, then one explainer", "Output: Overview, Key Concepts, How It Works, Where Things Live, Gotchas"]}, {"name": "why/", "path": "skills/why", "overview": ["why: digs up the reasons code is shaped the way it is", "Starts from git history and PRs, then queries each connected source (tickets, docs, chat, error tracking) in parallel", "Cites everything; separates evidence from inference"]}, {"name": "architect/", "path": "skills/architect", "overview": ["architect: settles types, signatures and module shape before code", "Phases: Ground, Sketch, Agree, Implement, Scrap", "Scraps the design if the code needs the same workaround in several places"]}, {"name": "arena/", "path": "skills/arena", "overview": ["arena: several agents attempt the same task, then the best parts are merged", "Phases: Frame, Fan out, Cross-judge, Pick a base, Graft, Verify", "The judge is always from a different model family than the main chat"]}, {"name": "swarm/", "path": "skills/swarm", "overview": ["swarm: many workers each check one slice, then one combined report", "Each worker reports PASS, ISSUES or BLOCKED"]}, {"name": "interrogate/", "path": "skills/interrogate", "overview": ["interrogate: models from the review panel try to break a change", "A finding counts only if rerunning its command shows the failure", "Output: Intent, Findings, Dropped. Fixes nothing"]}, {"name": "tdd/", "path": "skills/tdd", "overview": ["Bug with a cheap test path: failing test first, then the fix, then rerun", "Skips the test when it would need brittle mocks or heavy setup"]}, {"name": "no-comments/", "path": "skills/no-comments", "overview": ["Hands the diff to Comment Sicko, a reviewer that didn't write it", "Fixes the root cause behind each removed comment", "Offers to turn a 'do not remove' comment into a type, test or lint"]}, {"name": "unslop/", "path": "skills/unslop", "overview": ["unslop: strips signs of AI writing from any text, the agent's own replies included", "28 numbered patterns: AI vocabulary, em dashes, filler, hedging, jargon, passive voice…"]}, {"name": "show-me-your-work/", "path": "skills/show-me-your-work", "overview": ["Decision log: one TSV row per decision with time, phase, decision, why, evidence, result", "Append-only; local unless a reviewer needs it", "At the end: checks each row against the chat transcript, then a reviewer from another model family reads it"]}, {"name": "poteto-help/", "path": "skills/poteto-help", "overview": ["Answers 'which skill fits?' and hands you a prompt to send", "Doesn't start the work", "recipes.md: prompts to copy, by situation"]}, {"name": "principle-*/  (24)", "path": "skills", "overview": ["One folder per principle, each a short SKILL.md", "Each: when it applies, the rule, why, how to apply it"]}]}, {"name": "agents", "children": [{"name": "poteto-agent.md", "path": "agents/poteto-agent.md", "overview": ["poteto-agent: the helper agent type for every subagent spawned during a run", "First reads poteto-mode in full, principles index included", "Never runs the playbook itself"]}, {"name": "comment-sicko.md", "path": "agents/comment-sicko.md", "overview": ["Read-only. Reports deletions and flags; never writes app code", "Keeps only: licence headers, public API docs, lint switches, links that explain a constraint, behaviour forced by outside code", "Marks code that needed a comment to be understood as MUST KILL, to be reshaped"]}]}, {"name": "docs/harness/claude-code.md", "path": "docs/harness/claude-code.md", "overview": ["Maps Cursor names to Claude Code: Task → Agent, model slugs, paths", "Commands get a pstack: prefix, e.g. /pstack:poteto-mode", "Cursor-only steps (automatic PR review, automations) are skipped with a one-line note"]}]}, "how": {"lanes": ["You", "Main chat", "Subagents", "Model panel"], "phases": [{"title": "Frame", "overview": "Restate your goal, pick the playbook, load the principles it will use."}, {"title": "Find the cause", "overview": "Reproduce, then narrow hypotheses with runtime evidence until one survives."}, {"title": "Fix", "overview": "Design if needed, delegate the code, verify on the same surface."}, {"title": "Ship", "overview": "Clean the diff, open the PR, report with evidence."}], "steps": [{"phase": 0, "lane": 0, "title": "Give a goal", "detail": "Say what's wrong and how you'll know it's done, e.g. \"repro first, then fix and verify\". No need to name a playbook or skills.", "in": "one-line goal + done check", "out": "poteto-mode attached", "files": ["skills/poteto-mode/SKILL.md"]}, {"phase": 0, "lane": 1, "title": "Restate the goal", "detail": "First message: your goal, the problem, and the smallest change it expects. Doesn't wait for a yes. If the evidence rules out what you asked for, it shows that and stops.", "in": "your prompt", "out": "restatement", "files": ["skills/poteto-mode/SKILL.md#L19"]}, {"phase": 0, "lane": 1, "title": "Match a playbook", "detail": "Picks one of 23 and copies its steps into the todo list, word for word. A step it skips stays listed as `skip: <reason>`. Large or unattended work gets a custom playbook instead.", "in": "task", "out": "todo list", "files": ["skills/poteto-mode/SKILL.md#L124-L126"]}, {"phase": 0, "lane": 1, "title": "Read principles", "detail": "Reads the full rule for each principle it applies, e.g. fix-root-causes for a bug. It may cite only rules it read this session.", "in": "principles index", "out": "rules in context", "files": ["skills/principle-fix-root-causes/SKILL.md"]}, {"phase": 1, "lane": 1, "title": "Reproduce", "detail": "Triggers the bug itself, in the same kind of surface the user sees, by driving the app or terminal itself (with a separate Cursor plugin). Asks you only if it truly can't reach it.", "in": "bug report", "out": "a failing repro", "files": ["skills/poteto-mode/playbooks/bug-fix.md#L7"]}, {"phase": 1, "lane": 2, "title": "how + why", "detail": "Read-only agents explain the affected code and its history to seed the list of possible causes.", "in": "affected area", "out": "cited explanation", "files": ["skills/how/SKILL.md", "skills/why/SKILL.md"]}, {"phase": 1, "lane": 1, "title": "Narrow down the cause", "loop": true, "detail": "Each pass takes the split that rules out the most, adds logging if needed, and reads it while the code runs. Repeats until one cause survives.", "in": "hypotheses", "out": "confirmed cause", "files": ["skills/poteto-mode/playbooks/bug-fix.md#L8"]}, {"phase": 2, "lane": 3, "title": "architect", "detail": "Only when the fix crosses a function boundary. Several models sketch the design in parallel; a judge from another family scores them; the best parts are merged.", "in": "cause + code", "out": "design sketch", "files": ["skills/architect/SKILL.md#L27-L39", "skills/arena/SKILL.md"]}, {"phase": 2, "lane": 2, "title": "Write the fix", "detail": "A fresh poteto-agent on the bug-fix model (default grok-4.7-xhigh-fast) gets the exact scope. The main chat reviews its diff itself.", "in": "scope + design", "out": "diff", "files": ["agents/poteto-agent.md"]}, {"phase": 2, "lane": 1, "title": "Verify where the bug appeared", "detail": "The original repro must now pass. \"Inconclusive\" or a different surface is not a pass. Unit tests alone don't count.", "in": "diff", "out": "passing repro", "files": ["skills/principle-prove-it-works/SKILL.md"]}, {"phase": 3, "lane": 2, "title": "Comment Sicko", "detail": "Before review, a fresh reviewer strips comments; the main chat fixes what each comment was covering for. /deslop (cursor-team-kit) cleans the code first.", "in": "diff", "out": "clean diff", "files": ["skills/no-comments/SKILL.md", "agents/comment-sicko.md"]}, {"phase": 3, "lane": 3, "title": "interrogate", "detail": "If the design is contested, panel models try to break the change. Only findings a rerun proves survive.", "in": "branch diff", "out": "verified findings", "files": ["skills/interrogate/SKILL.md"]}, {"phase": 3, "lane": 1, "title": "Open the PR", "detail": "Small ordered commits, failing repro before the fix. Conventional Commits title. A one-minute body: Why, What changed, Scope, Blast Radius, Verification. Prose passes through unslop.", "in": "verified diff", "out": "PR link", "files": ["skills/poteto-mode/playbooks/opening-a-pr.md#L7-L20", "skills/unslop/SKILL.md"]}, {"phase": 3, "lane": 0, "title": "Read the reply", "detail": "Root cause, fix, how it was verified, and the failing-then-passing repro output pasted in full. Names each principle that changed a decision.", "out": "PR + evidence", "files": []}]}, "why": ["**Nothing skipped quietly:** steps are copied in word for word, and a skipped one stays on the list with its reason.", "**Checked by someone else:** the judge in arena is always another model family; a fresh agent verifies each PR before it lands.", "**Findings must reproduce:** review panels keep only problems a rerun shows, so noise gets dropped, not fixed.", "**Experiments over questions:** a question a run could answer gets a quick prototype instead of a question to you; it pauses only before irreversible actions.", "**Fresh agents per task:** new work goes to a new subagent with the full brief, because resumed agents silently drop instructions.", "**Less code on purpose:** the default bias is deletion and the smallest change that solves the problem."], "use": {"agentTitle": "Install pstack in Cursor or Claude Code", "agentPrompt": "Install pstack (the pstack plugin in github.com/cursor/plugins). Explain each step in one plain sentence. Plugin commands are typed in the chat, so when a step needs one, tell me exactly what to type and wait.\n\n1. Install it. In Cursor: I type /add-plugin pstack. In Claude Code: I type /plugin marketplace add cursor/plugins, then /plugin install pstack@cursor-plugins.\n2. I type /setup-pstack (Claude Code: /pstack:setup-pstack). Help me answer: pick the \"large\" budget and keep the default models unless one isn't available to me. Decline the verification-skill offers for now.\n3. Tell me to start a new chat, because the model settings apply to new chats, and confirm /poteto-mode appears when I type / there.", "envs": [{"name": "Cursor", "commands": [["/add-plugin pstack", "Install (once)"], ["/setup-pstack", "Pick budget and models (once)"], ["/poteto-mode <task>", "Any task that needs rigor"], ["/poteto-mode new task. <task>", "Switch tasks in a long chat"], ["/poteto-help <question>", "Which skill fits? Get a prompt"], ["/how <question>", "Explain how code works"], ["/interrogate review this pr.", "Models try to break it"], ["/automate-me", "Turn your own workflow into a skill"]]}, {"name": "Claude Code", "commands": [["/plugin marketplace add cursor/plugins", "Add the marketplace (once)"], ["/plugin install pstack@cursor-plugins", "Install (once)"], ["/pstack:setup-pstack", "Pick budget and models (once)"], ["/pstack:poteto-mode <task>", "Any task that needs rigor"], ["claude plugin update pstack@cursor-plugins", "Update by hand (terminal)"]]}]}, "terms": {"playbook": {"title": "23 playbooks", "body": "A playbook is a fixed list of steps for one kind of task. poteto-mode picks one per task.", "list": {"items": [{"id": "investigation", "text": "a read-only question. how does x work, why was y built this way, are we sure."}, {"id": "bug fix", "text": "reproduce a defect, root-cause it, and fix with runtime evidence."}, {"id": "perf", "text": "trace a measured slowness and improve it against a baseline."}, {"id": "hillclimb", "text": "sustained, scientific improvement of one metric against a target, looping hypotheses with before/after measurement and one commit per accepted win."}, {"id": "runtime forensics", "text": "diagnose a live symptom (leak, idle-cpu spin, glitch) from instrumentation."}, {"id": "trace forensics", "text": "diagnose a captured profiling artifact (cpuprofile, trace, spindump, heap snapshot)."}, {"id": "feature", "text": "new or changed behavior, built from a named data shape."}, {"id": "refactoring", "text": "a behavior-preserving change to structure or shape."}, {"id": "prototype", "text": "a throwaway sketch to make a design or behavioral decision cheaply, or to settle an empirical fork by observing it."}, {"id": "visual parity", "text": "pixel-exact ui equivalence between two implementations."}, {"id": "authoring a skill", "text": "writing or editing a SKILL.md."}, {"id": "eval", "text": "test how a skill or prompt change affects agent behavior, blinded."}, {"id": "babysit", "text": "drive a pr or a stack to merge-ready: conflicts, review threads, ci."}, {"id": "shipping", "text": "independently verify a green stack, then land the contiguous verified run bottom-up through github by default or origin when available."}, {"id": "autonomous run", "text": "drive a long task to completion without stopping."}, {"id": "orchestrate", "text": "a standing project handed to one coordinator chat: multi-day, many stacked prs, fleets of subagents."}, {"id": "autopilot-full", "text": "run independent prs to merged with one owner per pr. a swarm verifies each code-ready head, and every later change to the patch gets a fresh check."}, {"id": "autopilot-stack", "text": "autopilot-full without the merge. build and verify prs for the operator to review and land, stacking a pr only on a pr it builds on."}, {"id": "session pickup", "text": "resume or take over a prior agent's in-flight work."}, {"id": "pause safely", "text": "suspend in-flight work cleanly so it can be resumed later."}, {"id": "multi-phase plan", "text": "work that spans phases or stacked PRs."}, {"id": "worktree cleanup", "text": "reclaim disk by pruning merged or abandoned worktrees and stale ios simulators, safety-gated."}, {"id": "opening a pr", "text": "open a ready pr from small ordered commits with a conventional commits title and a briefing-style body. invoked at the end of every other playbook."}]}, "path": "README.md#L65-L94"}, "principles": {"title": "24 principles", "body": "Each is a short skill holding one rule. The agent reads the full rule before applying it and names it in its reply.", "list": {"items": [{"id": "laziness-protocol", "tag": "core", "text": "Bias toward deletion and the smallest change that solves the problem."}, {"id": "foundational-thinking", "tag": "core", "text": "Apply before writing logic: choosing core types and data structures, sequencing scaffold-vs-feature work, asking what concurrent actors share. Get the data structures right so downstream code becomes obvious."}, {"id": "redesign-from-first-principles", "tag": "core", "text": "Redesign as if the requirement had been a foundational assumption from day one, instead of bolting it on."}, {"id": "attack-the-premise", "tag": "core", "text": "Apply when two or more fixes that share one premise have failed the same gate. Write the premise down and test it directly before you write another fix that assumes it."}, {"id": "subtract-before-you-add", "tag": "core", "text": "Remove dead weight, redundant validators, and stub references first, then build on the simpler base."}, {"id": "minimize-reader-load", "tag": "core", "text": "Count layers between question and answer, and hidden state in the reader's head; collapse one-caller wrappers and shrink mutable scope."}, {"id": "outcome-oriented-execution", "tag": "core", "text": "Apply during planned rewrites and migrations with explicit phase boundaries. Converge on the target architecture; don't preserve smooth intermediate states with throwaway compatibility code."}, {"id": "experience-first", "tag": "core", "text": "Choose user delight over implementation convenience; ship fewer polished features over more rough ones."}, {"id": "exhaust-the-design-space", "tag": "core", "text": "Build 2-3 competing prototypes and compare side by side before committing."}, {"id": "build-the-lever", "tag": "core", "text": "Apply to any non-trivial work, not just bulk work: edits, migrations, analyses, checks. Build the tool that does it or proves it (codemod, script, generator, or a skill your subagents follow) instead of working by hand. The tool is the artifact a reviewer can rerun."}, {"id": "model-the-domain", "tag": "architecture", "text": "Encode the domain in a structure instead of scattered conditionals."}, {"id": "boundary-discipline", "tag": "architecture", "text": "Concentrate guards at system boundaries (CLI, config, network, external APIs); trust internal types and keep business logic in pure functions."}, {"id": "type-system-discipline", "tag": "architecture", "text": "Make illegal states unrepresentable, brand semantic primitives, parse external data at boundaries, exhaust variants, derive from authoritative schemas."}, {"id": "make-operations-idempotent", "tag": "architecture", "text": "Converge to the same end state regardless of partial prior runs."}, {"id": "migrate-callers-then-delete-legacy-apis", "tag": "architecture", "text": "Migrate callers and delete the old API in the same wave instead of preserving compatibility layers."}, {"id": "separate-before-serializing-shared-state", "tag": "architecture", "text": "Eliminate the sharing first; serialize structurally only when one shared writer is a real invariant."}, {"id": "prove-it-works", "tag": "verification", "text": "Apply after completing a task, before declaring done. Verify against the real artifact (run the feature, read the actual value, inspect the diff), not a proxy, self-report, or 'it compiles.'."}, {"id": "fix-root-causes", "tag": "verification", "text": "Trace each symptom back to the first place the system went wrong and fix it there. A guard is a fix only when the state it handles is legitimate."}, {"id": "sequence-verifiable-units", "tag": "verification", "text": "Apply to multi-step work (sweeps, migrations, runs of similar edits) and to how you stack commits and PRs. Break work into small units that each end in a verifiable state, check each before the next, and order delivery so the sequence proves itself to a reviewer."}, {"id": "test-behavior-not-implementation", "tag": "verification", "text": "Apply when you write, change, or keep a test. Assert what the code's users can observe, so the test fails when that behavior breaks and keeps passing when only the internals change."}, {"id": "explain-the-number", "tag": "verification", "text": "Apply before you trust, report, or act on a number you measured: a speedup, a regression, a throughput, a latency, or an eval result. Find what limits it, and rule out that it measured something other than the work you think."}, {"id": "guard-the-context-window", "tag": "delegation", "text": "Route bulk to subagents; keep summaries in the main thread, not raw payloads."}, {"id": "never-block-on-the-human", "tag": "delegation", "text": "Proceed, present the result, let the human course-correct after the fact; reserve confirmation for irreversible actions."}, {"id": "encode-lessons-in-structure", "tag": "meta", "text": "Encode the rule as a lint, metadata flag, runtime check, or script instead of more text."}]}, "path": "README.md#L223-L257"}, "proof": {"title": "Prove It Works", "body": "The verification principle, applied before declaring any task done:", "kv": [["Rule", "Verify against the real artifact: run the feature, read the actual value, inspect the diff"], ["Not proof", "A proxy, an agent's self-report, cached screenshots, \"it compiles\""], ["Best proof", "A script that reruns the same comparison, kept as an artifact a reviewer can rerun"], ["Bug fix bar", "The original repro passes on the same surface; \"inconclusive\" is not a pass"]], "path": "skills/principle-prove-it-works/SKILL.md"}}, "root": "pstack"}</script>
+<script>
+(function(){
+var B=JSON.parse(document.getElementById("brief").textContent);
+var BR=B.branch||"main", REPO=(B.repo||"").replace(/\/$/,""), ROOT=(B.root||"").replace(/^\/|\/$/g,"");
+var TERMS=B.terms||{};
+
+/* ---------- helpers ---------- */
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+// inline markup: [[term|label]] concept link, [label](url) link, **bold**, `code`
+function md(s){
+  return esc(s)
+    .replace(/`([^`]+)`/g,"<code>$1</code>")
+    .replace(/\*\*([^*]+)\*\*/g,"<b>$1</b>")
+    .replace(/\[\[([a-z0-9-]+)(?:\|([^\]]+))?\]\]/g,function(_,k,l){return '<button type="button" class="wl" data-k="'+k+'">'+(l||(TERMS[k]?esc(TERMS[k].title):k))+'</button>';})
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,'<a href="$2">$1</a>');
+}
+function gl(p){p=String(p||"");var m=p.match(/^(.*?)(#L\d+(?:-L\d+)?)?$/),path=m[1].replace(/\/$/,""),lines=m[2]||"";var full=ROOT?(path?ROOT+"/"+path:ROOT):path;var file=/\.[A-Za-z0-9]+$/.test(path);return REPO+"/"+(file?"blob":"tree")+"/"+BR+"/"+full+(lines&&/\.(md|mdx|markdown)$/i.test(path)?"?plain=1":"")+lines;}
+function short(p){var m=String(p).match(/^(.*?)(?:#L(\d+)(?:-L(\d+))?)?$/);var name=m[1].replace(/\/$/,"").split("/").slice(-2).join("/");return name+(m[2]?" L"+m[2]+(m[3]?"–"+m[3]:""):"");}
+var ICON={
+  abs:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>',
+  tip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>'
+};
+
+/* ---------- sections ---------- */
+var S=[],h='<h1>'+esc(B.name)+'</h1>';
+if(B.props&&B.props.length){
+  h+='<dl class="props">'+B.props.map(function(p){return '<dt>'+esc(p.k)+'</dt><dd>'+(p.tag?'<span class="tagp">'+esc(p.v)+'</span>':md(p.v))+'</dd>';}).join("")+'</dl>';
+}
+function sec(id,title,html){S.push([id,title]);h+='<h2 id="'+id+'">'+esc(title)+'</h2>'+html;}
+function bullets(a){return '<ul>'+a.map(function(x){return '<li>'+md(x)+'</li>';}).join("")+'</ul>';}
+
+if(B.problem) sec("problem","Problem it solves",bullets(B.problem));
+if(B.idea) sec("idea","Main idea",'<div class="callout abs"><p>'+md(B.idea)+'</p></div>');
+if(B.demo&&B.demo.items&&B.demo.items.length) sec("demo","Demo",'<div class="seg" id="demotabs"></div><div id="demobody"></div>');
+if(B.map) sec("map","Repo map",'<div class="tree" id="tree"></div>');
+if(B.how) sec("how","How it works",'<div id="lanes"><div class="slw" id="slw"><div class="slx" id="slx"><div class="sl" id="sl"></div></div></div><div class="slm" id="slm"></div></div>');
+if(B.why) sec("why","Why it works",bullets(B.why));
+if(B.use){
+  var U=B.use, uh='';
+  if(U.agentPrompt) uh+='<div class="callout tip"><div class="ct">'+ICON.tip+esc(U.agentTitle)+'</div><div class="row"><button class="btn" id="runcp" type="button">Copy prompt</button><button class="btn" id="runsee" type="button">Preview</button></div><div class="pre" id="runpre" hidden></div></div>';
+  if(U.envs&&U.envs.length){
+    if(U.envs.length>1) uh+='<div class="seg" id="envseg" role="tablist">'+U.envs.map(function(e,i){return '<button type="button" role="tab" data-e="'+i+'" aria-selected="'+(i?'false':'true')+'"'+(i?'':' class="on"')+'>'+esc(e.name)+'</button>';}).join("")+'</div>';
+    uh+='<div class="tw"><table><tbody id="refbody">'+U.envs.map(function(e,i){return e.commands.map(function(c){
+      return '<tr data-e="'+i+'"'+(i?' hidden':'')+'><td><code>'+esc(c[0])+'</code><button class="cp" type="button" data-c="'+esc(c[0])+'">copy</button></td><td>'+md(c[1])+'</td></tr>';}).join("");}).join("")+'</tbody></table></div>';
+  }
+  sec("use","How to use it",uh);
+}
+document.getElementById("note").innerHTML=h;
+document.getElementById("outline").innerHTML=S.map(function(s){return '<a href="#'+s[0]+'" data-s="'+s[0]+'">'+esc(s[1])+'</a>';}).join("");
+
+/* ---------- popover ---------- */
+var pop=document.getElementById("pop"),stack=[],anchor=null;
+function openPop(html,el,wide){if(el)anchor=el;pop.classList.toggle("wide",!!wide);pop.innerHTML=html;pop.hidden=false;place();}
+function place(){
+  if(!anchor||matchMedia("(max-width:600px)").matches){pop.style.left="";pop.style.top="";return;}
+  var r=anchor.getBoundingClientRect(),w=pop.offsetWidth,ht=pop.offsetHeight;
+  var left=Math.min(Math.max(16,r.left),innerWidth-w-16),top=r.bottom+6;
+  if(top+ht>innerHeight-12)top=Math.max(12,r.top-ht-6);
+  pop.style.left=left+"px";pop.style.top=top+"px";
+}
+function clearSel(){document.querySelectorAll(".st.on").forEach(function(n){n.classList.remove("on");});}
+function closePop(){pop.hidden=true;stack=[];clearSel();}
+var X='<button class="x" type="button" aria-label="Close">×</button>';
+function listHtml(L,f){var o="",g=null;L.items.forEach(function(it){if(f&&it.tag!==f)return;if(it.group&&it.group!==g){g=it.group;o+="<h5>"+esc(g)+"</h5>";}
+  var tone=(L.tones||{})[it.tag]||"";o+='<div><b class="'+(tone?"t-"+tone:"")+'">'+esc(it.id||"")+'</b><span>'+md(it.text)+'</span></div>';});return o;}
+function term(k,el,push){
+  var t=TERMS[k];if(!t)return; if(push)stack.push(k);else stack=[k];
+  var o=(stack.length>1?'<button class="back" type="button">← back</button>':'')+'<h4 id="pop-t">'+esc(t.title)+X+'</h4>';
+  if(t.body)o+='<p'+(t.kv||t.list?' class="muted"':'')+'>'+md(t.body)+'</p>';
+  if(t.kv)o+='<dl class="rk">'+t.kv.map(function(r){return '<dt>'+esc(r[0])+'</dt><dd>'+md(r[1])+'</dd>';}).join("")+'</dl>';
+  if(t.list){
+    var tags=[],cnt={};t.list.items.forEach(function(it){if(it.tag){if(!cnt[it.tag]){cnt[it.tag]=0;tags.push(it.tag);}cnt[it.tag]++;}});
+    if(tags.length>1)o+='<div class="seg" data-k="'+k+'"><button type="button" class="on" data-f="">All '+t.list.items.length+'</button>'+tags.map(function(g){return '<button type="button" data-f="'+esc(g)+'">'+esc(g)+' '+cnt[g]+'</button>';}).join("")+'</div>';
+    o+='<div class="hl">'+listHtml(t.list,"")+'</div>';
+  }
+  if(t.more)o+='<button type="button" class="wl small" data-k="'+t.more[0]+'">'+esc(t.more[1])+'</button>';
+  if(t.path)o+='<a class="small" href="'+gl(t.path)+'">'+esc(short(t.path))+'</a>';
+  openPop(o,el,!!t.list);
+}
+pop.addEventListener("click",function(e){var b=e.target.closest(".seg button");if(!b)return;var seg=b.parentNode;
+  seg.querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x===b);});
+  pop.querySelector(".hl").innerHTML=listHtml(TERMS[seg.dataset.k].list,b.dataset.f);});
+document.addEventListener("click",function(e){
+  var w=e.target.closest(".wl");
+  if(w){e.stopPropagation();var inside=pop.contains(w);term(w.dataset.k,inside?null:w,inside);return;}
+  if(e.target.closest(".back")){stack.pop();term(stack.pop(),null,true);return;}
+  if(e.target.closest(".x")){closePop();return;}
+  if(!pop.hidden&&!pop.contains(e.target)&&!e.target.closest(".st")&&!e.target.closest(".tr"))closePop();
+},true);
+addEventListener("keydown",function(e){if(e.key==="Escape"&&!pop.hidden)closePop();});
+addEventListener("scroll",function(){if(!pop.hidden)place();},{passive:true});
+
+/* ---------- demo ---------- */
+if(document.getElementById("demotabs")){
+  var D=B.demo,tabs=document.getElementById("demotabs"),body=document.getElementById("demobody");
+  tabs.innerHTML=D.items.length>1?D.items.map(function(it,i){return '<button type="button" data-i="'+i+'"'+(i?'':' class="on"')+'>'+esc(it.label)+'</button>';}).join(""):"";
+  var cmp=null;
+  function show(i){
+    var it=D.items[i];
+    if(D.type==="compare"){
+      if(!cmp){body.innerHTML='<div class="frame" id="frame"><div class="layer"><img class="a" alt=""><img class="b" alt=""><div class="hd" role="slider" tabindex="0" aria-label="Drag to compare" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span class="dtag l" id="dl"></span><span class="dtag r" id="dr"></span><span class="knob">‹ ›</span></div></div><div class="sp"></div></div>';cmp=initCompare();}
+      cmp.load(it);
+    } else if(D.type==="gallery"){
+      body.innerHTML='<div class="gal"><img src="'+it.src+'" alt="'+esc(it.caption||it.label)+'"></div>'+(it.caption?'<p class="gcap">'+md(it.caption)+'</p>':'');
+    } else if(D.type==="code"){
+      body.innerHTML='<div class="pair"><div><div class="clabel">'+esc(it.inputLabel||"Input")+'</div><pre class="code">'+esc(it.input)+'</pre></div><div><div class="clabel">'+esc(it.outputLabel||"Output")+'</div><pre class="code">'+esc(it.output)+'</pre></div></div>';
+    }
+  }
+  function initCompare(){
+    var fr=document.getElementById("frame"),ly=fr.querySelector(".layer"),sp=fr.querySelector(".sp"),A=ly.querySelector("img.a"),Bi=ly.querySelector("img.b"),hd=ly.querySelector(".hd");
+    var hA=0,hB=0,maxH=0,pos=50,cur=null;
+    function fit(){if(!cur)return;var W=ly.clientWidth,H=ly.clientHeight;hA=W*cur.before.h/cur.before.w;hB=W*cur.after.h/cur.after.w;maxH=Math.max(hA,hB);sp.style.height=Math.max(0,maxH-H)+"px";move();}
+    function move(){var H=ly.clientHeight,p=Math.min(1,fr.scrollTop/Math.max(1,maxH-H));A.style.transform="translateY("+(-p*Math.max(0,hA-H))+"px)";Bi.style.transform="translateY("+(-p*Math.max(0,hB-H))+"px)";}
+    function setPos(x){pos=Math.max(22,Math.min(78,x));Bi.style.clipPath="inset(0 0 0 "+pos+"%)";hd.style.left=pos+"%";hd.setAttribute("aria-valuenow",Math.round(pos));}
+    fr.addEventListener("scroll",move,{passive:true});
+    var drag=false;
+    hd.addEventListener("pointerdown",function(e){drag=true;hd.setPointerCapture(e.pointerId);e.preventDefault();});
+    hd.addEventListener("pointermove",function(e){if(!drag)return;var r=ly.getBoundingClientRect();setPos((e.clientX-r.left)/r.width*100);});
+    hd.addEventListener("pointerup",function(){drag=false;});
+    hd.addEventListener("keydown",function(e){if(e.key==="ArrowLeft"){setPos(pos-5);e.preventDefault();}if(e.key==="ArrowRight"){setPos(pos+5);e.preventDefault();}});
+    if(window.ResizeObserver)new ResizeObserver(fit).observe(ly);else addEventListener("resize",fit);
+    return {load:function(it){cur=it;A.src=it.before.src;Bi.src=it.after.src;A.alt=it.before.caption||"Before";Bi.alt=it.after.caption||"After";
+      document.getElementById("dl").innerHTML=md(it.before.caption||"Before");document.getElementById("dr").innerHTML=md(it.after.caption||"After");fr.scrollTop=0;fit();}};
+  }
+  tabs.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;tabs.querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x===b);});show(+b.dataset.i);});
+  show(0);
+}
+
+/* ---------- repo map ---------- */
+if(document.getElementById("tree")){
+  var TM={};
+  var tr=function(n,id){TM[id]=n;var dir=!!(n.children&&n.children.length);
+    var o='<li><div class="tr '+(dir?'dir':'leaf')+(dir&&n.open!==false?' open':'')+'" data-id="'+id+'" role="button" tabindex="0"><span class="chev">'+(dir?'›':'')+'</span><span class="nm">'+esc(n.name)+(dir&&!/\/$/.test(n.name)?'/':'')+'</span></div>';
+    if(dir)o+='<ul'+(n.open===false?' hidden':'')+'>'+n.children.map(function(c,i){return tr(c,id+'.'+i);}).join("")+'</ul>';
+    return o+'</li>';};
+  var treeEl=document.getElementById("tree");treeEl.innerHTML='<ul>'+tr(B.map,'r')+'</ul>';
+  var act=function(r){var n=TM[r.dataset.id];
+    if(n.children&&n.children.length){var ul=r.nextElementSibling,op=!r.classList.contains("open");r.classList.toggle("open",op);ul.hidden=!op;return;}
+    stack=[];openPop('<h4 id="pop-t"><code>'+esc(n.name)+'</code>'+X+'</h4>'+(n.overview?'<ul class="small">'+n.overview.map(function(x){return '<li>'+md(x)+'</li>';}).join("")+'</ul>':'')+(n.path?'<a class="small" href="'+gl(n.path)+'">Open on GitHub</a>':''),r.querySelector(".nm"));};
+  treeEl.addEventListener("click",function(e){var r=e.target.closest(".tr");if(r){e.stopPropagation();act(r);}});
+  treeEl.addEventListener("keydown",function(e){var r=e.target.closest(".tr");if(r&&(e.key==="Enter"||e.key===" ")){e.preventDefault();act(r);}});
+}
+
+/* ---------- swimlane ---------- */
+if(document.getElementById("sl")){
+  var H=B.how,steps=H.steps,PH=H.phases,LN=H.lanes;
+  var chip=function(s,i,mob){return '<button type="button" class="st'+(s.script?' script':'')+'" data-i="'+i+'"><i>'+(i+1)+'</i>'+esc(s.title)+(s.loop?'<span class="lp">↺</span>':'')+(mob?'<em>'+esc(LN[s.lane])+'</em>':'')+'</button>';};
+  var sl=document.getElementById("sl");sl.style.gridTemplateColumns="96px repeat("+PH.length+",minmax(150px,1fr))";
+  var x='<div></div>'+PH.map(function(p){return '<div class="ph"><b>'+esc(p.title)+'</b><span>'+md(p.overview)+'</span></div>';}).join("");
+  LN.forEach(function(ln,l){x+='<div class="ln">'+esc(ln)+'</div>';PH.forEach(function(p,pi){x+='<div class="cell">'+steps.map(function(s,i){return (s.phase===pi&&s.lane===l)?chip(s,i):'';}).join("")+'</div>';});});
+  sl.innerHTML=x;
+  document.getElementById("slm").innerHTML=PH.map(function(p,pi){return '<div class="ph"><b>'+esc(p.title)+'</b><span>'+md(p.overview)+'</span><div class="steps">'+steps.map(function(s,i){return s.phase===pi?chip(s,i,1):'';}).join("")+'</div></div>';}).join("");
+  var slx=document.getElementById("slx"),slw=document.getElementById("slw");
+  var edge=function(){slw.classList.toggle("more",slx.scrollLeft+slx.clientWidth<slx.scrollWidth-2);};
+  slx.addEventListener("scroll",edge,{passive:true});addEventListener("resize",edge);edge();
+  document.getElementById("lanes").addEventListener("click",function(e){var n=e.target.closest(".st");if(!n)return;e.stopPropagation();
+    var i=+n.dataset.i,s=steps[i];clearSel();document.querySelectorAll('.st[data-i="'+i+'"]').forEach(function(m){m.classList.add("on");});stack=[];
+    openPop('<h4 id="pop-t">'+(s.script?'<code>'+esc(s.title)+'</code>':esc(s.title))+'<small>'+esc(LN[s.lane])+'</small></h4><p>'+md(s.detail)+'</p>'+
+      ((s["in"]||s.out)?'<ul class="small">'+(s["in"]?'<li>In: '+md(s["in"])+'</li>':'')+(s.out?'<li>Out: '+md(s.out)+'</li>':'')+'</ul>':'')+
+      (s.files&&s.files.length?'<div class="fl">'+s.files.map(function(f){return '<a href="'+gl(f)+'">'+esc(short(f))+'</a>';}).join("")+'</div>':''),n);});
+}
+
+/* ---------- use ---------- */
+function toast(m){var t=document.getElementById("toast");t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){t.hidden=true;},1600);}
+function copy(txt,el){try{navigator.clipboard.writeText(txt).then(function(){toast("Copied");},fb);}catch(e){fb();}
+  function fb(){if(!el)return;el.hidden=false;var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);toast("Selected. Press Cmd+C");}}
+if(document.getElementById("runpre"))document.getElementById("runpre").textContent=B.use.agentPrompt;
+document.addEventListener("click",function(e){
+  var c=e.target.closest(".cp");if(c)copy(c.dataset.c,c.previousElementSibling);
+  if(e.target.id==="runcp")copy(B.use.agentPrompt,document.getElementById("runpre"));
+  if(e.target.id==="runsee"){var p=document.getElementById("runpre");p.hidden=!p.hidden;e.target.textContent=p.hidden?"Preview":"Hide";}
+  var eb=e.target.closest("#envseg button");
+  if(eb){eb.parentNode.querySelectorAll("button").forEach(function(x){var on=x===eb;x.classList.toggle("on",on);x.setAttribute("aria-selected",on?"true":"false");});
+    document.querySelectorAll("#refbody tr").forEach(function(r){r.hidden=r.dataset.e!==eb.dataset.e;});}
+});
+
+/* ---------- outline ---------- */
+var OL=[].slice.call(document.querySelectorAll(".outline a"));
+if(window.IntersectionObserver){var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting)OL.forEach(function(a){a.classList.toggle("on",a.dataset.s===en.target.id);});});},{rootMargin:"0px 0px -70% 0px"});
+  S.forEach(function(s){io.observe(document.getElementById(s[0]));});}
+})();
+</script>
+</body>
+</html>

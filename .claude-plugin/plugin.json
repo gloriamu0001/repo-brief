@@ -1,0 +1,9 @@
+{
+  "name": "repo-brief",
+  "version": "1.0.0",
+  "description": "Turn any GitHub repo into a one-page interactive brief a non-technical builder understands in a minute.",
+  "author": { "name": "Gloria Mu", "url": "https://github.com/gloriamu0001" },
+  "repository": "https://github.com/gloriamu0001/repo-brief",
+  "license": "MIT",
+  "keywords": ["github", "repo", "explainer", "onboarding", "non-technical", "agent-skill"]
+}
