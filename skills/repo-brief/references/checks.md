@@ -8,7 +8,7 @@
 4. Are the concept links the repo's core concepts only, each defined once at its first linkable mention?
 5. Does every repo-map item earn its place: used by the workflow or the install, with a content overview?
 6. Does the install prompt only install the tool and confirm it worked, with no example run or add-on?
-7. Does the swimlane show the pipeline the code actually runs, in order, with each step pointing at the file (and lines, where given) that does it?
+7. Does the swimlane show the pipeline the code actually runs, in order, with step files pointing at the lines that do each step?
 
 ## Reader questions
 
