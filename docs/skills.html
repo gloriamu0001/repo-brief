@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>skills Repo Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Repo Brief: Obsidian-style note. One 720px reading column, outline pane on the right, callouts, internal links, hover previews. */
+:root{
+  --bg:#FFFFFF; --bg2:#F6F6F6; --tx:#222222; --tx2:#5C5C5C; --tx3:#ABABAB; --bd:#E3E3E3; --bd2:#CFCFCF;
+  --ac:#7C5CEA; --ac-bg:rgba(124,92,234,.09); --c-abs:#0FA3B1; --c-tip:#0FA3B1;
+  --bad:#E93147; --warn:#E07A00; --good:#08A94E; --code-bg:#F3F3F3;
+  --f:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --m:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --sh:0 8px 28px rgba(0,0,0,.14); color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1E1E1E; --bg2:#262626; --tx:#DADADA; --tx2:#A3A3A3; --tx3:#666666; --bd:#333333; --bd2:#454545;
+  --ac:#A68AF9; --ac-bg:rgba(166,138,249,.12); --c-abs:#3FC5D0; --c-tip:#3FC5D0;
+  --bad:#FB464C; --warn:#E9973F; --good:#44CF6E; --code-bg:#2A2A2A; --sh:0 8px 28px rgba(0,0,0,.5); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#1E1E1E; --bg2:#262626; --tx:#DADADA; --tx2:#A3A3A3; --tx3:#666666; --bd:#333333; --bd2:#454545;
+  --ac:#A68AF9; --ac-bg:rgba(166,138,249,.12); --c-abs:#3FC5D0; --c-tip:#3FC5D0;
+  --bad:#FB464C; --warn:#E9973F; --good:#44CF6E; --code-bg:#2A2A2A; --sh:0 8px 28px rgba(0,0,0,.5); color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--tx);font-family:var(--f);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 80px}
+h1,h2,h3{margin:0;line-height:1.25;font-weight:700;text-wrap:balance}
+p{margin:0}
+a{color:var(--ac);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font-family:var(--m);font-size:.86em;background:var(--code-bg);border-radius:4px;padding:.1em .35em}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.t-bad{color:var(--bad)} .t-warn{color:var(--warn)} .t-good{color:var(--good)}
+
+.layout{max-width:980px;margin:0 auto;display:grid;grid-template-columns:minmax(0,720px) 200px;gap:60px;justify-content:center}
+@media (max-width:1000px){.layout{grid-template-columns:minmax(0,720px)}.outline{display:none}}
+.note{display:flex;flex-direction:column;gap:14px;min-width:0}
+.note h1{font-size:34px;letter-spacing:-.01em}
+.note h2{font-size:22px;margin-top:30px;padding-top:4px;scroll-margin-top:20px}
+.note ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+.note li::marker{color:var(--tx3)}
+.small{font-size:13.5px}
+
+.props{display:grid;grid-template-columns:110px minmax(0,1fr);gap:4px 12px;font-size:14px;padding:8px 0 14px;border-bottom:1px solid var(--bd);margin:0}
+.props dt{color:var(--tx2)}
+.props dd{margin:0;min-width:0}
+.tagp{display:inline-block;background:var(--ac-bg);color:var(--ac);border-radius:10px;padding:0 8px;font-size:13px}
+
+.wl{appearance:none;border:none;background:none;padding:0;margin:0;color:var(--ac);cursor:pointer;font:inherit}
+.wl:hover{text-decoration:underline}
+
+.callout{border-radius:6px;padding:12px 16px;background:color-mix(in srgb,var(--cc) 9%,transparent);display:flex;flex-direction:column;gap:8px}
+.callout .ct{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--cc);font-size:15px}
+.callout .ct svg{width:16px;height:16px;flex:none}
+.callout.abs{--cc:var(--c-abs)} .callout.tip{--cc:var(--c-tip)}
+.callout p{font-size:15.5px}
+
+.outline{position:sticky;top:40px;align-self:start;font-size:13.5px}
+.outline p{color:var(--tx3);font-size:12px;font-weight:600;margin-bottom:6px}
+.outline a{display:block;color:var(--tx2);padding:3px 0 3px 10px;border-left:1px solid var(--bd)}
+.outline a.on{color:var(--tx);border-left-color:var(--ac)}
+.outline a:hover{text-decoration:none;color:var(--tx)}
+
+.btn{appearance:none;border:1px solid var(--bd2);background:var(--bg);color:var(--tx);border-radius:6px;padding:5px 12px;font-size:14px;font-weight:500;cursor:pointer}
+.btn:hover{background:var(--bg2)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.seg{display:flex;gap:4px;flex-wrap:wrap}
+.seg button{appearance:none;border:1px solid var(--bd);background:none;border-radius:10px;padding:1px 9px;font-size:12px;color:var(--tx2);cursor:pointer}
+.seg button.on{border-color:var(--ac);color:var(--ac)}
+
+/* swimlane: lanes are rows, phases are columns */
+.slw{position:relative}
+.slx{overflow-x:auto;padding-bottom:6px}
+.slx::-webkit-scrollbar{height:8px}
+.slx::-webkit-scrollbar-track{background:var(--bg2);border-radius:4px}
+.slx::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:4px}
+.slx::-webkit-scrollbar-thumb:hover{background:var(--tx3)}
+@supports not selector(::-webkit-scrollbar){.slx{scrollbar-width:thin;scrollbar-color:var(--bd2) var(--bg2)}}
+.slw.more::after{content:"";position:absolute;top:0;right:0;bottom:14px;width:48px;background:linear-gradient(to right,transparent,var(--bg));pointer-events:none}
+.sl{display:grid;border-top:1px solid var(--bd)}
+.sl>div:first-child,.sl .ln{position:sticky;left:0;z-index:1;background:var(--bg)}
+.sl>div{padding:8px;border-bottom:1px solid var(--bd);min-width:0}
+.sl .ph{border-bottom:1px solid var(--bd2);display:flex;flex-direction:column;gap:2px}
+.sl .ph b{font-size:13.5px}
+.sl .ph span{font-size:12.5px;color:var(--tx2);line-height:1.4}
+.sl .ph+.ph,.sl .cell+.cell{border-left:1px dashed var(--bd)}
+.sl .ln{font-size:12.5px;color:var(--tx2);font-weight:600;padding-top:11px}
+.sl .cell{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.st{overflow-wrap:anywhere;min-width:0;appearance:none;cursor:pointer;text-align:left;background:var(--bg);border:1px solid var(--bd2);border-radius:5px;padding:3px 7px;font-size:12.5px;line-height:1.3;display:flex;gap:5px;align-items:baseline;max-width:100%}
+.st i{font-style:normal;color:var(--tx3);font-size:11px;font-variant-numeric:tabular-nums;white-space:nowrap;flex:none}
+.st.script{font-family:var(--m);font-size:11.5px}
+.st .lp{color:var(--warn);font-family:var(--f)}
+.st:hover{border-color:var(--tx2)}
+.st.on{border-color:var(--ac);background:var(--ac-bg)}
+.slm{display:none}
+@media (max-width:640px){
+  .slw{display:none}
+  .slm{display:flex;flex-direction:column;gap:14px}
+  .slm .ph b{font-size:14px} .slm .ph span{display:block;font-size:13px;color:var(--tx2)}
+  .slm .steps{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+  .slm .st{width:100%}
+  .slm .st em{font-style:normal;margin-left:auto;color:var(--tx3);font-family:var(--f);font-size:11px}
+}
+
+/* demo */
+.frame{height:520px;overflow-y:auto;position:relative;border:1px solid var(--bd);border-radius:6px;background:var(--bg2)}
+.layer{position:sticky;top:0;height:520px;overflow:hidden}
+.layer img{position:absolute;left:0;top:0;width:100%;max-width:100%;display:block;will-change:transform}
+.layer img.b{clip-path:inset(0 0 0 50%)}
+.dtag{position:absolute;top:12px;z-index:3;font-size:12px;font-weight:600;background:var(--bg);color:var(--tx);border:1px solid var(--bd2);border-radius:10px;padding:2px 9px;white-space:nowrap}
+.dtag.l{right:calc(50% + 8px)} .dtag.r{left:calc(50% + 8px)}
+.hd{position:absolute;top:0;bottom:0;left:50%;width:28px;margin-left:-14px;z-index:4;cursor:ew-resize;touch-action:none;display:flex;justify-content:center}
+.hd::before{content:"";width:2px;height:100%;background:var(--ac)}
+.hd .knob{position:absolute;top:50%;width:30px;height:24px;margin-top:-12px;border-radius:12px;background:var(--ac);color:var(--bg);font-size:13px;font-weight:700;line-height:24px;text-align:center;box-shadow:0 0 0 3px var(--bg)}
+.gal{border:1px solid var(--bd);border-radius:6px;overflow:auto;max-height:520px;background:var(--bg2)}
+.gal img{display:block;width:100%;max-width:100%}
+.gcap{font-size:13.5px;color:var(--tx2)}
+.pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.pair>div{min-width:0}
+@media (max-width:640px){.pair{grid-template-columns:minmax(0,1fr)}}
+.code{background:var(--code-bg);border-radius:6px;padding:10px 12px;font-family:var(--m);font-size:12px;line-height:1.6;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
+.clabel{font-size:12px;color:var(--tx3);font-weight:600;margin-bottom:4px}
+@media (max-width:560px){.frame,.layer{height:420px}}
+
+/* table */
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+td{padding:7px 10px;border-bottom:1px solid var(--bd);vertical-align:top}
+td:first-child{width:58%}
+td code{white-space:normal;overflow-wrap:anywhere}
+.cp{appearance:none;border:none;background:none;color:var(--tx3);cursor:pointer;font-size:12px;margin-left:4px}
+.cp:hover{color:var(--ac)}
+.pre{white-space:pre-wrap;font-family:var(--m);font-size:12px;background:var(--code-bg);border-radius:6px;padding:10px 12px}
+
+/* tree */
+.tree{font-size:14px}
+.tree ul{list-style:none;margin:0 0 0 6px;padding-left:14px;border-left:1px solid var(--bd)}
+.tree>ul{border:none;padding:0;margin:0}
+.tr{display:flex;gap:8px;align-items:baseline;padding:2px 6px;border-radius:4px;min-width:0;cursor:pointer}
+.tr:hover{background:var(--bg2)}
+.tr .chev{width:10px;flex:none;color:var(--tx3);font-size:10px;transition:transform .15s}
+.tr.open .chev{transform:rotate(90deg)}
+.tr .nm{font-family:var(--m);font-size:13px;color:var(--tx);overflow-wrap:anywhere;min-width:0}
+.tr.dir .nm{font-weight:500}
+.tr.leaf .nm{color:var(--ac)}
+
+/* popover */
+.pop{position:fixed;z-index:50;width:min(340px,calc(100vw - 32px));background:var(--bg);border:1px solid var(--bd2);border-radius:8px;box-shadow:var(--sh);padding:12px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.pop.wide{width:min(460px,calc(100vw - 32px))}
+.pop h4{margin:0;font-size:15px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.pop h4 small{font-weight:400;color:var(--tx3);font-size:12px}
+.pop .x{appearance:none;border:none;background:none;color:var(--tx3);cursor:pointer;font-size:16px;line-height:1;padding:0}
+.pop ul{margin:0;padding-left:18px}
+.pop .fl{display:flex;flex-wrap:wrap;gap:4px 10px;font-family:var(--m);font-size:12px}
+.pop .back{appearance:none;border:none;background:none;padding:0;color:var(--tx3);font-size:12px;cursor:pointer;align-self:flex-start}
+.pop .muted{color:var(--tx2);font-size:13.5px}
+.rk{display:grid;grid-template-columns:fit-content(40%) minmax(0,1fr);gap:4px 10px;margin:0;font-size:13.5px}
+.rk dt{color:var(--tx2)}
+.rk dd{margin:0}
+.hl{max-height:min(55vh,420px);overflow:auto;padding-right:4px}
+.hl h5{margin:10px 0 2px;font-size:12px;color:var(--tx3);font-weight:600}
+.hl div{display:grid;grid-template-columns:34px minmax(0,1fr);gap:8px;font-size:13px;line-height:1.4;padding:2px 0}
+.hl b{font-family:var(--m);font-size:11.5px;font-weight:500}
+.hl.long div{display:block;padding:3px 0}
+.hl.long b{display:block}
+@media (max-width:600px){.pop{left:max(16px,env(safe-area-inset-left,0px))!important;right:max(16px,env(safe-area-inset-right,0px));top:auto!important;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:auto!important}}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:6px 12px;border-radius:6px;font-size:13.5px;z-index:60}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="layout">
+  <article class="note" id="note"></article>
+  <nav class="outline" aria-label="Outline"><p>Outline</p><div id="outline"></div></nav>
+</div>
+<div class="pop" id="pop" role="dialog" aria-labelledby="pop-t" hidden></div>
+<div class="toast" id="toast" hidden></div>
+
+<script type="application/json" id="brief">{"name": "skills", "repo": "https://github.com/vercel-labs/skills", "branch": "d3701c11b1101251af14c9d148f026e1a47ebe17", "props": [{"k": "type", "v": "CLI", "tag": true}, {"k": "licence", "v": "MIT"}, {"k": "version", "v": "1.7.6"}, {"k": "source", "v": "[vercel-labs/skills](https://github.com/vercel-labs/skills) by Vercel Labs · [skills.sh](https://skills.sh)"}, {"k": "questions", "v": "[Ask an AI about this repo (DeepWiki)](https://deepwiki.com/vercel-labs/skills)"}], "problem": ["If you use more than one coding agent, each looks for skills in its own folder (`.claude/skills`, `.windsurf/skills` and so on), so one skill means one hand-made copy per agent.", "Hand-made copies drift: nothing records where a skill came from, so you can't tell when it is out of date or update it in one step."], "idea": "Fetch [[skill|skills]] from any [[source|source]], keep [[canonical|one real copy]] per project, link every agent in [[registry|a built-in list of 79 agents]] to that copy, and record each install in [[lock|a lock file]] so later updates are one command.", "demo": {"type": "code", "items": [{"label": "Start a new skill", "input": "npx skills init my-skill", "inputLabel": "You type", "outputLabel": "What the terminal prints", "output": "Initialized skill: my-skill\n\nCreated:\n  my-skill/SKILL.md\n\nNext steps:\n  1. Edit my-skill/SKILL.md to define your skill instructions\n  2. Update the name and description in the frontmatter\n\nPublishing:\n  GitHub:  Push to a repo, then npx skills add <owner>/<repo>\n  URL:     Host the file, then npx skills add https://example.com/my-skill/SKILL.md\n\nBrowse existing skills for inspiration at https://skills.sh/"}, {"label": "The file it writes", "input": "npx skills init my-skill", "inputLabel": "You type", "outputLabel": "The new file my-skill/SKILL.md", "output": "---\nname: my-skill\ndescription: A brief description of what this skill does\n---\n\n# my-skill\n\nInstructions for the agent to follow when this skill is activated.\n\n## When to use\n\nDescribe when this skill should be used.\n\n## Instructions\n\n1. First step\n2. Second step\n3. Additional steps as needed"}]}, "map": {"name": "skills", "children": [{"name": "package.json", "path": "package.json", "overview": ["Published to npm as `skills`, run with npx", "Two command names: `skills` and `add-skill`, both start bin/cli.mjs", "Needs Node.js 22.20 or newer"]}, {"name": "bin/cli.mjs", "path": "bin/cli.mjs", "overview": ["The 14-line launcher npx runs", "Loads the built copy of src/cli.ts"]}, {"name": "src", "open": true, "children": [{"name": "cli.ts", "path": "src/cli.ts", "overview": ["Start here: the full help screen lists every command and option, and the command switch shows which file runs each one", "Commands: add, use, remove, list, find, check, update, init, plus two experimental ones", "The `init` template that writes a new SKILL.md"]}, {"name": "add.ts", "path": "src/add.ts", "overview": ["The whole install flow, from reading the source to the final \"Done!\"", "Prompts: which skills, which agents, project or global, link or copy, confirm", "Shows a security rating table from skills.sh for public GitHub repos", "Writes the lock files and offers the find-skills skill once"]}, {"name": "source-parser.ts", "path": "src/source-parser.ts", "overview": ["Turns what you typed into a source: GitHub, GitLab, Azure Repos, any git URL, a local folder, a website or a download link", "Handles `owner/repo@skill` and version pins like `owner/repo@v1.2.3`", "Asks the GitHub API whether a repo is public"]}, {"name": "git.ts", "path": "src/git.ts", "overview": ["Shallow clone into a temporary folder", "Tries your git login, then GitHub CLI, then SSH, for private repos", "Refuses unsafe git transports"]}, {"name": "blob.ts", "path": "src/blob.ts", "overview": ["Fast path for a short list of GitHub owners (vercel, vercel-labs and a few more)", "Finds SKILL.md files through the GitHub API, then downloads cached files from skills.sh instead of cloning", "Falls back to a clone if anything fails"]}, {"name": "providers/wellknown.ts", "path": "src/providers/wellknown.ts", "overview": ["Installs skills a website publishes itself", "Reads `/.well-known/agent-skills/index.json`, then the older `/.well-known/skills/index.json`"]}, {"name": "download-source.ts", "path": "src/download-source.ts", "overview": ["Installs from a direct link to one SKILL.md or an archive (.zip, .tar, .tar.gz, .tgz)", "Limits: 10 MiB download, 25 MiB unpacked, 1000 files"]}, {"name": "skills.ts", "path": "src/skills.ts", "overview": ["Finds every SKILL.md in the fetched files", "Looks in `skills/` and each agent's own skills folder, up to three levels deep, then searches everywhere if nothing turns up", "Skips any skill without both `name` and `description`"]}, {"name": "agents.ts", "path": "src/agents.ts", "overview": ["The 79 agent entries: display name, project folder, home folder, and a check for whether it is installed", "Detects installed agents by looking for their config folders"]}, {"name": "installer.ts", "path": "src/installer.ts", "overview": ["Copies each skill into `.agents/skills/<name>`", "Links each other agent's folder to that copy; falls back to a copy when links fail (Windows needs Developer Mode)", "Guards skill names against writing outside the target folder"]}, {"name": "local-lock.ts", "path": "src/local-lock.ts", "overview": ["The project lock file, `skills-lock.json`, meant to be committed", "Per skill: source, source type, path, and a fingerprint of the files", "Sorted and timestamp-free, so merges stay clean"]}, {"name": "skill-lock.ts", "path": "src/skill-lock.ts", "overview": ["The global lock file, `~/.agents/.skill-lock.json`", "Per skill: source, the GitHub folder fingerprint, install and update dates", "Also remembers the agents you picked last time"]}, {"name": "update.ts", "path": "src/update.ts", "overview": ["Runs `check` and `update`", "Reads both lock files, fetches each source again and compares fingerprints", "Reinstalls only what changed"]}, {"name": "telemetry.ts", "path": "src/telemetry.ts", "overview": ["Sends anonymous usage events and fetches security ratings, both from skills.sh", "Off when `DISABLE_TELEMETRY` or `DO_NOT_TRACK` is set"]}]}, {"name": "skills/find-skills/SKILL.md", "path": "skills/find-skills/SKILL.md", "overview": ["The one skill this repo ships", "Teaches your agent to search for and suggest skills when you ask \"how do I do X\"", "Offered once after your first install"]}]}, "how": {"lanes": ["You", "skills CLI", "Online services"], "phases": [{"title": "Ask", "overview": "Most common flow: `npx skills add <source>` in a project folder."}, {"title": "Fetch", "overview": "Gets the files and finds every valid SKILL.md."}, {"title": "Choose", "overview": "You pick skills, agents, scope and install method, then confirm."}, {"title": "Install", "overview": "One copy, links for the other agents, a lock entry, a closing note."}], "steps": [{"phase": 0, "lane": 0, "title": "npx skills add", "script": true, "detail": "e.g. `npx skills add vercel-labs/agent-skills`. Add `-g` for every project, `-y` to skip prompts.", "in": "a source", "out": "options", "files": ["src/cli.ts#L387-L409", "src/add.ts#L3365-L3446"]}, {"phase": 0, "lane": 1, "title": "Detect host agent", "detail": "If a coding agent ran the command, it turns off prompts and installs for that agent.", "in": "environment", "out": "prompt or no prompt", "files": ["src/add.ts#L2300-L2352", "src/detect-agent.ts"]}, {"phase": 0, "lane": 1, "title": "Read the source", "detail": "Works out the kind of source, the repo, branch or tag, sub-folder and any skill name after `@`.", "in": "what you typed", "out": "parsed source", "files": ["src/add.ts#L2378-L2387", "src/source-parser.ts#L367-L610"]}, {"phase": 1, "lane": 2, "title": "Is it public?", "detail": "GitHub only: asks the GitHub API. Only confirmed-public repos are later named to skills.sh.", "in": "owner/repo", "out": "public, private or unknown", "files": ["src/add.ts#L2392-L2402", "src/source-parser.ts#L86-L101"]}, {"phase": 1, "lane": 2, "title": "Clone or download", "detail": "Shallow git clone into a temporary folder. A few GitHub owners use cached files from skills.sh; websites and links are downloaded.", "in": "parsed source", "out": "skill files on disk", "files": ["src/add.ts#L1541-L1606", "src/git.ts#L276-L287", "src/blob.ts"]}, {"phase": 1, "lane": 1, "title": "Find skills", "detail": "Walks the usual skill folders up to three levels deep and reads each SKILL.md header. The first skill with a given name wins.", "in": "files", "out": "skill list", "files": ["src/skills.ts#L179-L330", "src/skills.ts#L56-L119"]}, {"phase": 2, "lane": 0, "title": "Pick skills", "detail": "Multi-select list. Skipped when you named skills, used `-y`, or there is only one.", "in": "skill list", "out": "chosen skills", "files": ["src/add.ts#L2520-L2609"]}, {"phase": 2, "lane": 1, "title": "Detect agents", "detail": "Checks each of the 79 entries for its config folder on this computer.", "in": "agent list", "out": "installed agents", "files": ["src/agents.ts#L859-L867", "src/add.ts#L2626-L2720"]}, {"phase": 2, "lane": 0, "title": "Pick agents, scope, method", "detail": "Agents: detected ones are offered. Scope: this project or every project. Method: link (recommended) or separate copies.", "in": "installed agents", "out": "install plan", "files": ["src/add.ts#L2766-L2827"]}, {"phase": 2, "lane": 2, "title": "Security ratings", "detail": "Public GitHub repos only: skills.sh returns ratings from three outside scanners (Gen, Socket, Snyk). Advisory; never blocks.", "in": "repo + skill names", "out": "rating table", "files": ["src/add.ts#L2611-L2624", "src/add.ts#L2926-L2949"]}, {"phase": 2, "lane": 0, "title": "Confirm", "detail": "Reads the Installation Summary, including what will be overwritten, and answers \"Proceed with installation?\".", "in": "summary", "out": "yes or no", "files": ["src/add.ts#L2836-L2958"]}, {"phase": 3, "lane": 1, "title": "Copy and link", "detail": "Copies each skill into `.agents/skills/`, then links each chosen agent's folder to it. Agents that already read `.agents/skills` need no link. In a project, agents whose folder (e.g. `.windsurf/`) isn't there are skipped unless you named them.", "in": "install plan", "out": "skill in every agent", "files": ["src/add.ts#L2960-L2969", "src/installer.ts#L303-L476"]}, {"phase": 3, "lane": 2, "title": "Usage event", "detail": "Confirmed-public repos only: source, skills, agents and scope go to skills.sh. `DISABLE_TELEMETRY=1` or `DO_NOT_TRACK=1` turns this off, and the security ratings too.", "in": "install result", "out": "anonymous event", "files": ["src/add.ts#L2979-L3014"]}, {"phase": 3, "lane": 1, "title": "Write lock file", "detail": "Project: `skills-lock.json`. Global: `~/.agents/.skill-lock.json`. Each entry says where the skill came from and fingerprints its files.", "in": "install result", "out": "lock entry", "files": ["src/add.ts#L3032-L3095"]}, {"phase": 3, "lane": 1, "title": "Done", "detail": "Prints \"Installed N skills\" and \"Review skills before use; they run with full agent permissions.\", then offers the find-skills skill once.", "in": "lock entry", "out": "closing note", "files": ["src/add.ts#L3215-L3244"]}]}, "why": ["**One copy, many agents:** an update to the copy reaches every linked agent at once.", "**Detects, doesn't guess:** it offers the agents it finds on your computer and links only into agent folders that already exist in the project.", "**Lock file in the project:** commit it and teammates can restore the same skills; `check` and `update` compare fingerprints.", "**Works with any git host:** private repos use the git or GitHub CLI login you already have; it never copies your GitHub CLI credential.", "**Privacy by default:** repo and skill names leave your computer only for repos GitHub confirms are public."], "use": {"agentTitle": "Set up the skills CLI on this computer", "agentPrompt": "Set up the skills CLI (github.com/vercel-labs/skills) on this computer. Explain each step in one plain sentence. Ask before installing anything.\n\n1. Check that Node.js is 22.20 or newer (node -v). If not, help me install it.\n2. Run: npx skills --help (npx downloads the CLI on first use; nothing else to install)\n3. Confirm it worked: the output starts with \"Usage: skills <command> [options]\" and ends with \"Discover more skills at https://skills.sh/\". If it doesn't, show me the error.", "envs": [{"name": "Terminal", "commands": [["npx skills add <owner>/<repo>", "Install skills into this project"], ["npx skills add <owner>/<repo> -g", "Install for every project"], ["npx skills add <owner>/<repo> --skill <name> -a claude-code", "One skill, one agent"], ["npx skills add <owner>/<repo> --list", "Show skills without installing"], ["npx skills find [query]", "Search for skills"], ["npx skills list", "Show installed skills"], ["npx skills check", "Check for updates"], ["npx skills update", "Update installed skills"], ["npx skills install", "Restore the skills in skills-lock.json"], ["npx skills remove", "Remove skills"], ["npx skills init <name>", "Start a new skill"], ["npx skills use <owner>/<repo>@<skill>", "Use one skill without installing"]]}]}, "terms": {"skill": {"title": "Skill", "body": "A folder with a `SKILL.md` file: a short header with a `name` and a `description` (both required), then instructions for the agent. Other files in the folder come along.", "kv": [["name", "find-skills"], ["description", "Helps users discover and install agent skills when they ask questions like \"how do I do X\"…"], ["body", "When to use it, then the steps the agent follows"]], "path": "skills/find-skills/SKILL.md"}, "source": {"title": "Source: where skills come from", "body": "Whatever you put after `npx skills add`. Each kind is read and fetched differently.", "list": {"items": [{"id": "1", "tag": "git", "text": "GitHub shorthand: `vercel-labs/agent-skills`, optionally `@skill-name` or `@v1.2.3`"}, {"id": "2", "tag": "git", "text": "GitHub URL, including a link to one skill's folder"}, {"id": "3", "tag": "git", "text": "GitLab URL, any instance"}, {"id": "4", "tag": "git", "text": "Azure Repos URL"}, {"id": "5", "tag": "git", "text": "Any git URL: `git@…`, `ssh://…`, `https://….git`"}, {"id": "6", "tag": "local", "text": "A folder on your computer: `./my-local-skills`"}, {"id": "7", "tag": "web", "text": "A website that publishes `/.well-known/agent-skills/index.json`"}, {"id": "8", "tag": "web", "text": "A direct link to a SKILL.md or an archive"}, {"id": "9", "tag": "web", "text": "A Notion skill page"}]}, "path": "src/source-parser.ts"}, "canonical": {"title": "One real copy, linked", "body": "Each skill is stored once in `.agents/skills/<name>` (in the project, or in your home folder with `-g`). Every other agent's skills folder gets a link (symlink) pointing at it. Many agents already read `.agents/skills` and need no link. `--copy` makes separate copies instead.", "kv": [["The copy", ".agents/skills/my-skill"], ["Claude Code", ".claude/skills/my-skill → link to the copy"], ["Windsurf", ".windsurf/skills/my-skill → link to the copy"], ["Cursor, Codex, OpenCode", "read .agents/skills directly"]], "path": "src/installer.ts"}, "registry": {"title": "The agent list", "body": "One entry per agent: where it reads skills in a project, where it reads them in your home folder, and how to tell it is installed. 78 named agents plus `universal`, a generic target for any agent that reads `.agents/skills`.", "kv": [["Claude Code", ".claude/skills/ · ~/.claude/skills/"], ["Cursor", ".agents/skills/ · ~/.cursor/skills/"], ["Windsurf", ".windsurf/skills/ · ~/.codeium/windsurf/skills/"], ["GitHub Copilot", ".agents/skills/ · ~/.copilot/skills/"]], "path": "src/agents.ts"}, "lock": {"title": "Lock file", "body": "A JSON record of every installed skill. `check` and `update` read it to fetch each source again and spot changes; `npx skills install` with no source restores a project from it.", "kv": [["Project", "skills-lock.json, committed with the project"], ["Global", "~/.agents/.skill-lock.json"], ["source", "e.g. vercel-labs/agent-skills"], ["sourceType", "github, gitlab, git, local, well-known, download"], ["skillPath", "where the skill sits inside the source"], ["fingerprint", "a hash of the skill's files, compared on update"]], "path": "src/local-lock.ts"}}}</script>
+<script>
+(function(){
+var B=JSON.parse(document.getElementById("brief").textContent);
+var BR=B.branch||"main", REPO=(B.repo||"").replace(/\/$/,""), ROOT=(B.root||"").replace(/^\/|\/$/g,"");
+var TERMS=B.terms||{};
+
+/* ---------- helpers ---------- */
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+// inline markup: [[term|label]] concept link, [label](url) link, **bold**, `code`
+function md(s){
+  return esc(s)
+    .replace(/`([^`]+)`/g,"<code>$1</code>")
+    .replace(/\*\*([^*]+)\*\*/g,"<b>$1</b>")
+    .replace(/\[\[([a-z0-9-]+)(?:\|([^\]]+))?\]\]/g,function(_,k,l){return '<button type="button" class="wl" data-k="'+k+'">'+(l||(TERMS[k]?esc(TERMS[k].title):k))+'</button>';})
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,'<a href="$2">$1</a>');
+}
+function gl(p){p=String(p||"");var m=p.match(/^(.*?)(#L\d+(?:-L\d+)?)?$/),path=m[1].replace(/\/$/,""),lines=m[2]||"";var full=ROOT?(path?ROOT+"/"+path:ROOT):path;var file=/\.[A-Za-z0-9]+$/.test(path);return REPO+"/"+(file?"blob":"tree")+"/"+BR+"/"+full+(lines&&/\.(md|mdx|markdown)$/i.test(path)?"?plain=1":"")+lines;}
+function short(p){var m=String(p).match(/^(.*?)(?:#L(\d+)(?:-L(\d+))?)?$/);var name=m[1].replace(/\/$/,"").split("/").slice(-2).join("/");return name+(m[2]?" L"+m[2]+(m[3]?"–"+m[3]:""):"");}
+var ICON={
+  abs:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>',
+  tip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>'
+};
+
+/* ---------- sections ---------- */
+var S=[],h='<h1>'+esc(B.name)+'</h1>';
+if(B.props&&B.props.length){
+  h+='<dl class="props">'+B.props.map(function(p){return '<dt>'+esc(p.k)+'</dt><dd>'+(p.tag?'<span class="tagp">'+esc(p.v)+'</span>':md(p.v))+'</dd>';}).join("")+'</dl>';
+}
+function sec(id,title,html){S.push([id,title]);h+='<h2 id="'+id+'">'+esc(title)+'</h2>'+html;}
+function bullets(a){return '<ul>'+a.map(function(x){return '<li>'+md(x)+'</li>';}).join("")+'</ul>';}
+
+if(B.problem) sec("problem","Problem it solves",bullets(B.problem));
+if(B.idea) sec("idea","Main idea",'<div class="callout abs"><p>'+md(B.idea)+'</p></div>');
+if(B.demo&&B.demo.items&&B.demo.items.length) sec("demo","Demo",'<div class="seg" id="demotabs"></div><div id="demobody"></div>');
+if(B.map) sec("map","Repo map",'<div class="tree" id="tree"></div>');
+if(B.how) sec("how","How it works",'<div id="lanes"><div class="slw" id="slw"><div class="slx" id="slx"><div class="sl" id="sl"></div></div></div><div class="slm" id="slm"></div></div>');
+if(B.why) sec("why","Why it works",bullets(B.why));
+if(B.use){
+  var U=B.use, uh='';
+  if(U.agentPrompt) uh+='<div class="callout tip"><div class="ct">'+ICON.tip+esc(U.agentTitle)+'</div><div class="row"><button class="btn" id="runcp" type="button">Copy prompt</button><button class="btn" id="runsee" type="button">Preview</button></div><div class="pre" id="runpre" hidden></div></div>';
+  if(U.envs&&U.envs.length){
+    if(U.envs.length>1) uh+='<div class="seg" id="envseg" role="tablist">'+U.envs.map(function(e,i){return '<button type="button" role="tab" data-e="'+i+'" aria-selected="'+(i?'false':'true')+'"'+(i?'':' class="on"')+'>'+esc(e.name)+'</button>';}).join("")+'</div>';
+    uh+='<div class="tw"><table><tbody id="refbody">'+U.envs.map(function(e,i){return e.commands.map(function(c){
+      return '<tr data-e="'+i+'"'+(i?' hidden':'')+'><td><code>'+esc(c[0])+'</code><button class="cp" type="button" data-c="'+esc(c[0])+'">copy</button></td><td>'+md(c[1])+'</td></tr>';}).join("");}).join("")+'</tbody></table></div>';
+  }
+  sec("use","How to use it",uh);
+}
+document.getElementById("note").innerHTML=h;
+document.getElementById("outline").innerHTML=S.map(function(s){return '<a href="#'+s[0]+'" data-s="'+s[0]+'">'+esc(s[1])+'</a>';}).join("");
+
+/* ---------- popover ---------- */
+var pop=document.getElementById("pop"),stack=[],anchor=null;
+function openPop(html,el,wide){if(el)anchor=el;pop.classList.toggle("wide",!!wide);pop.innerHTML=html;pop.hidden=false;place();}
+function place(){
+  if(!anchor||matchMedia("(max-width:600px)").matches){pop.style.left="";pop.style.top="";return;}
+  var r=anchor.getBoundingClientRect(),w=pop.offsetWidth,ht=pop.offsetHeight;
+  var left=Math.min(Math.max(16,r.left),innerWidth-w-16),top=r.bottom+6;
+  if(top+ht>innerHeight-12)top=Math.max(12,r.top-ht-6);
+  pop.style.left=left+"px";pop.style.top=top+"px";
+}
+function clearSel(){document.querySelectorAll(".st.on").forEach(function(n){n.classList.remove("on");});}
+function closePop(){pop.hidden=true;stack=[];clearSel();}
+var X='<button class="x" type="button" aria-label="Close">×</button>';
+function listHtml(L,f){var o="",g=null;L.items.forEach(function(it){if(f&&it.tag!==f)return;if(it.group&&it.group!==g){g=it.group;o+="<h5>"+esc(g)+"</h5>";}
+  var tone=(L.tones||{})[it.tag]||"";o+='<div><b class="'+(tone?"t-"+tone:"")+'">'+esc(it.id||"")+'</b><span>'+md(it.text)+'</span></div>';});return o;}
+function term(k,el,push){
+  var t=TERMS[k];if(!t)return; if(push)stack.push(k);else stack=[k];
+  var o=(stack.length>1?'<button class="back" type="button">← back</button>':'')+'<h4 id="pop-t">'+esc(t.title)+X+'</h4>';
+  if(t.body)o+='<p'+(t.kv||t.list?' class="muted"':'')+'>'+md(t.body)+'</p>';
+  if(t.kv)o+='<dl class="rk">'+t.kv.map(function(r){return '<dt>'+esc(r[0])+'</dt><dd>'+md(r[1])+'</dd>';}).join("")+'</dl>';
+  if(t.list){
+    var tags=[],cnt={};t.list.items.forEach(function(it){if(it.tag){if(!cnt[it.tag]){cnt[it.tag]=0;tags.push(it.tag);}cnt[it.tag]++;}});
+    if(tags.length>1)o+='<div class="seg" data-k="'+k+'"><button type="button" class="on" data-f="">All '+t.list.items.length+'</button>'+tags.map(function(g){return '<button type="button" data-f="'+esc(g)+'">'+esc(g)+' '+cnt[g]+'</button>';}).join("")+'</div>';
+    var long=t.list.items.some(function(it){return (it.id||"").length>4;});
+    o+='<div class="hl'+(long?' long':'')+'">'+listHtml(t.list,"")+'</div>';
+  }
+  if(t.more)o+='<button type="button" class="wl small" data-k="'+t.more[0]+'">'+esc(t.more[1])+'</button>';
+  if(t.path)o+='<a class="small" href="'+gl(t.path)+'">'+esc(short(t.path))+'</a>';
+  openPop(o,el,!!t.list);
+}
+pop.addEventListener("click",function(e){var b=e.target.closest(".seg button");if(!b)return;var seg=b.parentNode;
+  seg.querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x===b);});
+  pop.querySelector(".hl").innerHTML=listHtml(TERMS[seg.dataset.k].list,b.dataset.f);});
+document.addEventListener("click",function(e){
+  var w=e.target.closest(".wl");
+  if(w){e.stopPropagation();var inside=pop.contains(w);term(w.dataset.k,inside?null:w,inside);return;}
+  if(e.target.closest(".back")){stack.pop();term(stack.pop(),null,true);return;}
+  if(e.target.closest(".x")){closePop();return;}
+  if(!pop.hidden&&!pop.contains(e.target)&&!e.target.closest(".st")&&!e.target.closest(".tr"))closePop();
+},true);
+addEventListener("keydown",function(e){if(e.key==="Escape"&&!pop.hidden)closePop();});
+addEventListener("scroll",function(){if(!pop.hidden)place();},{passive:true});
+
+/* ---------- demo ---------- */
+if(document.getElementById("demotabs")){
+  var D=B.demo,tabs=document.getElementById("demotabs"),body=document.getElementById("demobody");
+  tabs.innerHTML=D.items.length>1?D.items.map(function(it,i){return '<button type="button" data-i="'+i+'"'+(i?'':' class="on"')+'>'+esc(it.label)+'</button>';}).join(""):"";
+  var cmp=null;
+  function show(i){
+    var it=D.items[i];
+    if(D.type==="compare"){
+      if(!cmp){body.innerHTML='<div class="frame" id="frame"><div class="layer"><img class="a" alt=""><img class="b" alt=""><div class="hd" role="slider" tabindex="0" aria-label="Drag to compare" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span class="dtag l" id="dl"></span><span class="dtag r" id="dr"></span><span class="knob">‹ ›</span></div></div><div class="sp"></div></div>';cmp=initCompare();}
+      cmp.load(it);
+    } else if(D.type==="gallery"){
+      body.innerHTML='<div class="gal"><img src="'+it.src+'" alt="'+esc(it.caption||it.label)+'"></div>'+(it.caption?'<p class="gcap">'+md(it.caption)+'</p>':'');
+    } else if(D.type==="code"){
+      body.innerHTML='<div class="pair"><div><div class="clabel">'+esc(it.inputLabel||"Input")+'</div><pre class="code">'+esc(it.input)+'</pre></div><div><div class="clabel">'+esc(it.outputLabel||"Output")+'</div><pre class="code">'+esc(it.output)+'</pre></div></div>';
+    }
+  }
+  function initCompare(){
+    var fr=document.getElementById("frame"),ly=fr.querySelector(".layer"),sp=fr.querySelector(".sp"),A=ly.querySelector("img.a"),Bi=ly.querySelector("img.b"),hd=ly.querySelector(".hd");
+    var hA=0,hB=0,maxH=0,pos=50,cur=null;
+    function fit(){if(!cur)return;var W=ly.clientWidth,H=ly.clientHeight;hA=W*cur.before.h/cur.before.w;hB=W*cur.after.h/cur.after.w;maxH=Math.max(hA,hB);sp.style.height=Math.max(0,maxH-H)+"px";move();}
+    function move(){var H=ly.clientHeight,p=Math.min(1,fr.scrollTop/Math.max(1,maxH-H));A.style.transform="translateY("+(-p*Math.max(0,hA-H))+"px)";Bi.style.transform="translateY("+(-p*Math.max(0,hB-H))+"px)";}
+    function setPos(x){pos=Math.max(22,Math.min(78,x));Bi.style.clipPath="inset(0 0 0 "+pos+"%)";hd.style.left=pos+"%";hd.setAttribute("aria-valuenow",Math.round(pos));}
+    fr.addEventListener("scroll",move,{passive:true});
+    var drag=false;
+    hd.addEventListener("pointerdown",function(e){drag=true;hd.setPointerCapture(e.pointerId);e.preventDefault();});
+    hd.addEventListener("pointermove",function(e){if(!drag)return;var r=ly.getBoundingClientRect();setPos((e.clientX-r.left)/r.width*100);});
+    hd.addEventListener("pointerup",function(){drag=false;});
+    hd.addEventListener("keydown",function(e){if(e.key==="ArrowLeft"){setPos(pos-5);e.preventDefault();}if(e.key==="ArrowRight"){setPos(pos+5);e.preventDefault();}});
+    if(window.ResizeObserver)new ResizeObserver(fit).observe(ly);else addEventListener("resize",fit);
+    return {load:function(it){cur=it;A.src=it.before.src;Bi.src=it.after.src;A.alt=it.before.caption||"Before";Bi.alt=it.after.caption||"After";
+      document.getElementById("dl").innerHTML=md(it.before.caption||"Before");document.getElementById("dr").innerHTML=md(it.after.caption||"After");fr.scrollTop=0;fit();}};
+  }
+  tabs.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;tabs.querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x===b);});show(+b.dataset.i);});
+  show(0);
+}
+
+/* ---------- repo map ---------- */
+if(document.getElementById("tree")){
+  var TM={};
+  var tr=function(n,id){TM[id]=n;var dir=!!(n.children&&n.children.length);
+    var o='<li><div class="tr '+(dir?'dir':'leaf')+(dir&&n.open!==false?' open':'')+'" data-id="'+id+'" role="button" tabindex="0"><span class="chev">'+(dir?'›':'')+'</span><span class="nm">'+esc(n.name)+(dir&&!/\/$/.test(n.name)?'/':'')+'</span></div>';
+    if(dir)o+='<ul'+(n.open===false?' hidden':'')+'>'+n.children.map(function(c,i){return tr(c,id+'.'+i);}).join("")+'</ul>';
+    return o+'</li>';};
+  var treeEl=document.getElementById("tree");treeEl.innerHTML='<ul>'+tr(B.map,'r')+'</ul>';
+  var act=function(r){var n=TM[r.dataset.id];
+    if(n.children&&n.children.length){var ul=r.nextElementSibling,op=!r.classList.contains("open");r.classList.toggle("open",op);ul.hidden=!op;return;}
+    stack=[];openPop('<h4 id="pop-t"><code>'+esc(n.name)+'</code>'+X+'</h4>'+(n.overview?'<ul class="small">'+n.overview.map(function(x){return '<li>'+md(x)+'</li>';}).join("")+'</ul>':'')+(n.path?'<a class="small" href="'+gl(n.path)+'">Open on GitHub</a>':''),r.querySelector(".nm"));};
+  treeEl.addEventListener("click",function(e){var r=e.target.closest(".tr");if(r){e.stopPropagation();act(r);}});
+  treeEl.addEventListener("keydown",function(e){var r=e.target.closest(".tr");if(r&&(e.key==="Enter"||e.key===" ")){e.preventDefault();act(r);}});
+}
+
+/* ---------- swimlane ---------- */
+if(document.getElementById("sl")){
+  var H=B.how,steps=H.steps,PH=H.phases,LN=H.lanes;
+  var chip=function(s,i,mob){return '<button type="button" class="st'+(s.script?' script':'')+'" data-i="'+i+'"><i>'+(i+1)+'</i>'+esc(s.title)+(s.loop?'<span class="lp">↺</span>':'')+(mob?'<em>'+esc(LN[s.lane])+'</em>':'')+'</button>';};
+  var sl=document.getElementById("sl");sl.style.gridTemplateColumns="96px repeat("+PH.length+",minmax(150px,1fr))";
+  var x='<div></div>'+PH.map(function(p){return '<div class="ph"><b>'+esc(p.title)+'</b><span>'+md(p.overview)+'</span></div>';}).join("");
+  LN.forEach(function(ln,l){x+='<div class="ln">'+esc(ln)+'</div>';PH.forEach(function(p,pi){x+='<div class="cell">'+steps.map(function(s,i){return (s.phase===pi&&s.lane===l)?chip(s,i):'';}).join("")+'</div>';});});
+  sl.innerHTML=x;
+  document.getElementById("slm").innerHTML=PH.map(function(p,pi){return '<div class="ph"><b>'+esc(p.title)+'</b><span>'+md(p.overview)+'</span><div class="steps">'+steps.map(function(s,i){return s.phase===pi?chip(s,i,1):'';}).join("")+'</div></div>';}).join("");
+  var slx=document.getElementById("slx"),slw=document.getElementById("slw");
+  var edge=function(){slw.classList.toggle("more",slx.scrollLeft+slx.clientWidth<slx.scrollWidth-2);};
+  slx.addEventListener("scroll",edge,{passive:true});addEventListener("resize",edge);edge();
+  document.getElementById("lanes").addEventListener("click",function(e){var n=e.target.closest(".st");if(!n)return;e.stopPropagation();
+    var i=+n.dataset.i,s=steps[i];clearSel();document.querySelectorAll('.st[data-i="'+i+'"]').forEach(function(m){m.classList.add("on");});stack=[];
+    openPop('<h4 id="pop-t">'+(s.script?'<code>'+esc(s.title)+'</code>':esc(s.title))+'<small>'+esc(LN[s.lane])+'</small></h4><p>'+md(s.detail)+'</p>'+
+      ((s["in"]||s.out)?'<ul class="small">'+(s["in"]?'<li>In: '+md(s["in"])+'</li>':'')+(s.out?'<li>Out: '+md(s.out)+'</li>':'')+'</ul>':'')+
+      (s.files&&s.files.length?'<div class="fl">'+s.files.map(function(f){return '<a href="'+gl(f)+'">'+esc(short(f))+'</a>';}).join("")+'</div>':''),n);});
+}
+
+/* ---------- use ---------- */
+function toast(m){var t=document.getElementById("toast");t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){t.hidden=true;},1600);}
+function copy(txt,el){try{navigator.clipboard.writeText(txt).then(function(){toast("Copied");},fb);}catch(e){fb();}
+  function fb(){if(!el)return;el.hidden=false;var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);toast("Selected. Press Cmd+C");}}
+if(document.getElementById("runpre"))document.getElementById("runpre").textContent=B.use.agentPrompt;
+document.addEventListener("click",function(e){
+  var c=e.target.closest(".cp");if(c)copy(c.dataset.c,c.previousElementSibling);
+  if(e.target.id==="runcp")copy(B.use.agentPrompt,document.getElementById("runpre"));
+  if(e.target.id==="runsee"){var p=document.getElementById("runpre");p.hidden=!p.hidden;e.target.textContent=p.hidden?"Preview":"Hide";}
+  var eb=e.target.closest("#envseg button");
+  if(eb){eb.parentNode.querySelectorAll("button").forEach(function(x){var on=x===eb;x.classList.toggle("on",on);x.setAttribute("aria-selected",on?"true":"false");});
+    document.querySelectorAll("#refbody tr").forEach(function(r){r.hidden=r.dataset.e!==eb.dataset.e;});}
+});
+
+/* ---------- outline ---------- */
+var OL=[].slice.call(document.querySelectorAll(".outline a"));
+if(window.IntersectionObserver){var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting)OL.forEach(function(a){a.classList.toggle("on",a.dataset.s===en.target.id);});});},{rootMargin:"0px 0px -70% 0px"});
+  S.forEach(function(s){io.observe(document.getElementById(s[0]));});}
+})();
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 # Checks before presenting
 
-`build.py --check-render` covers links, paths, sections and layout, and warns when the page or repo map runs long. Answer these yourself:
+`build.py` covers links, paths, sections and length; `--check-render` adds layout. Answer these yourself:
 
 1. Can every number and claim on the page be traced to a repo file or an official page the repo links?
 2. Is every demo item real output from the repo or its official pages, quoted word for word?
@@ -12,7 +12,7 @@
 
 ## Reader questions
 
-Give the reader-test subagent these instructions: you are a skeptical non-technical reader; use only the brief; answer each question in one to three sentences; mark an answer CONFIDENT only if the brief states it outright, otherwise GUESS (you inferred something, the brief shows a format or example but no real result, or two parts disagree), with one line on what was unclear; then list every place where two parts of the brief contradict or repeat each other, and every term used without a plain definition. Finding gaps is the point; an answer sheet with no GUESS marks is suspicious.
+Give the reader-test subagent these instructions: you are a skeptical non-technical reader; use only the brief; answer each question in one to three sentences; mark an answer CONFIDENT if the brief states it, or GUESS if you had to infer it or two parts of the brief disagree, with one line on what was missing; then list at most five problems that would mislead or stop a non-technical reader, most serious first: places where two parts of the brief contradict each other, or terms you could not get past. Skip general tech terms a builder likely knows, and small repeats.
 
 1. What problem does it solve, and for whom?
 2. What is the one idea that makes it work?

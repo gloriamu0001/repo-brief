@@ -33,6 +33,7 @@ Repo Brief 是给 AI 编程助手（Claude Code 或 Codex）用的一个技能�
 | [Hallmark](https://github.com/Nutlope/hallmark) | 一个设计技能，让 AI 做出的网页不再一看就是 AI 做的 | [打开](https://gloriamu0001.github.io/repo-brief/hallmark.html) |
 | [REA](https://github.com/morluto/rea) | 让 AI 助手查看已编译应用内部结构的工具 | [打开](https://gloriamu0001.github.io/repo-brief/rea.html) |
 | [pstack](https://github.com/cursor/plugins/tree/main/pstack) | 给编程助手用的工程实践手册（一个大仓库里的一个文件夹） | [打开](https://gloriamu0001.github.io/repo-brief/pstack.html) |
+| [skills](https://github.com/vercel-labs/skills) | 一条命令，把 agent 技能一次装进所有编程助手 | [打开](https://gloriamu0001.github.io/repo-brief/skills.html) |
 | [Repo Brief](https://github.com/gloriamu0001/repo-brief) | 本技能为自己生成的简报 | [打开](https://gloriamu0001.github.io/repo-brief/repo-brief.html) |
 
 示例页面是英文的。
@@ -86,23 +87,11 @@ Make a repo brief of https://github.com/owner/repo
 
 ## 使用须知
 
-**需要多长时间、花费多少。** 我们在 Claude Code 中实测了 1.2.0 版本的一次完整运行，对象是 [vercel-labs/skills](https://github.com/vercel-labs/skills)（201 个文件），主模型为 Fable 5.1。用时约 15 分钟，按 API 标价计算约花费 7.40 美元：
-
-| 步骤 | 花费 |
-| --- | --- |
-| 阅读仓库并撰写页面 | 约 5.40 美元 |
-| 助手启动的一个帮手，用来追踪代码 | 约 2.00 美元 |
-| 读者测试，用小模型 | 约 0.01 美元 |
-| 第二次读者测试 | 不需要：只有在某次修改重写了整个部分时才会运行 |
-
-- **仓库大小对花费影响不大。** 在之前的运行中，阅读有 7,448 个文件的 REA，工作量只比阅读一个小仓库多约 20%。
-- **每次运行的花费会有差异。** 读多少文件、要不要启动帮手，都由助手自己决定。换用其他主模型，花费也会不同。旧版本在 Cowork 中运行时，用时 20–30 分钟。
-- **更大的仓库还没测过。** 文件数远超 REA 的仓库可能用时更长、花费更多。
-- **如果你用的是订阅套餐，** 生成一份简报是个大任务，会占用明显的一部分用量额度。
+**需要多长时间。** 我们在 Claude Code 中用 Opus 5.5 模型测试了 [vercel-labs/skills](https://github.com/vercel-labs/skills)（201 个文件），一份简报用时约 7 分钟。和其他较长的 AI 任务一样，它会占用你套餐的一部分用量额度。比 REA（约 7,400 个文件）大得多的仓库还没有测试过。
 
 **设计上可以放心用于任何仓库。** 本技能要求助手只读取仓库里的文件：绝不运行仓库里的代码、安装程序或脚本，并忽略仓库里写给 AI 助手的任何指令。
 
-**它会自己检查。** 在你看到页面之前，一个脚本会确认页面提到的每个文件和每一行代码都真实存在。然后另一个 AI 只读这个页面，回答关于仓库的七个问题（前提是你的助手能启动第二个 AI）。凡是它需要靠猜的答案，助手都会回去修改对应的部分。
+**它会自己检查。** 在你看到页面之前，一个脚本会确认页面提到的每个文件和每一行代码都真实存在。然后另一个 AI 只读这个页面，回答关于仓库的七个问题（前提是你的助手能启动第二个 AI）。凡是会误导读者的地方，助手都会回去修改。
 
 <details>
 <summary><b>其他安装方式</b>（Claude Code 插件、Cursor、OpenCode、手动安装）</summary>
@@ -134,17 +123,17 @@ npx skills add gloriamu0001/repo-brief -g --agent claude-code
 - `git` 和 Python 3
 - [Pillow](https://pypi.org/project/Pillow/)（`python3 -m pip install Pillow`），用于把演示图片放进页面
 - 可选：[Playwright](https://playwright.dev/python/) 及其浏览器（`python3 -m playwright install chromium firefox webkit`），用于在 Chrome 和 Edge、Firefox、Safari 背后的浏览器引擎中检查版面。没有安装的引擎会被跳过。
-- 可选：能启动子代理（subagent）的 AI 助手，用于读者测试。没有的话，助手会跳过这项测试并告诉你。
+- 可选：能启动子代理（subagent）的 AI 助手，用于阅读帮手和读者测试。没有的话，助手会自己阅读仓库，跳过这项测试并告诉你。
 
 </details>
 
 <details>
 <summary><b>运作原理</b>（给好奇的你）</summary>
 
-1. **阅读。** 助手克隆仓库，读取代码和配置。它把 README 当作“说法”，把文件当作“事实”。
+1. **阅读。** 助手克隆仓库。一个使用更便宜模型的帮手读取代码和配置，交回一份事实清单，由助手抽查核实。README 只算“说法”，文件才是“事实”。
 2. **撰写。** 它把页面要展示的所有内容写进一个数据文件 `brief.json`，并遵守 [`SKILL.md`](skills/repo-brief/SKILL.md) 里的内容规则。
 3. **检查。** [`build.py`](skills/repo-brief/scripts/build.py) 把内容填进固定的页面模板。只要有任何问题，它就拒绝完成：缺少某个部分、链接失效，或者提到的文件或行号在仓库里不存在。它还会在 Chrome 和 Edge、Firefox、Safari 背后的浏览器引擎中，分别以电脑和手机宽度打开页面，检查版面问题。
-4. **读者测试。** 一个使用更便宜小模型的全新助手只拿到页面文字，回答关于仓库的七个问题，并标出所有靠猜的答案。每个猜测都会让助手回去修改对应的部分。只有在某次修改重写了整个部分时，测试才会再跑一次。
+4. **读者测试。** 一个使用小模型的全新助手只拿到页面文字，回答关于仓库的七个问题，并列出会让读者困惑的地方。助手据此修改对应的部分。
 5. **交付。** 你得到一个 HTML 文件。
 
 </details>
@@ -160,7 +149,7 @@ repo-brief/
 ├── .claude-plugin/
 │   └── marketplace.json               让 Claude Code 能以插件方式安装本技能
 ├── docs/                              示例简报，通过 GitHub Pages 发布
-│   ├── *.html                         四份示例简报
+│   ├── *.html                         五份示例简报
 │   └── images/                        本页用到的截图
 └── skills/
     └── repo-brief/                    技能本体

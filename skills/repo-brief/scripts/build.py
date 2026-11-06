@@ -3,13 +3,10 @@
 
 Usage: python3 build.py brief.json out.html [--repo-dir PATH] [--check-render] [--text reader.md]
 
-Embeds demo images as data URIs so the page is one self-contained file,
-checks term links, step indexes and repo paths, then fills assets/template.html.
---check-render opens the page with Playwright in every installed browser engine
-(Chromium for Chrome and Edge, Firefox, WebKit for Safari) at 1280 and 390 px and
-fails on page errors, horizontal scroll, labels spilling out of their box, pop-ups
-that don't open, or pop-up text that spills or overlaps. Exits non-zero if any
-check fails. WARN lines (a long page or repo map) don't fail the build.
+Checks the brief (links, sections, steps, repo paths), embeds demo images and
+fills assets/template.html. --check-render also checks layout with Playwright in
+Chromium, Firefox and WebKit at 1280 and 390 px. Exits non-zero on any FAIL;
+WARN lines (a long page or repo map) don't fail the build.
 """
 import base64, io, json, os, re, shutil, sys, tempfile
 
@@ -176,7 +173,7 @@ def main():
         print(f"WARN repo map has {n_map} file items: keep it to about twenty, group similar siblings or drop items the workflow doesn't use")
     n_words = prose_words(B)
     if n_words > MAX_WORDS:
-        print(f"WARN page has {n_words} words of written text (limit about {MAX_WORDS}): cut what doesn't help the reader understand or use the repo")
+        print(f"WARN page has {n_words} words of written text (limit about {MAX_WORDS}): cut whole items that don't help the reader understand or use the repo")
 
     # "ask questions" link: DeepWiki answers questions about the whole repo
     m = re.match(r"https?://github\.com/([^/]+)/([^/#?]+)", B.get("repo", ""))
@@ -357,7 +354,7 @@ def check_render(page):
                 for (title, kind), names in pops.items():
                     names = list(dict.fromkeys(names))
                     add(f'pop-up "{title}": {len(names)} {kind}, e.g. "{names[0]}"' if kind.startswith("names")
-                        else f'pop-up "{title}": {kind}: "{names[0]}"', tag)
+                        else f'pop-up "{title}": {kind}: "{names[0]}" (a long word, path or code with no spaces: shorten it or add spaces)', tag)
                 pg.close()
             browser.close()
     if not ran:
