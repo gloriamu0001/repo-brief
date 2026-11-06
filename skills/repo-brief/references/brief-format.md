@@ -1,6 +1,6 @@
 # brief.json
 
-One JSON object. `examples/hallmark.json` is a complete brief in this format.
+One JSON object. `references/example-hallmark.json` is a complete brief in this format.
 
 ## Inline markup (any text field)
 

@@ -1,0 +1,54 @@
+{
+  "skill_name": "repo-brief",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Make a repo brief of https://github.com/gloriamu0001/repo-brief",
+      "expected_output": "repo-brief-repo-brief.html: a brief of a small repo (about 20 files), with all seven sections and no guessed answers in the reader test.",
+      "files": [],
+      "expectations": [
+        "build.py with --check-render printed ok for the final page",
+        "The page has the seven sections in order: Problem it solves, Main idea, Demo, Repo map, How it works, Why it works, How to use it",
+        "The repo map names SKILL.md as the file to open first",
+        "The reader test ran, and every wrong or guessed answer was fixed before delivery",
+        "The agent did not run any script from the cloned repo"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I found this on GitHub and don't read code. What does it do and how do I use it? https://github.com/Nutlope/hallmark",
+      "expected_output": "hallmark-repo-brief.html with a before/after demo built from the repo's own screenshots.",
+      "files": [],
+      "expectations": [
+        "build.py with --check-render printed ok for the final page",
+        "The demo uses the compare type with real before/after images from the repo, not mocks",
+        "Every number on the page (issue counts, rule counts, version) matches a repo file",
+        "The install prompt only installs Hallmark and says how to confirm it worked"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Explain this repo to me in one page: https://github.com/morluto/rea",
+      "expected_output": "rea-repo-brief.html for a large repo (about 7,400 files), with a repo map of about twenty items and a code demo quoted word for word.",
+      "files": [],
+      "expectations": [
+        "build.py with --check-render printed ok for the final page",
+        "The repo map has about twenty items or fewer, and groups similar siblings into one item with a count",
+        "The demo is a code demo quoted word for word from the repo or its official pages",
+        "Swimlane step files point at line ranges that exist in the repo"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "/repo-brief https://github.com/cursor/plugins/tree/main/pstack",
+      "expected_output": "pstack-repo-brief.html scoped to the pstack folder only, not the whole cursor/plugins repo.",
+      "files": [],
+      "expectations": [
+        "brief.json sets root to pstack",
+        "Every repo-map path and step file is inside the pstack folder",
+        "The page describes pstack only and does not describe the other plugins in the repo",
+        "build.py with --check-render printed ok for the final page"
+      ]
+    }
+  ]
+}

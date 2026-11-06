@@ -1,98 +1,166 @@
+<div align="center">
+
 # Repo Brief
 
-An agent skill that turns any GitHub repo into a one-page brief you can understand in a minute, even if you don't read code.
+**Understand any GitHub repo in a minute. No coding knowledge needed.**
 
-You give it a repo URL. Your coding agent reads the code, then hands you one HTML file that answers four questions: what it does, how it does it, why it works and how to use it.
+English | [简体中文](README.zh-CN.md)
 
-![Hallmark brief: main idea and a before/after demo](docs/images/hallmark.png)
+[See an example](https://gloriamu0001.github.io/repo-brief/hallmark.html) · [Get started](#get-started-in-3-steps) · [What to expect](#good-to-know)
 
-## What's on the page
+</div>
 
-Seven sections, always in this order:
+![A Repo Brief page: the main idea and a before/after demo](docs/images/hallmark.png)
 
-| Section | What it shows |
-| --- | --- |
-| Problem it solves | Who has the problem, in one or two bullets |
-| Main idea | The working principle in one sentence. Its key words open the real thing, such as the actual rule list or a real example |
-| Demo | Real output from the repo: a before/after slider, a gallery, or an input and its output |
-| Repo map | Only the files that matter. Click one for an overview of what's inside and a link to it on GitHub |
-| How it works | A swimlane of who does what, phase by phase. Each step opens its detail and the exact lines of code that do it |
-| Why it works | A few one-line reasons the approach works |
-| How to use it | A copy-paste prompt that has your coding agent install the tool, plus the commands |
+## Who it's for
 
-It is one self-contained file. It reads well on a laptop and on a phone, in light and dark mode.
+You found a tool on GitHub that looks useful. Then you opened its README and got lost in setup steps, code and jargon.
 
-## Examples
+Repo Brief is a skill for your AI coding agent (Claude Code or Codex). You give it a GitHub link. The agent reads the whole repo for you and gives back **one simple web page** that answers:
+
+- **Is it useful to me?** Which problem it solves, and for whom.
+- **What does it actually do?** The main idea in one sentence, with real examples of its output.
+- **How do I start?** A ready-made prompt that installs the tool for you.
+
+You don't need to read code, open a terminal or understand the repo's README.
+
+## See it first
+
+Each page below was made by Repo Brief. Open one to see what you'll get.
 
 | Repo | What it is | Brief |
 | --- | --- | --- |
-| [Nutlope/hallmark](https://github.com/Nutlope/hallmark) | Design skill that stops AI-built pages looking AI-built | [Open](https://gloriamu0001.github.io/repo-brief/hallmark.html) |
-| [morluto/rea](https://github.com/morluto/rea) | MCP server and CLI that lets an agent inspect compiled apps | [Open](https://gloriamu0001.github.io/repo-brief/rea.html) |
-| [cursor/plugins › pstack](https://github.com/cursor/plugins/tree/main/pstack) | Plugin of engineering playbooks for coding agents, briefed from one folder of a larger repo | [Open](https://gloriamu0001.github.io/repo-brief/pstack.html) |
-| [gloriamu0001/repo-brief](https://github.com/gloriamu0001/repo-brief) | This skill, briefed by itself | [Open](https://gloriamu0001.github.io/repo-brief/repo-brief.html) |
+| [Hallmark](https://github.com/Nutlope/hallmark) | A design skill that stops AI-built web pages from looking AI-built | [Open](https://gloriamu0001.github.io/repo-brief/hallmark.html) |
+| [REA](https://github.com/morluto/rea) | A tool that lets an AI agent look inside compiled apps | [Open](https://gloriamu0001.github.io/repo-brief/rea.html) |
+| [pstack](https://github.com/cursor/plugins/tree/main/pstack) | Engineering playbooks for coding agents (one folder of a bigger repo) | [Open](https://gloriamu0001.github.io/repo-brief/pstack.html) |
+| [Repo Brief](https://github.com/gloriamu0001/repo-brief) | This skill, explained by itself | [Open](https://gloriamu0001.github.io/repo-brief/repo-brief.html) |
 
-| A step opened in How it works (REA) | A file opened in the repo map (pstack) |
+| Click a step to see how it works (REA) | Click a file to see what's inside (pstack) |
 | --- | --- |
-| ![REA swimlane with a step pop-up](docs/images/rea.png) | ![pstack repo map with a file pop-up](docs/images/pstack.png) |
+| ![REA: a step opened in How it works](docs/images/rea.png) | ![pstack: a file opened in the repo map](docs/images/pstack.png) |
 
-## Install
+## Get started in 3 steps
 
-**Claude Code**, with the [skills CLI](https://github.com/vercel-labs/skills):
+**1. Get an AI coding agent.** Install [Claude Code](https://claude.com/product/claude-code) or [Codex](https://developers.openai.com/codex), if you don't have one yet.
+
+**2. Ask the agent to install Repo Brief.** Copy this prompt and paste it into Claude Code or Codex:
+
+```text
+Install the Repo Brief skill from https://github.com/gloriamu0001/repo-brief for all my projects.
+
+1. Run: npx skills add gloriamu0001/repo-brief -g --agent <claude-code or codex, whichever you are>
+   If npx doesn't work, copy the repo's skills/repo-brief folder into your global skills folder instead.
+2. Check that git and Python 3 are installed. If one is missing, tell me how to install it.
+3. Make sure Python can use Pillow. If it can't, run: python3 -m pip install Pillow
+4. Confirm that the skill's SKILL.md is in your global skills folder, and tell me its path.
+```
+
+**3. Ask for a brief.** Start a new session and type:
+
+```text
+Make a repo brief of https://github.com/owner/repo
+```
+
+The link can point to a whole repo or to one folder inside it. When the agent finishes, you get a file called `<name>-repo-brief.html` in your working folder. Double-click it to open it in your browser.
+
+## What's on the page
+
+Every brief has the same seven parts, in this order:
+
+| Part | What it tells you |
+| --- | --- |
+| **Problem it solves** | Who has the problem, in one or two bullets |
+| **Main idea** | How it works, in one sentence. Click the key words to see the real thing behind them |
+| **Demo** | Real output from the repo: a before/after slider, a gallery, or an input and its result |
+| **Repo map** | Only the files that matter. Click one to see what's inside |
+| **How it works** | Who does what, step by step. Click a step for the details |
+| **Why it works** | A few short reasons the approach works |
+| **How to use it** | A copy-paste prompt that installs the tool, plus its main commands |
+
+Everything is in that one file, so it's easy to keep and share. It reads well on a laptop and on a phone, in light and dark mode.
+
+## Good to know
+
+**How long it takes and what it uses.** We measured the four example briefs above. They range from a small repo to a large one:
+
+| Repo size | Example | Files in the repo | Time | Tokens used |
+| --- | --- | --- | --- | --- |
+| Small | Repo Brief | 20 | about 20–30 min | about 400k–500k |
+| Medium | pstack (one folder) | 573 | about 20–30 min | about 400k–500k |
+| Medium | Hallmark | 850 | about 20–30 min | about 400k–500k |
+| Large | REA | 7,448 | about 20–30 min | about 400k–500k |
+
+- **Size matters less than you might expect.** The smallest and the largest example both fell in the same range.
+- **Much larger repos are untested.** A repo with many more files than REA can take longer and use more tokens.
+- **Tokens are how your AI plan measures usage.** A brief is a big task. On a subscription plan, expect it to use a noticeable part of your usage limit.
+
+**It's safe to brief any repo.** The agent only reads the repo's files. It never runs the repo's code, installers or scripts, and it ignores any instructions for AI agents written inside the repo.
+
+**It checks its own work.** Before you see the page, a script checks that every file and line it points to really exists. Then a second AI reads only the page and answers seven questions about the repo. Any answer it has to guess sends the agent back to fix that part.
+
+<details>
+<summary><b>Other ways to install</b> (Claude Code plugin, Cursor, OpenCode, by hand)</summary>
+
+**As a Claude Code plugin.** Type these two commands in Claude Code:
+
+```text
+/plugin marketplace add gloriamu0001/repo-brief
+/plugin install repo-brief@repo-brief
+```
+
+A plugin adds its name in front of the command, so you run it as `/repo-brief:repo-brief <link>`. You can also just ask in plain words, as in step 3.
+
+**With the skills CLI**, in a terminal (needs [Node.js](https://nodejs.org)):
 
 ```sh
 npx skills add gloriamu0001/repo-brief -g --agent claude-code
 ```
 
-**Or as a Claude Code plugin:**
+Replace `claude-code` with `codex`, `cursor` or `opencode` for another agent.
 
-```
-/plugin marketplace add gloriamu0001/repo-brief
-/plugin install repo-brief@repo-brief
-```
+**By hand.** Copy the `skills/repo-brief/` folder into your agent's skills folder, for example `~/.claude/skills/repo-brief/`.
 
-**Or by hand:** copy `skills/repo-brief/` into your agent's skills folder, for example `~/.claude/skills/repo-brief/`.
+</details>
 
-The skills CLI also installs into other agents. Replace `claude-code` with `codex`, `cursor` or `opencode`.
-
-### Requirements
+<details>
+<summary><b>Requirements</b></summary>
 
 - `git` and Python 3
-- [Pillow](https://pypi.org/project/Pillow/) (`python3 -m pip install Pillow`), to embed demo images in the page
-- Optional: [Playwright](https://playwright.dev/python/) with Chrome or Chromium, for the layout check. Without it, that check is skipped.
-- Optional: an agent that can start subagents, for the reader test. Without one, the test is skipped and the agent says so.
+- [Pillow](https://pypi.org/project/Pillow/) (`python3 -m pip install Pillow`), to put demo images into the page
+- Optional: [Playwright](https://playwright.dev/python/) with Chrome or Chromium, for the layout check. Without it, the agent skips that check.
+- Optional: an agent that can start subagents, for the reader test. Without one, the agent skips the test and tells you.
 
-## Use
+</details>
 
-```
-/repo-brief https://github.com/owner/repo
-/repo-brief https://github.com/owner/repo/tree/main/some-folder
-```
+<details>
+<summary><b>How it works</b> (for the curious)</summary>
 
-You get `<name>-repo-brief.html`. A brief takes about 20–30 minutes and roughly 400k–500k tokens. That was measured on the examples above, and it grows with the size of the repo.
-
-## How it works
-
-1. **Read.** The agent clones the repo and reads its code and config. The README counts as a claim and the files as the facts.
-2. **Write.** Everything the page will show goes into one data file, `brief.json`, written to the content rules in [`SKILL.md`](skills/repo-brief/SKILL.md).
-3. **Check.** [`build.py`](skills/repo-brief/scripts/build.py) fills a fixed template and refuses to finish while anything is wrong. It checks for missing sections, broken concept links, and file paths or line ranges that don't exist in the repo. It also opens the page in Chrome at laptop and phone width to catch layout faults.
+1. **Read.** The agent clones the repo and reads its code and settings. It treats the README as a claim and the files as the facts.
+2. **Write.** It puts everything the page will show into one data file, `brief.json`, following the content rules in [`SKILL.md`](skills/repo-brief/SKILL.md).
+3. **Check.** [`build.py`](skills/repo-brief/scripts/build.py) fills a fixed page template. It refuses to finish while anything is wrong: a missing section, a broken link, or a file or line that doesn't exist in the repo. It also opens the page in Chrome at laptop and phone width to catch layout faults.
 4. **Reader test.** A fresh agent gets only the page's text and answers seven questions about the repo, marking any guesses. Every guess sends the agent back to fix that section.
 5. **Deliver.** You get one HTML file.
 
-The cloned repo is treated as untrusted. The skill reads its files and never runs its code, installers or scripts. It also ignores any agent instructions inside the repo.
+</details>
 
-## Repo layout
+<details>
+<summary><b>Repo layout</b> (for contributors)</summary>
 
-```
+```text
 skills/repo-brief/
-  SKILL.md              workflow and content rules (start here)
-  reference.md          brief.json fields
-  eval.md               final checks and reader-test questions
-  scripts/build.py      checks, build, layout test, reader export
-  assets/template.html  the page
-  examples/hallmark.json
-.claude-plugin/         plugin install
-docs/                   example briefs, served by GitHub Pages
+  SKILL.md                         workflow and content rules (start here)
+  references/brief-format.md       every field of brief.json
+  references/checks.md             final checks and reader-test questions
+  references/example-hallmark.json a complete brief.json, used as the model
+  scripts/build.py                 checks, build, layout test, reader export
+  assets/template.html             the page template
+  evals/evals.json                 test cases for the skill (the four example repos)
+  agents/openai.yaml               display name and default prompt for Codex
+.claude-plugin/marketplace.json    lets Claude Code install the skill as a plugin
+docs/                              example briefs, served by GitHub Pages
 ```
+
+</details>
 
 ## Licence
 
