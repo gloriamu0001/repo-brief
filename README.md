@@ -83,19 +83,7 @@ Everything is in that one file, so it's easy to keep and share. It reads well on
 
 ## Good to know
 
-**How long it takes and what it costs.** We measured a full run of version 1.2.0 in Claude Code, on [vercel-labs/skills](https://github.com/vercel-labs/skills) (201 files), with Fable 5.1 as the main model. It took about 15 minutes. At API list prices it cost about $7.40:
-
-| Step | Cost |
-| --- | --- |
-| Read the repo and write the page | about $5.40 |
-| A helper the agent started to trace the code | about $2.00 |
-| Reader test, on a small model | about $0.01 |
-| Second reader test | not needed: it runs only when a fix rewrote a whole section |
-
-- **Repo size changes the cost only a little.** In earlier runs, reading REA (7,448 files) took only about 20% more work than reading a small repo.
-- **The cost changes from run to run.** The agent decides how much to read and whether to start a helper. Other main models cost differently. Earlier versions, run in Cowork, took 20–30 minutes.
-- **Much larger repos are untested.** A repo with many more files than REA can take longer and cost more.
-- **On a subscription plan,** a brief is a big task: expect it to use a noticeable part of your usage limit.
+**How long it takes.** In our test on [vercel-labs/skills](https://github.com/vercel-labs/skills) (201 files), with Opus 5.5 in Claude Code, a brief took about 7 minutes. Like any long agent task, it uses part of your plan's usage limit. Repos much larger than about 7,000 files are untested.
 
 **Built to be safe with any repo.** The skill tells the agent to only read the repo's files. The agent must never run the repo's code, installers or scripts, and must ignore any instructions for AI agents written inside the repo.
 
@@ -131,17 +119,17 @@ Replace `claude-code` with `codex`, `cursor` or `opencode` for another agent.
 - `git` and Python 3
 - [Pillow](https://pypi.org/project/Pillow/) (`python3 -m pip install Pillow`), to put demo images into the page
 - Optional: [Playwright](https://playwright.dev/python/) and its browsers (`python3 -m playwright install chromium firefox webkit`), for the layout check in the engines behind Chrome and Edge, Firefox and Safari. The check skips any engine that isn't installed.
-- Optional: an agent that can start subagents, for the reader test. Without one, the agent skips the test and tells you.
+- Optional: an agent that can start subagents, for the reading helper and the reader test. Without one, the agent reads the repo itself, skips the test and tells you.
 
 </details>
 
 <details>
 <summary><b>How it works</b> (for the curious)</summary>
 
-1. **Read.** The agent clones the repo and reads its code and settings. It treats the README as a claim and the files as the facts.
+1. **Read.** The agent clones the repo. A helper on a cheaper model reads the code and settings and returns a fact sheet, which the agent spot-checks. The README counts as a claim; the files are the facts.
 2. **Write.** It puts everything the page will show into one data file, `brief.json`, following the content rules in [`SKILL.md`](skills/repo-brief/SKILL.md).
 3. **Check.** [`build.py`](skills/repo-brief/scripts/build.py) fills a fixed page template. It refuses to finish while anything is wrong: a missing section, a broken link, or a file or line that doesn't exist in the repo. It also opens the page at laptop and phone width in the engines behind Chrome and Edge, Firefox and Safari, to catch layout faults.
-4. **Reader test.** A fresh agent on a small, cheaper model gets only the page's text and answers seven questions about the repo, marking any guesses. Every guess sends the agent back to fix that section. The test runs again only when a fix rewrote a whole section.
+4. **Reader test.** A fresh agent on a small model gets only the page's text, answers seven questions about the repo and lists what would confuse a reader. The agent fixes those parts.
 5. **Deliver.** You get one HTML file.
 
 </details>

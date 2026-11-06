@@ -1,6 +1,6 @@
 # Checks before presenting
 
-`build.py --check-render` covers links, paths, sections and layout, and warns when the page or repo map runs long. Answer these yourself:
+`build.py` covers links, paths, sections, length and layout. Answer these yourself:
 
 1. Can every number and claim on the page be traced to a repo file or an official page the repo links?
 2. Is every demo item real output from the repo or its official pages, quoted word for word?

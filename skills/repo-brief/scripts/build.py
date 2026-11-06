@@ -3,13 +3,10 @@
 
 Usage: python3 build.py brief.json out.html [--repo-dir PATH] [--check-render] [--text reader.md]
 
-Embeds demo images as data URIs so the page is one self-contained file,
-checks term links, step indexes and repo paths, then fills assets/template.html.
---check-render opens the page with Playwright in every installed browser engine
-(Chromium for Chrome and Edge, Firefox, WebKit for Safari) at 1280 and 390 px and
-fails on page errors, horizontal scroll, labels spilling out of their box, pop-ups
-that don't open, or pop-up text that spills or overlaps. Exits non-zero if any
-check fails. WARN lines (a long page or repo map) don't fail the build.
+Checks the brief (links, sections, steps, repo paths), embeds demo images and
+fills assets/template.html. --check-render also checks layout with Playwright in
+Chromium, Firefox and WebKit at 1280 and 390 px. Exits non-zero on any FAIL;
+WARN lines (a long page or repo map) don't fail the build.
 """
 import base64, io, json, os, re, shutil, sys, tempfile
 
