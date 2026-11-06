@@ -173,7 +173,7 @@ def main():
     # length: the reader should get the gist in a minute
     n_map = sum(1 for _ in tree_paths(B.get("map", {})))
     if n_map > MAX_MAP:
-        print(f"WARN repo map has {n_map} items: keep it to about twenty, group similar siblings or drop items the workflow doesn't use")
+        print(f"WARN repo map has {n_map} file items: keep it to about twenty, group similar siblings or drop items the workflow doesn't use")
     n_words = prose_words(B)
     if n_words > MAX_WORDS:
         print(f"WARN page has {n_words} words of written text (limit about {MAX_WORDS}): cut what doesn't help the reader understand or use the repo")
@@ -285,22 +285,25 @@ POP_JS = """() => {
     if (!b || !s || !b.textContent) return;
     const br = b.getBoundingClientRect(), sr = s.getBoundingClientRect();
     const overlap = br.right > sr.left + 1 && br.left < sr.right - 1 && br.top < sr.bottom - 1 && sr.top < br.bottom - 1;
-    if (b.scrollWidth > b.clientWidth + 1 || overlap) out.push(`pop-up "${title}": "${b.textContent.slice(0, 30)}" overlaps its text`);
+    if (b.scrollWidth > b.clientWidth + 1 || overlap) out.push([title, 'names overlap their text', b.textContent.slice(0, 30)]);
   });
   p.querySelectorAll('*').forEach(e => {
     const r = e.getBoundingClientRect();
-    if (r.width && r.right > pr.right + 1) out.push(`pop-up "${title}": text spills out: "${e.textContent.trim().slice(0, 30)}"`);
+    if ((r.width && r.right > pr.right + 1) || (e.clientWidth && e.scrollWidth > e.clientWidth + 1 && getComputedStyle(e).overflowX !== 'auto'))
+      out.push([title, 'text spills out', e.textContent.trim().slice(0, 30)]);
   });
-  return [...new Set(out)];
+  return out;
 }"""
 
 
 def launch(p, engine):
-    if engine == "chromium":
-        chrome = os.environ.get("CHROME_PATH") or next(
-            (shutil.which(c) for c in ("google-chrome", "chromium", "chromium-browser") if shutil.which(c)), None)
-        if chrome:
+    chrome = os.environ.get("CHROME_PATH") or next(
+        (shutil.which(c) for c in ("google-chrome", "chromium", "chromium-browser") if shutil.which(c)), None)
+    if engine == "chromium" and chrome:
+        try:
             return p.chromium.launch(executable_path=chrome, args=["--no-sandbox"])
+        except Exception as e:
+            print(f"render check: {chrome} failed to start ({str(e).splitlines()[0]}); trying Playwright's Chromium")
     return getattr(p, engine).launch()
 
 
@@ -310,7 +313,11 @@ def check_render(page):
     except ImportError:
         print("render check skipped: Playwright not installed")
         return []
-    problems, ran, missing = [], [], []
+    found, ran, missing = {}, [], []  # problem -> list of "engine width"
+
+    def add(problem, tag):
+        found.setdefault(problem, []).append(tag)
+
     with tempfile.TemporaryDirectory() as tmp, sync_playwright() as p:
         path = os.path.join(tmp, "page.html")
         with open(path, "w") as f:
@@ -318,35 +325,46 @@ def check_render(page):
         for engine in ("chromium", "firefox", "webkit"):
             try:
                 browser = launch(p, engine)
-            except Exception:
-                missing.append(engine)
+            except Exception as e:
+                missing.append(f"{engine} ({str(e).splitlines()[0][:80]})")
                 continue
             ran.append(engine)
             for width in (1280, 390):
+                tag = f"{engine} {width}px"
                 pg = browser.new_page(viewport={"width": width, "height": 900})
                 errs = []
                 pg.on("pageerror", lambda e: errs.append(str(e)))
                 pg.goto("file://" + path)
                 pg.wait_for_timeout(400)
-                tag = f"{engine} {width}px"
-                problems += [f"{tag}: {e}" for e in errs + pg.evaluate(RENDER_JS)]
+                for e in errs + pg.evaluate(RENDER_JS):
+                    add(e, tag)
+                pops = {}  # (pop-up, kind) -> names
                 for sel in (".wl", ".tr.leaf", ".st"):
                     els = [e for e in pg.query_selector_all(sel) if e.is_visible()]
                     for el in (els if sel == ".wl" else els[:1]):
-                        el.click()
+                        try:
+                            el.click(timeout=5000)
+                        except Exception:
+                            add(f"could not click {sel} \"{(el.text_content() or '').strip()[:30]}\"", tag)
+                            continue
                         pg.wait_for_timeout(100)
                         if not pg.evaluate("!document.getElementById('pop').hidden"):
-                            problems.append(f"{tag}: pop-up did not open for {sel}")
+                            add(f"pop-up did not open for {sel}", tag)
                         else:
-                            problems += [f"{tag}: {e}" for e in pg.evaluate(POP_JS)]
+                            for title, kind, name in pg.evaluate(POP_JS):
+                                pops.setdefault((title, kind), []).append(name)
                         pg.keyboard.press("Escape")
+                for (title, kind), names in pops.items():
+                    names = list(dict.fromkeys(names))
+                    add(f'pop-up "{title}": {len(names)} {kind}, e.g. "{names[0]}"' if kind.startswith("names")
+                        else f'pop-up "{title}": {kind}: "{names[0]}"', tag)
                 pg.close()
             browser.close()
     if not ran:
         print("render check skipped: no Playwright browser installed (python3 -m playwright install chromium firefox webkit)")
     elif missing:
-        print(f"render check ran in {', '.join(ran)}; not installed: {', '.join(missing)}")
-    return problems
+        print(f"render check ran in {', '.join(ran)}; could not start: {'; '.join(missing)}")
+    return [f"{prob} [{', '.join(tags)}]" for prob, tags in found.items()]
 
 
 if __name__ == "__main__":

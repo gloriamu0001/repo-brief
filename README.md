@@ -82,14 +82,14 @@ Everything is in that one file, so it's easy to keep and share. It reads well on
 
 ## Good to know
 
-**How long it takes and what it uses.** A brief took about 20–30 minutes in our test runs. These are the tokens for each step, measured on real runs:
+**How long it takes and what it uses.** A brief took about 20–30 minutes in our test runs. We measured the tokens for each step on real runs; the total is their sum:
 
 | Step | Tokens | What changes it |
 | --- | --- | --- |
 | Read the repo and write the page | about 220k–270k | Repo size: a small repo used 222k, pstack (573 files) 248k, REA (7,448 files) 267k |
-| Reader test, on a small model that costs less per token | about 100k–115k | Hardly anything: most of it is the cost of starting a fresh AI |
-| Second reader test | about 100k | Runs only when a fix rewrote a whole section |
-| **Total** | **about 320k–380k** | Up to about 480k with a second reader test |
+| Reader test, on a small model that costs less per token | about 60k–115k | Hardly anything: most of it is the cost of starting a fresh AI |
+| Second reader test | about 60k–115k | Runs only when a fix rewrote a whole section |
+| **Total** | **about 280k–390k** | Up to about 500k with a second reader test |
 
 - **Small or large, the cost is close.** Reading REA, with 7,448 files, used only about 45k more tokens than reading a small repo.
 - **Much larger repos are untested.** A repo with many more files than REA can take longer and use more tokens.
