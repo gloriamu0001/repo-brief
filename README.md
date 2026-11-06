@@ -52,6 +52,7 @@ Install the Repo Brief skill from https://github.com/gloriamu0001/repo-brief for
    If npx doesn't work, copy the repo's skills/repo-brief folder into your global skills folder instead.
 2. Check that git and Python 3 are installed. If one is missing, tell me how to install it.
 3. Make sure Python can use Pillow. If it can't, run: python3 -m pip install Pillow
+   If pip refuses (for example "externally-managed-environment"), install Pillow for this same python3 another way, for example brew install pillow on a Mac with Homebrew. Do not use sudo or --break-system-packages unless I say yes. Then check again that python3 can import Pillow.
 4. Confirm that the skill's SKILL.md is in your global skills folder, and tell me its path.
 ```
 
