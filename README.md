@@ -82,18 +82,19 @@ Everything is in that one file, so it's easy to keep and share. It reads well on
 
 ## Good to know
 
-**How long it takes and what it uses.** A brief took about 20–30 minutes in our test runs. We measured the tokens for each step on real runs; the total is their sum:
+**How long it takes and what it uses.** We measured a full run of the current version in Claude Code, on [vercel-labs/skills](https://github.com/vercel-labs/skills) (201 files):
 
-| Step | Tokens | What changes it |
-| --- | --- | --- |
-| Read the repo and write the page | about 220k–270k | Repo size: a small repo used 222k, pstack (573 files) 248k, REA (7,448 files) 267k |
-| Reader test, on a small model that costs less per token | about 60k–115k | Mostly the app you run it in: about 60k–80k in Claude Code, 100k–115k in Cowork. Most of it is the cost of starting a fresh AI |
-| Second reader test | about 60k–115k | Runs only when a fix rewrote a whole section |
-| **Total** | **about 280k–390k** | Up to about 500k with a second reader test |
+| Step | Tokens |
+| --- | --- |
+| Read the repo and write the page (the agent also started a helper to trace the code) | about 325k |
+| Reader test, on a small model that costs less per token | about 42k |
+| Second reader test | not needed: it runs only when a fix rewrote a whole section |
+| **Total** | **about 370k, in about 10 minutes** |
 
-- **Small or large, the cost is close.** Reading REA, with 7,448 files, used only about 45k more tokens than reading a small repo.
+- **Repo size changes the cost only a little.** In earlier runs, reading REA (7,448 files) used only about 45k more tokens than reading a small repo.
+- **The cost changes from run to run.** The agent decides how much to read and whether to start a helper. Runs of the earlier version used 400k–500k tokens and took 20–30 minutes.
 - **Much larger repos are untested.** A repo with many more files than REA can take longer and use more tokens.
-- **Tokens are how your AI plan measures usage.** A brief is a big task. On a subscription plan, expect it to use a noticeable part of your usage limit.
+- **Tokens are how your AI plan measures usage.** A brief is a big task. On a subscription plan, expect it to use a noticeable part of your usage limit. At API list prices, the measured run cost about $7.40.
 
 **Built to be safe with any repo.** The skill tells the agent to only read the repo's files. The agent must never run the repo's code, installers or scripts, and must ignore any instructions for AI agents written inside the repo.
 
