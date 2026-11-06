@@ -92,7 +92,7 @@ Everything is in that one file, so it's easy to keep and share. It reads well on
 | Second reader test | not needed: it runs only when a fix rewrote a whole section |
 
 - **Repo size changes the cost only a little.** In earlier runs, reading REA (7,448 files) took only about 20% more work than reading a small repo.
-- **The cost changes from run to run.** The agent decides how much to read and whether to start a helper. Other main models cost differently. Earlier runs took 20–30 minutes.
+- **The cost changes from run to run.** The agent decides how much to read and whether to start a helper. Other main models cost differently. Earlier versions, run in Cowork, took 20–30 minutes.
 - **Much larger repos are untested.** A repo with many more files than REA can take longer and cost more.
 - **On a subscription plan,** a brief is a big task: expect it to use a noticeable part of your usage limit.
 
