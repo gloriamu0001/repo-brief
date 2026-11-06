@@ -33,6 +33,7 @@ Repo Brief 是给 AI 编程助手（Claude Code 或 Codex）用的一个技能�
 | [Hallmark](https://github.com/Nutlope/hallmark) | 一个设计技能，让 AI 做出的网页不再一看就是 AI 做的 | [打开](https://gloriamu0001.github.io/repo-brief/hallmark.html) |
 | [REA](https://github.com/morluto/rea) | 让 AI 助手查看已编译应用内部结构的工具 | [打开](https://gloriamu0001.github.io/repo-brief/rea.html) |
 | [pstack](https://github.com/cursor/plugins/tree/main/pstack) | 给编程助手用的工程实践手册（一个大仓库里的一个文件夹） | [打开](https://gloriamu0001.github.io/repo-brief/pstack.html) |
+| [skills](https://github.com/vercel-labs/skills) | 一条命令，把 agent 技能一次装进所有编程助手 | [打开](https://gloriamu0001.github.io/repo-brief/skills.html) |
 | [Repo Brief](https://github.com/gloriamu0001/repo-brief) | 本技能为自己生成的简报 | [打开](https://gloriamu0001.github.io/repo-brief/repo-brief.html) |
 
 示例页面是英文的。
@@ -160,7 +161,7 @@ repo-brief/
 ├── .claude-plugin/
 │   └── marketplace.json               让 Claude Code 能以插件方式安装本技能
 ├── docs/                              示例简报，通过 GitHub Pages 发布
-│   ├── *.html                         四份示例简报
+│   ├── *.html                         五份示例简报
 │   └── images/                        本页用到的截图
 └── skills/
     └── repo-brief/                    技能本体

@@ -8,11 +8,11 @@
 4. Are the concept links the repo's core concepts only, each defined once at its first linkable mention?
 5. Does every repo-map item earn its place: used by the workflow or the install, with a content overview?
 6. Does the install prompt only install the tool and confirm it worked, with no example run or add-on?
-7. Does the swimlane show the pipeline the code actually runs, in order, with step files pointing at the lines that do each step?
+7. Does the swimlane show the pipeline the code actually runs, in order, with each step pointing at the file (and lines, where given) that does it?
 
 ## Reader questions
 
-Give the reader-test subagent these instructions: you are a skeptical non-technical reader; use only the brief; answer each question in one to three sentences; mark an answer CONFIDENT only if the brief states it outright, otherwise GUESS (you inferred something, the brief shows a format or example but no real result, or two parts disagree), with one line on what was unclear; then list every place where two parts of the brief contradict or repeat each other, and every term used without a plain definition. Finding gaps is the point; an answer sheet with no GUESS marks is suspicious.
+Give the reader-test subagent these instructions: you are a skeptical non-technical reader; use only the brief; answer each question in one to three sentences; mark an answer CONFIDENT if the brief states it, or GUESS if you had to infer it or two parts of the brief disagree, with one line on what was missing; then list at most five problems that would mislead or stop a non-technical reader, most serious first: places where two parts of the brief contradict each other, or terms you could not get past. Skip general tech terms a builder likely knows, and small repeats.
 
 1. What problem does it solve, and for whom?
 2. What is the one idea that makes it work?

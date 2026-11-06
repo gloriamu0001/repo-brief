@@ -50,7 +50,7 @@ def texts(obj):
             yield from texts(v)
 
 
-MAX_MAP, MAX_WORDS = 22, 1700
+MAX_MAP, MAX_WORDS = 22, 1800
 
 
 def prose_words(B):
@@ -176,7 +176,7 @@ def main():
         print(f"WARN repo map has {n_map} file items: keep it to about twenty, group similar siblings or drop items the workflow doesn't use")
     n_words = prose_words(B)
     if n_words > MAX_WORDS:
-        print(f"WARN page has {n_words} words of written text (limit about {MAX_WORDS}): cut what doesn't help the reader understand or use the repo")
+        print(f"WARN page has {n_words} words of written text (warns above {MAX_WORDS}, aim for about 1,500): in one pass, cut whole items that don't help the reader understand or use the repo")
 
     # "ask questions" link: DeepWiki answers questions about the whole repo
     m = re.match(r"https?://github\.com/([^/]+)/([^/#?]+)", B.get("repo", ""))
@@ -357,7 +357,7 @@ def check_render(page):
                 for (title, kind), names in pops.items():
                     names = list(dict.fromkeys(names))
                     add(f'pop-up "{title}": {len(names)} {kind}, e.g. "{names[0]}"' if kind.startswith("names")
-                        else f'pop-up "{title}": {kind}: "{names[0]}"', tag)
+                        else f'pop-up "{title}": {kind}: "{names[0]}" (a long word, path or code with no spaces: shorten it or add spaces)', tag)
                 pg.close()
             browser.close()
     if not ran:

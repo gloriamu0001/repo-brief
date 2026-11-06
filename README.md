@@ -33,6 +33,7 @@ Each page below was made by Repo Brief. Open one to see what you'll get.
 | [Hallmark](https://github.com/Nutlope/hallmark) | A design skill that stops AI-built web pages from looking AI-built | [Open](https://gloriamu0001.github.io/repo-brief/hallmark.html) |
 | [REA](https://github.com/morluto/rea) | A tool that lets an AI agent look inside compiled apps | [Open](https://gloriamu0001.github.io/repo-brief/rea.html) |
 | [pstack](https://github.com/cursor/plugins/tree/main/pstack) | Engineering playbooks for coding agents (one folder of a bigger repo) | [Open](https://gloriamu0001.github.io/repo-brief/pstack.html) |
+| [skills](https://github.com/vercel-labs/skills) | A command that installs agent skills into every coding agent at once | [Open](https://gloriamu0001.github.io/repo-brief/skills.html) |
 | [Repo Brief](https://github.com/gloriamu0001/repo-brief) | This skill, explained by itself | [Open](https://gloriamu0001.github.io/repo-brief/repo-brief.html) |
 
 | Click a step to see how it works (REA) | Click a file to see what's inside (pstack) |
@@ -156,7 +157,7 @@ repo-brief/
 ├── .claude-plugin/
 │   └── marketplace.json               lets Claude Code install the skill as a plugin
 ├── docs/                              example briefs, served by GitHub Pages
-│   ├── *.html                         the four example briefs
+│   ├── *.html                         the five example briefs
 │   └── images/                        screenshots for this page
 └── skills/
     └── repo-brief/                    the skill itself
