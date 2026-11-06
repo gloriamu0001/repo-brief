@@ -11,7 +11,7 @@
         "The page has the seven sections in order: Problem it solves, Main idea, Demo, Repo map, How it works, Why it works, How to use it",
         "The repo map names SKILL.md as the file to open first",
         "The reader test ran, and every wrong or guessed answer was fixed before delivery",
-        "The agent did not run any script from the cloned repo"
+        "The agent ran only its own installed scripts/build.py, never a file from the cloned repo"
       ]
     },
     {

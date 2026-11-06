@@ -22,7 +22,7 @@ Repo Brief is a skill for your AI coding agent (Claude Code or Codex). You give 
 - **What does it actually do?** The main idea in one sentence, with real examples of its output.
 - **How do I start?** A ready-made prompt that installs the tool for you.
 
-You don't need to read code, open a terminal or understand the repo's README.
+You don't need to read code or understand the repo's README.
 
 ## See it first
 
@@ -81,22 +81,22 @@ Everything is in that one file, so it's easy to keep and share. It reads well on
 
 ## Good to know
 
-**How long it takes and what it uses.** We measured the four example briefs above. They range from a small repo to a large one:
+**How long it takes and what it uses.** We measured the four example briefs above, from a small repo to a large one:
 
-| Repo size | Example | Files in the repo | Time | Tokens used |
-| --- | --- | --- | --- | --- |
-| Small | Repo Brief | 20 | about 20–30 min | about 400k–500k |
-| Medium | pstack (one folder) | 573 | about 20–30 min | about 400k–500k |
-| Medium | Hallmark | 850 | about 20–30 min | about 400k–500k |
-| Large | REA | 7,448 | about 20–30 min | about 400k–500k |
+| Repo size | Example | Files in the repo |
+| --- | --- | --- |
+| Small | Repo Brief | 20 |
+| Medium | pstack (one folder) | 573 |
+| Medium | Hallmark | 850 |
+| Large | REA | 7,448 |
 
-- **Size matters less than you might expect.** The smallest and the largest example both fell in the same range.
+- **Small or large, expect about 20–30 minutes and 400k–500k tokens.** All four examples fell in this range.
 - **Much larger repos are untested.** A repo with many more files than REA can take longer and use more tokens.
 - **Tokens are how your AI plan measures usage.** A brief is a big task. On a subscription plan, expect it to use a noticeable part of your usage limit.
 
-**It's safe to brief any repo.** The agent only reads the repo's files. It never runs the repo's code, installers or scripts, and it ignores any instructions for AI agents written inside the repo.
+**Built to be safe with any repo.** The skill tells the agent to only read the repo's files. The agent must never run the repo's code, installers or scripts, and must ignore any instructions for AI agents written inside the repo.
 
-**It checks its own work.** Before you see the page, a script checks that every file and line it points to really exists. Then a second AI reads only the page and answers seven questions about the repo. Any answer it has to guess sends the agent back to fix that part.
+**It checks its own work.** Before you see the page, a script checks that every file and line it points to really exists. Then a second AI reads only the page and answers seven questions about the repo (when your agent can start a second AI). Any answer it has to guess sends the agent back to fix that part.
 
 <details>
 <summary><b>Other ways to install</b> (Claude Code plugin, Cursor, OpenCode, by hand)</summary>
