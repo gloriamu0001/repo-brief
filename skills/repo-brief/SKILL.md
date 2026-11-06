@@ -5,7 +5,7 @@ description: Turn a GitHub repo (or a folder inside one) into a one-page interac
 
 # Repo brief
 
-Input: a GitHub repo URL, or a URL to a folder inside a repo. Output: one self-contained HTML file, built by filling `brief.json` (schema in [reference.md](reference.md)) and running `scripts/build.py`, which injects it into `assets/template.html`.
+Input: a GitHub repo URL, or a URL to a folder inside a repo. Output: one self-contained HTML file, built by filling `brief.json` (schema in [references/brief-format.md](references/brief-format.md)) and running `scripts/build.py`, which injects it into `assets/template.html`.
 
 ## Workflow
 
@@ -17,7 +17,7 @@ Input: a GitHub repo URL, or a URL to a folder inside a repo. Output: one self-c
    Verify every number on the page against a file. When the repo is mainly in another language, verify against those files: English docs are often older. Quote the author's own translation where one exists; otherwise translate faithfully.
 3. Write `brief.json` following the content rules below.
 4. Build and check: `python3 scripts/build.py brief.json <name>-repo-brief.html --repo-dir <clone> --check-render --text <name>-reader.md`. It fails on undefined, unused or repeated concept links, markup inside code demos, bad step indexes, missing sections, repo paths or line ranges that don't exist, and, in Chrome at 1280 and 390 px, page errors, sideways scrolling, text spilling out of its box and pop-ups that don't open. Fix and rerun until it prints `ok`.
-5. Reader test: give `<name>-reader.md` (everything the page shows, pop-ups included) and nothing else to a fresh subagent, and have it answer the reader questions in [eval.md](eval.md) from the brief alone, marking anything it had to guess. Compare its answers with the repo. Fix the section behind every wrong or guessed answer, rebuild, and rerun the test once. Without a subagent tool, skip it and say so. Then answer the remaining checks in eval.md.
+5. Reader test: give `<name>-reader.md` (everything the page shows, pop-ups included) and nothing else to a fresh subagent, and have it answer the reader questions in [references/checks.md](references/checks.md) from the brief alone, marking anything it had to guess. Compare its answers with the repo. Fix the section behind every wrong or guessed answer, rebuild, and rerun the test once. Without a subagent tool, skip it and say so. Then answer the remaining checks in references/checks.md.
 6. Deliver `<name>-repo-brief.html` where the user can open it: their working folder, and the chat too when the client can send files. Revise by rebuilding the same file.
 
 ## Content rules
