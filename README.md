@@ -83,11 +83,11 @@ Everything is in that one file, so it's easy to keep and share. It reads well on
 
 ## Good to know
 
-**How long it takes.** In our test on [vercel-labs/skills](https://github.com/vercel-labs/skills) (201 files), with Opus 5.5 in Claude Code, a brief took about 7 minutes. Like any long agent task, it uses part of your plan's usage limit. Repos much larger than about 7,000 files are untested.
+**How long it takes.** In our test on [vercel-labs/skills](https://github.com/vercel-labs/skills) (201 files), with the Opus 5.5 model in Claude Code, a brief took about 7 minutes. Like any long agent task, it uses part of your plan's usage limit. Repos much larger than REA (about 7,400 files) are untested.
 
 **Built to be safe with any repo.** The skill tells the agent to only read the repo's files. The agent must never run the repo's code, installers or scripts, and must ignore any instructions for AI agents written inside the repo.
 
-**It checks its own work.** Before you see the page, a script checks that every file and line it points to really exists. Then a second AI reads only the page and answers seven questions about the repo (when your agent can start a second AI). Any answer it has to guess sends the agent back to fix that part.
+**It checks its own work.** Before you see the page, a script checks that every file and line it points to really exists. Then a second AI reads only the page and answers seven questions about the repo (when your agent can start a second AI). Anything that would mislead a reader sends the agent back to fix that part.
 
 <details>
 <summary><b>Other ways to install</b> (Claude Code plugin, Cursor, OpenCode, by hand)</summary>
