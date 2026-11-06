@@ -11,7 +11,9 @@
         "The page has the seven sections in order: Problem it solves, Main idea, Demo, Repo map, How it works, Why it works, How to use it",
         "The repo map names SKILL.md as the file to open first",
         "The reader test ran, and every wrong or guessed answer was fixed before delivery",
-        "The agent ran only its own installed scripts/build.py, never a file from the cloned repo"
+        "The agent ran only its own installed scripts/build.py, never a file from the cloned repo",
+        "The final build printed no WARN lines, or the agent said why each remaining item is needed",
+        "The reader test ran on the smallest available model"
       ]
     },
     {
@@ -23,7 +25,8 @@
         "build.py with --check-render printed ok for the final page",
         "The demo uses the compare type with real before/after images from the repo, not mocks",
         "Every number on the page (issue counts, rule counts, version) matches a repo file",
-        "The install prompt only installs Hallmark and says how to confirm it worked"
+        "The install prompt only installs Hallmark and says how to confirm it worked",
+        "The final build printed no WARN lines, or the agent said why each remaining item is needed"
       ]
     },
     {
@@ -35,7 +38,8 @@
         "build.py with --check-render printed ok for the final page",
         "The repo map has about twenty items or fewer, and groups similar siblings into one item with a count",
         "The demo is a code demo quoted word for word from the repo or its official pages",
-        "Swimlane step files point at line ranges that exist in the repo"
+        "Swimlane step files point at line ranges that exist in the repo",
+        "The final build printed no WARN lines, or the agent said why each remaining item is needed"
       ]
     },
     {
@@ -47,7 +51,8 @@
         "brief.json sets root to pstack",
         "Every repo-map path and step file is inside the pstack folder",
         "The page describes pstack only and does not describe the other plugins in the repo",
-        "build.py with --check-render printed ok for the final page"
+        "build.py with --check-render printed ok for the final page",
+        "The final build printed no WARN lines, or the agent said why each remaining item is needed"
       ]
     }
   ]

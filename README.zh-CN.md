@@ -86,16 +86,16 @@ Make a repo brief of https://github.com/owner/repo
 
 ## 使用须知
 
-**需要多长时间、消耗多少。** 我们实测了上面四个示例，从小仓库到大仓库都有：
+**需要多长时间、消耗多少。** 在我们的测试中，一份简报用时约 20–30 分钟。每个步骤的 token 消耗都来自实际运行，合计是它们的总和：
 
-| 仓库规模 | 示例 | 仓库文件数 |
+| 步骤 | Token 消耗 | 影响因素 |
 | --- | --- | --- |
-| 小 | Repo Brief | 20 |
-| 中 | pstack（一个文件夹） | 573 |
-| 中 | Hallmark | 850 |
-| 大 | REA | 7,448 |
+| 阅读仓库并撰写页面 | 约 22–27 万 | 仓库大小：一个小仓库用了 22.2 万，pstack（573 个文件）24.8 万，REA（7,448 个文件）26.7 万 |
+| 读者测试，用每个 token 更便宜的小模型 | 约 6–11.5 万 | 主要取决于你用的应用：在 Claude Code 中约 6–8 万，在 Cowork 中约 10–11.5 万。大部分是启动一个新 AI 的固定开销 |
+| 第二次读者测试 | 约 6–11.5 万 | 只有在某次修改重写了整个部分时才会运行 |
+| **合计** | **约 28–39 万** | 如果需要第二次读者测试，最多约 50 万 |
 
-- **无论仓库大小，预计用时约 20–30 分钟，消耗约 40–50 万 token。** 四个示例都在这个范围内。
+- **仓库大小对消耗影响不大。** 阅读有 7,448 个文件的 REA，只比阅读一个小仓库多用了约 4.5 万 token。
 - **更大的仓库还没测过。** 文件数远超 REA 的仓库可能用时更长、消耗更多 token。
 - **Token 是 AI 套餐计算用量的单位。** 生成一份简报是个大任务。如果你用的是订阅套餐，它会占用明显的一部分用量额度。
 
@@ -132,7 +132,7 @@ npx skills add gloriamu0001/repo-brief -g --agent claude-code
 
 - `git` 和 Python 3
 - [Pillow](https://pypi.org/project/Pillow/)（`python3 -m pip install Pillow`），用于把演示图片放进页面
-- 可选：[Playwright](https://playwright.dev/python/) 加 Chrome 或 Chromium，用于版面检查。没有的话，助手会跳过这项检查。
+- 可选：[Playwright](https://playwright.dev/python/) 及其浏览器（`python3 -m playwright install chromium firefox webkit`），用于在 Chrome 和 Edge、Firefox、Safari 背后的浏览器引擎中检查版面。没有安装的引擎会被跳过。
 - 可选：能启动子代理（subagent）的 AI 助手，用于读者测试。没有的话，助手会跳过这项测试并告诉你。
 
 </details>
@@ -142,8 +142,8 @@ npx skills add gloriamu0001/repo-brief -g --agent claude-code
 
 1. **阅读。** 助手克隆仓库，读取代码和配置。它把 README 当作“说法”，把文件当作“事实”。
 2. **撰写。** 它把页面要展示的所有内容写进一个数据文件 `brief.json`，并遵守 [`SKILL.md`](skills/repo-brief/SKILL.md) 里的内容规则。
-3. **检查。** [`build.py`](skills/repo-brief/scripts/build.py) 把内容填进固定的页面模板。只要有任何问题，它就拒绝完成：缺少某个部分、链接失效，或者提到的文件或行号在仓库里不存在。它还会在 Chrome 里分别以电脑和手机宽度打开页面，检查版面问题。
-4. **读者测试。** 一个全新的助手只拿到页面文字，回答关于仓库的七个问题，并标出所有靠猜的答案。每个猜测都会让助手回去修改对应的部分。
+3. **检查。** [`build.py`](skills/repo-brief/scripts/build.py) 把内容填进固定的页面模板。只要有任何问题，它就拒绝完成：缺少某个部分、链接失效，或者提到的文件或行号在仓库里不存在。它还会在 Chrome 和 Edge、Firefox、Safari 背后的浏览器引擎中，分别以电脑和手机宽度打开页面，检查版面问题。
+4. **读者测试。** 一个使用更便宜小模型的全新助手只拿到页面文字，回答关于仓库的七个问题，并标出所有靠猜的答案。每个猜测都会让助手回去修改对应的部分。只有在某次修改重写了整个部分时，测试才会再跑一次。
 5. **交付。** 你得到一个 HTML 文件。
 
 </details>
@@ -152,17 +152,30 @@ npx skills add gloriamu0001/repo-brief -g --agent claude-code
 <summary><b>仓库结构</b>（给贡献者）</summary>
 
 ```text
-skills/repo-brief/
-  SKILL.md                         工作流程和内容规则（从这里开始读）
-  references/brief-format.md       brief.json 的所有字段
-  references/checks.md             最终检查项和读者测试问题
-  references/example-hallmark.json 一份完整的 brief.json，作为范例
-  scripts/build.py                 检查、生成、版面测试、导出读者测试文本
-  assets/template.html             页面模板
-  evals/evals.json                 技能的测试用例（四个示例仓库）
-  agents/openai.yaml               Codex 用的显示名称和默认提示词
-.claude-plugin/marketplace.json    让 Claude Code 能以插件方式安装本技能
-docs/                              示例简报，通过 GitHub Pages 发布
+repo-brief/
+├── README.md                          本页（英文）
+├── README.zh-CN.md                    本页（简体中文）
+├── LICENSE
+├── .claude-plugin/
+│   └── marketplace.json               让 Claude Code 能以插件方式安装本技能
+├── docs/                              示例简报，通过 GitHub Pages 发布
+│   ├── *.html                         四份示例简报
+│   └── images/                        本页用到的截图
+└── skills/
+    └── repo-brief/                    技能本体
+        ├── SKILL.md                   工作流程和内容规则（从这里开始读）
+        ├── agents/
+        │   └── openai.yaml            Codex 用的显示名称和默认提示词
+        ├── assets/
+        │   └── template.html          页面模板
+        ├── evals/
+        │   └── evals.json             技能的测试用例（四个示例仓库）
+        ├── references/
+        │   ├── brief-format.md        brief.json 的所有字段
+        │   ├── checks.md              最终检查项和读者测试问题
+        │   └── example-hallmark.json  一份完整的 brief.json，作为范例
+        └── scripts/
+            └── build.py               检查、生成、浏览器测试、导出读者测试文本
 ```
 
 </details>
