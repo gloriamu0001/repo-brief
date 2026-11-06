@@ -1,6 +1,6 @@
 ---
 name: repo-brief
-description: Turn a GitHub repo, or a folder inside one, into a one-page interactive brief that a non-technical builder understands in a minute: problem, main idea, real demo, repo map, how it works, why it works, how to use it, in one self-contained HTML file. Use when the user shares a GitHub URL to understand, evaluate or explain, or asks for a repo brief.
+description: Turn a GitHub repo, or a folder inside one, into a one-page interactive brief that a non-technical builder understands in a minute (problem, main idea, real demo, repo map, how it works, why it works, how to use it), in one self-contained HTML file. Use when the user shares a GitHub URL to understand, evaluate or explain, or asks for a repo brief.
 ---
 
 # Repo brief
