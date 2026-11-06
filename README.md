@@ -82,16 +82,16 @@ Everything is in that one file, so it's easy to keep and share. It reads well on
 
 ## Good to know
 
-**How long it takes and what it uses.** We measured the four example briefs above, from a small repo to a large one:
+**How long it takes and what it uses.** A brief took about 20–30 minutes in our test runs. These are the tokens for each step, measured on real runs:
 
-| Repo size | Example | Files in the repo |
+| Step | Tokens | What changes it |
 | --- | --- | --- |
-| Small | Repo Brief | 20 |
-| Medium | pstack (one folder) | 573 |
-| Medium | Hallmark | 850 |
-| Large | REA | 7,448 |
+| Read the repo and write the page | about 220k–270k | Repo size: a small repo used 222k, pstack (573 files) 248k, REA (7,448 files) 267k |
+| Reader test, on a small model that costs less per token | about 100k–115k | Hardly anything: most of it is the cost of starting a fresh AI |
+| Second reader test | about 100k | Runs only when a fix rewrote a whole section |
+| **Total** | **about 320k–380k** | Up to about 480k with a second reader test |
 
-- **Small or large, expect about 20–30 minutes and 400k–500k tokens.** All four examples fell in this range.
+- **Small or large, the cost is close.** Reading REA, with 7,448 files, used only about 45k more tokens than reading a small repo.
 - **Much larger repos are untested.** A repo with many more files than REA can take longer and use more tokens.
 - **Tokens are how your AI plan measures usage.** A brief is a big task. On a subscription plan, expect it to use a noticeable part of your usage limit.
 
@@ -128,7 +128,7 @@ Replace `claude-code` with `codex`, `cursor` or `opencode` for another agent.
 
 - `git` and Python 3
 - [Pillow](https://pypi.org/project/Pillow/) (`python3 -m pip install Pillow`), to put demo images into the page
-- Optional: [Playwright](https://playwright.dev/python/) with Chrome or Chromium, for the layout check. Without it, the agent skips that check.
+- Optional: [Playwright](https://playwright.dev/python/) and its browsers (`python3 -m playwright install chromium firefox webkit`), for the layout check in the engines behind Chrome and Edge, Firefox and Safari. The check skips any engine that isn't installed.
 - Optional: an agent that can start subagents, for the reader test. Without one, the agent skips the test and tells you.
 
 </details>
@@ -138,8 +138,8 @@ Replace `claude-code` with `codex`, `cursor` or `opencode` for another agent.
 
 1. **Read.** The agent clones the repo and reads its code and settings. It treats the README as a claim and the files as the facts.
 2. **Write.** It puts everything the page will show into one data file, `brief.json`, following the content rules in [`SKILL.md`](skills/repo-brief/SKILL.md).
-3. **Check.** [`build.py`](skills/repo-brief/scripts/build.py) fills a fixed page template. It refuses to finish while anything is wrong: a missing section, a broken link, or a file or line that doesn't exist in the repo. It also opens the page in Chrome at laptop and phone width to catch layout faults.
-4. **Reader test.** A fresh agent gets only the page's text and answers seven questions about the repo, marking any guesses. Every guess sends the agent back to fix that section.
+3. **Check.** [`build.py`](skills/repo-brief/scripts/build.py) fills a fixed page template. It refuses to finish while anything is wrong: a missing section, a broken link, or a file or line that doesn't exist in the repo. It also opens the page at laptop and phone width in the engines behind Chrome and Edge, Firefox and Safari, to catch layout faults.
+4. **Reader test.** A fresh agent on a small, cheaper model gets only the page's text and answers seven questions about the repo, marking any guesses. Every guess sends the agent back to fix that section. The test runs again only when a fix rewrote a whole section.
 5. **Deliver.** You get one HTML file.
 
 </details>
@@ -148,17 +148,30 @@ Replace `claude-code` with `codex`, `cursor` or `opencode` for another agent.
 <summary><b>Repo layout</b> (for contributors)</summary>
 
 ```text
-skills/repo-brief/
-  SKILL.md                         workflow and content rules (start here)
-  references/brief-format.md       every field of brief.json
-  references/checks.md             final checks and reader-test questions
-  references/example-hallmark.json a complete brief.json, used as the model
-  scripts/build.py                 checks, build, layout test, reader export
-  assets/template.html             the page template
-  evals/evals.json                 test cases for the skill (the four example repos)
-  agents/openai.yaml               display name and default prompt for Codex
-.claude-plugin/marketplace.json    lets Claude Code install the skill as a plugin
-docs/                              example briefs, served by GitHub Pages
+repo-brief/
+├── README.md                          this page (English)
+├── README.zh-CN.md                    this page (简体中文)
+├── LICENSE
+├── .claude-plugin/
+│   └── marketplace.json               lets Claude Code install the skill as a plugin
+├── docs/                              example briefs, served by GitHub Pages
+│   ├── *.html                         the four example briefs
+│   └── images/                        screenshots for this page
+└── skills/
+    └── repo-brief/                    the skill itself
+        ├── SKILL.md                   workflow and content rules (start here)
+        ├── agents/
+        │   └── openai.yaml            display name and default prompt for Codex
+        ├── assets/
+        │   └── template.html          the page template
+        ├── evals/
+        │   └── evals.json             test cases for the skill (the four example repos)
+        ├── references/
+        │   ├── brief-format.md        every field of brief.json
+        │   ├── checks.md              final checks and reader-test questions
+        │   └── example-hallmark.json  a complete brief.json, used as the model
+        └── scripts/
+            └── build.py               checks, build, browser test, reader export
 ```
 
 </details>
