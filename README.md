@@ -82,18 +82,19 @@ Everything is in that one file, so it's easy to keep and share. It reads well on
 
 ## Good to know
 
-**How long it takes and what it uses.** A brief took about 20–30 minutes in our test runs. We measured the tokens for each step on real runs; the total is their sum:
+**How long it takes and what it costs.** We measured a full run of version 1.2.0 in Claude Code, on [vercel-labs/skills](https://github.com/vercel-labs/skills) (201 files), with Fable 5.1 as the main model. It took about 15 minutes. At API list prices it cost about $7.40:
 
-| Step | Tokens | What changes it |
-| --- | --- | --- |
-| Read the repo and write the page | about 220k–270k | Repo size: a small repo used 222k, pstack (573 files) 248k, REA (7,448 files) 267k |
-| Reader test, on a small model that costs less per token | about 60k–115k | Mostly the app you run it in: about 60k–80k in Claude Code, 100k–115k in Cowork. Most of it is the cost of starting a fresh AI |
-| Second reader test | about 60k–115k | Runs only when a fix rewrote a whole section |
-| **Total** | **about 280k–390k** | Up to about 500k with a second reader test |
+| Step | Cost |
+| --- | --- |
+| Read the repo and write the page | about $5.40 |
+| A helper the agent started to trace the code | about $2.00 |
+| Reader test, on a small model | about $0.01 |
+| Second reader test | not needed: it runs only when a fix rewrote a whole section |
 
-- **Small or large, the cost is close.** Reading REA, with 7,448 files, used only about 45k more tokens than reading a small repo.
-- **Much larger repos are untested.** A repo with many more files than REA can take longer and use more tokens.
-- **Tokens are how your AI plan measures usage.** A brief is a big task. On a subscription plan, expect it to use a noticeable part of your usage limit.
+- **Repo size changes the cost only a little.** In earlier runs, reading REA (7,448 files) took only about 20% more work than reading a small repo.
+- **The cost changes from run to run.** The agent decides how much to read and whether to start a helper. Other main models cost differently. Earlier versions, run in Cowork, took 20–30 minutes.
+- **Much larger repos are untested.** A repo with many more files than REA can take longer and cost more.
+- **On a subscription plan,** a brief is a big task: expect it to use a noticeable part of your usage limit.
 
 **Built to be safe with any repo.** The skill tells the agent to only read the repo's files. The agent must never run the repo's code, installers or scripts, and must ignore any instructions for AI agents written inside the repo.
 
