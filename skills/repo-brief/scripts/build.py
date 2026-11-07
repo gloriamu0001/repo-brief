@@ -25,16 +25,14 @@ def embed(src, base_dirs):
         raise SystemExit(f"image not found: {src}")
     try:
         from PIL import Image
-        im = Image.open(path).convert("RGB")
-        if im.width > MAX_W:
-            im = im.resize((MAX_W, round(im.height * MAX_W / im.width)), Image.LANCZOS)
-        buf = io.BytesIO()
-        im.save(buf, "WEBP", quality=58, method=6)
-        return "data:image/webp;base64," + base64.b64encode(buf.getvalue()).decode(), im.width, im.height
     except ImportError:
-        ext = os.path.splitext(path)[1].lstrip(".").lower().replace("jpg", "jpeg")
-        with open(path, "rb") as f:
-            return f"data:image/{ext};base64," + base64.b64encode(f.read()).decode(), None, None
+        raise SystemExit(f"FAIL image demo needs Pillow, install it (python3 -m pip install Pillow): {src}")
+    im = Image.open(path).convert("RGB")
+    if im.width > MAX_W:
+        im = im.resize((MAX_W, round(im.height * MAX_W / im.width)), Image.LANCZOS)
+    buf = io.BytesIO()
+    im.save(buf, "WEBP", quality=58, method=6)
+    return "data:image/webp;base64," + base64.b64encode(buf.getvalue()).decode(), im.width, im.height
 
 
 def texts(obj):

@@ -118,7 +118,7 @@ npx skills add gloriamu0001/repo-brief -g --agent claude-code
 <summary><b>运行环境要求</b></summary>
 
 - `git` 和 Python 3
-- 仅当仓库的演示是图片时需要：[Pillow](https://pypi.org/project/Pillow/)（`python3 -m pip install Pillow`）。需要时助手会自动安装。
+- 仅当仓库的演示是图片时需要：[Pillow](https://pypi.org/project/Pillow/)（`python3 -m pip install Pillow`）。需要时助手会安装它。
 - 可选：[Playwright](https://playwright.dev/python/) 和 Chromium（`python3 -m playwright install chromium`），用于检查版面。没有安装时，构建结果会注明 "layout not checked"（未检查版面）。
 - 可选：能启动子代理（subagent）的 AI 助手，用于阅读帮手和读者测试。没有的话，助手会自己阅读仓库，跳过这项测试并告诉你。
 
