@@ -154,7 +154,7 @@ repo-brief/
         ├── assets/
         │   └── template.html          the page template
         ├── evals/
-        │   └── evals.json             test cases for the skill (the four example repos)
+        │   └── evals.json             test cases for the skill (three example repos)
         ├── references/
         │   ├── brief-format.md        every field of brief.json
         │   ├── checks.md              final checks and reader-test questions

@@ -158,7 +158,7 @@ repo-brief/
         ├── assets/
         │   └── template.html          页面模板
         ├── evals/
-        │   └── evals.json             技能的测试用例（四个示例仓库）
+        │   └── evals.json             技能的测试用例（三个示例仓库）
         ├── references/
         │   ├── brief-format.md        brief.json 的所有字段
         │   ├── checks.md              最终检查项和读者测试问题

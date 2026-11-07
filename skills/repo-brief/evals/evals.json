@@ -3,21 +3,6 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Make a repo brief of https://github.com/gloriamu0001/repo-brief",
-      "expected_output": "repo-brief-repo-brief.html: a brief of a small repo (about 20 files), with all seven sections.",
-      "files": [],
-      "expectations": [
-        "build.py with --check-render printed ok for the final page",
-        "The page has the seven sections in order: Problem it solves, Main idea, Demo, Repo map, How it works, Why it works, How to use it",
-        "The repo map names SKILL.md as the file to open first",
-        "The reader test ran, and every wrong answer and every problem that would mislead a reader was fixed before delivery",
-        "The agent ran only its own installed scripts/build.py, never a file from the cloned repo",
-        "The final build printed no WARN lines, or the agent said why each remaining item is needed",
-        "The reader test ran on the smallest available model"
-      ]
-    },
-    {
-      "id": 2,
       "prompt": "I found this on GitHub and don't read code. What does it do and how do I use it? https://github.com/Nutlope/hallmark",
       "expected_output": "hallmark-repo-brief.html with a before/after demo built from the repo's own screenshots.",
       "files": [],
@@ -30,7 +15,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": 2,
       "prompt": "Explain this repo to me in one page: https://github.com/morluto/rea",
       "expected_output": "rea-repo-brief.html for a large repo (about 7,400 files), with a repo map of about twenty items and a code demo quoted word for word.",
       "files": [],
@@ -43,7 +28,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": 3,
       "prompt": "/repo-brief https://github.com/cursor/plugins/tree/main/pstack",
       "expected_output": "pstack-repo-brief.html scoped to the pstack folder only, not the whole cursor/plugins repo.",
       "files": [],
