@@ -51,9 +51,7 @@ Install the Repo Brief skill from https://github.com/gloriamu0001/repo-brief for
 1. Run: npx skills add gloriamu0001/repo-brief -g --agent <claude-code or codex, whichever you are>
    If npx doesn't work, copy the repo's skills/repo-brief folder into your global skills folder instead.
 2. Check that git and Python 3 are installed. If one is missing, tell me how to install it.
-3. Make sure Python can use Pillow. If it can't, run: python3 -m pip install Pillow
-   If pip refuses (for example "externally-managed-environment"), install Pillow for this same python3 another way, for example brew install pillow on a Mac with Homebrew. Do not use sudo or --break-system-packages unless I say yes. Then check again that python3 can import Pillow.
-4. Confirm that the skill's SKILL.md is in your global skills folder, and tell me its path.
+3. Confirm that the skill's SKILL.md is in your global skills folder, and tell me its path.
 ```
 
 **3. Ask for a brief.** Start a new session and type:
@@ -72,7 +70,7 @@ Every brief has the same seven parts, in this order:
 | --- | --- |
 | **Problem it solves** | Who has the problem, in one or two bullets |
 | **Main idea** | How it works, in one sentence. Click the key words to see the real thing behind them |
-| **Demo** | Real output from the repo: a before/after slider, a gallery, or an input and its result |
+| **Demo** | Real output from the repo: a before/after slider, a finished result, or an input and its result |
 | **Repo map** | Only the files that matter. Click one to see what's inside |
 | **How it works** | Who does what, step by step. Click a step for the details |
 | **Why it works** | A few short reasons the approach works |
@@ -116,8 +114,8 @@ Replace `claude-code` with `codex`, `cursor` or `opencode` for another agent.
 <summary><b>Requirements</b></summary>
 
 - `git` and Python 3
-- [Pillow](https://pypi.org/project/Pillow/) (`python3 -m pip install Pillow`), to put demo images into the page
-- Optional: [Playwright](https://playwright.dev/python/) and its browsers (`python3 -m playwright install chromium firefox webkit`), for the layout check in the engines behind Chrome and Edge, Firefox and Safari. The check skips any engine that isn't installed.
+- Only for repos whose demo is images: [Pillow](https://pypi.org/project/Pillow/) (`python3 -m pip install Pillow`). The agent installs it when a brief needs it.
+- Optional: [Playwright](https://playwright.dev/python/) and Chromium (`python3 -m playwright install chromium`), for the layout check. Without it, the build says "layout not checked".
 - Optional: an agent that can start subagents, for the reading helper and the reader test. Without one, the agent reads the repo itself, skips the test and tells you.
 
 </details>
@@ -127,7 +125,7 @@ Replace `claude-code` with `codex`, `cursor` or `opencode` for another agent.
 
 1. **Read.** The agent clones the repo. A helper on a cheaper model reads the code and settings and returns a fact sheet, which the agent spot-checks. The README counts as a claim; the files are the facts.
 2. **Write.** It puts everything the page will show into one data file, `brief.json`, following the content rules in [`SKILL.md`](skills/repo-brief/SKILL.md).
-3. **Check.** [`build.py`](skills/repo-brief/scripts/build.py) fills a fixed page template. It refuses to finish while anything is wrong: a missing section, a broken link, or a file or line that doesn't exist in the repo. It also opens the page at laptop and phone width in the engines behind Chrome and Edge, Firefox and Safari, to catch layout faults.
+3. **Check.** [`build.py`](skills/repo-brief/scripts/build.py) fills a fixed page template. It refuses to finish while anything is wrong: a missing section, a broken link, or a file or line that doesn't exist in the repo. If Playwright is installed, it also opens the page at laptop and phone width in Chromium, the engine behind Chrome and Edge, to catch layout faults.
 4. **Reader test.** A fresh agent on a small model gets only the page's text, answers seven questions about the repo and lists what would confuse a reader. The agent fixes those parts.
 5. **Deliver.** You get one HTML file.
 
@@ -158,7 +156,7 @@ repo-brief/
         ├── references/
         │   ├── brief-format.md        every field of brief.json
         │   ├── checks.md              final checks and reader-test questions
-        │   └── example-hallmark.json  a complete brief.json, used as the model
+        │   └── example-hallmark.json  a real brief.json (rule list shortened), used as the model
         └── scripts/
             └── build.py               checks, build, browser test, reader export
 ```

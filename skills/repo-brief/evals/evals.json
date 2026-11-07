@@ -7,7 +7,7 @@
       "expected_output": "hallmark-repo-brief.html with a before/after demo built from the repo's own screenshots.",
       "files": [],
       "expectations": [
-        "build.py with --check-render printed ok for the final page",
+        "build.py with --check-render printed ok for the final page, without \"layout not checked\"",
         "The demo uses the compare type with real before/after images from the repo, not mocks",
         "Every number on the page (issue counts, rule counts, version) matches a repo file",
         "The install prompt only installs Hallmark and says how to confirm it worked",
@@ -20,7 +20,7 @@
       "expected_output": "rea-repo-brief.html for a large repo (about 7,400 files), with a repo map of about twenty items and a code demo quoted word for word.",
       "files": [],
       "expectations": [
-        "build.py with --check-render printed ok for the final page",
+        "build.py with --check-render printed ok for the final page, without \"layout not checked\"",
         "The repo map has about twenty items or fewer, and groups similar siblings into one item with a count",
         "The demo is a code demo quoted word for word from the repo or its official pages",
         "Swimlane step files point at line ranges that exist in the repo",
@@ -36,7 +36,7 @@
         "brief.json sets root to pstack",
         "Every repo-map path and step file is inside the pstack folder",
         "The page describes pstack only and does not describe the other plugins in the repo",
-        "build.py with --check-render printed ok for the final page",
+        "build.py with --check-render printed ok for the final page, without \"layout not checked\"",
         "The final build printed no WARN lines, or the agent said why each remaining item is needed"
       ]
     }

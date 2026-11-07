@@ -1,6 +1,6 @@
 # brief.json
 
-One JSON object. `references/example-hallmark.json` is a complete brief in this format.
+One JSON object. `references/example-hallmark.json` is a real brief in this format, with its long rule list cut to a few items.
 
 ## Inline markup (any text field)
 
@@ -12,7 +12,7 @@ One JSON object. `references/example-hallmark.json` is a complete brief in this 
 
 | Field | Shape | Notes |
 | --- | --- | --- |
-| `name` | string | Page heading. Title defaults to `<name> Repo Brief`; override with `title`. |
+| `name` | string | Page heading. The page title is `<name> Repo Brief`. |
 | `repo` | URL | GitHub repo. File links become `<repo>/blob|tree/<branch>/<path>`. |
 | `branch` | string | Default `main`. |
 | `root` | string | Optional. For a folder inside a repo: its path (e.g. `pstack`). All other paths are relative to it. |
@@ -36,7 +36,7 @@ One JSON object. `references/example-hallmark.json` is a complete brief in this 
 
 ### map
 
-Folder: `{name, open?, children: [node]}`. File, or a folder shown as one item: `{name, path, overview: [string]}`. For many similar siblings, one item such as `{name: "principle-*/ (24)", path: "skills", overview: [...]}`. Define a repo-specific term in the overview where it first appears.
+Folder: `{name, children: [node]}`. File, or a folder shown as one item: `{name, path, overview: [string]}`. For many similar siblings, one item such as `{name: "principle-*/ (24)", path: "skills", overview: [...]}`. Define a repo-specific term in the overview where it first appears.
 
 ### how
 
