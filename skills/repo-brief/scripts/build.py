@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Build a Repo Brief page from brief.json.
 
-Usage: python3 build.py brief.json out.html [--repo-dir PATH] [--check-render] [--text reader.md]
+Usage: python3 build.py brief.json out.html [--repo-dir PATH] [--check-render [--all-engines]] [--text reader.md]
 
 Checks the brief (links, sections, steps, repo paths), embeds demo images and
 fills assets/template.html. --check-render also checks layout with Playwright in
-Chromium, Firefox and WebKit at 1280 and 390 px. Exits non-zero on any FAIL;
-WARN lines (a long page or repo map) don't fail the build.
+Chromium at 1280 and 390 px; add --all-engines to check Firefox and WebKit too,
+after a change to the template. Exits non-zero on any FAIL; WARN lines (a long
+page or repo map) don't fail the build. When the layout check can't run, the ok
+line ends with "layout not checked".
 """
 import base64, io, json, os, re, shutil, sys, tempfile
 
@@ -23,16 +25,14 @@ def embed(src, base_dirs):
         raise SystemExit(f"image not found: {src}")
     try:
         from PIL import Image
-        im = Image.open(path).convert("RGB")
-        if im.width > MAX_W:
-            im = im.resize((MAX_W, round(im.height * MAX_W / im.width)), Image.LANCZOS)
-        buf = io.BytesIO()
-        im.save(buf, "WEBP", quality=58, method=6)
-        return "data:image/webp;base64," + base64.b64encode(buf.getvalue()).decode(), im.width, im.height
     except ImportError:
-        ext = os.path.splitext(path)[1].lstrip(".").lower().replace("jpg", "jpeg")
-        with open(path, "rb") as f:
-            return f"data:image/{ext};base64," + base64.b64encode(f.read()).decode(), None, None
+        raise SystemExit(f"FAIL image demo needs Pillow, install it (python3 -m pip install Pillow): {src}")
+    im = Image.open(path).convert("RGB")
+    if im.width > MAX_W:
+        im = im.resize((MAX_W, round(im.height * MAX_W / im.width)), Image.LANCZOS)
+    buf = io.BytesIO()
+    im.save(buf, "WEBP", quality=58, method=6)
+    return "data:image/webp;base64," + base64.b64encode(buf.getvalue()).decode(), im.width, im.height
 
 
 def texts(obj):
@@ -80,6 +80,9 @@ def main():
     render = "--check-render" in args
     if render:
         args.remove("--check-render")
+    engines = ("chromium", "firefox", "webkit") if "--all-engines" in args else ("chromium",)
+    if "--all-engines" in args:
+        args.remove("--all-engines")
     text_path = None
     if "--text" in args:
         i = args.index("--text")
@@ -114,7 +117,7 @@ def main():
                 if w:
                     slot["w"], slot["h"] = w, h
                 if demo.get("type") == "compare" and not (slot.get("w") and slot.get("h")):
-                    errors.append(f"compare image needs w/h (install Pillow): {it.get('label')}")
+                    errors.append(f"compare image needs w/h, install Pillow (python3 -m pip install Pillow): {it.get('label')}")
 
     # every [[term]] must be defined, and each defined term should be used
     terms = B.get("terms", {})
@@ -186,17 +189,16 @@ def main():
 
     with open(TEMPLATE) as f:
         page = f.read()
-    title = B.get("title") or f"{B['name']} Repo Brief"
+    title = f"{B['name']} Repo Brief"
     page = page.replace("__TITLE__", title.replace("<", "&lt;"))
     page = page.replace("__BRIEF_JSON__", json.dumps(B, ensure_ascii=False).replace("</", "<\\/"))
     with open(out_path, "w") as f:
         f.write(page)
-    if render:
-        problems = check_render(page)
-        if problems:
-            print("\n".join("FAIL " + e for e in problems))
-            raise SystemExit(1)
-    print(f"ok: {out_path} ({len(page) // 1024} KB)")
+    problems = check_render(page, engines) if render else []
+    if problems:
+        print("\n".join("FAIL " + e for e in problems))
+        raise SystemExit(1)
+    print(f"ok: {out_path} ({len(page) // 1024} KB)" + (", layout not checked" if problems is None else ""))
 
 
 def plain(s):
@@ -304,12 +306,13 @@ def launch(p, engine):
     return getattr(p, engine).launch()
 
 
-def check_render(page):
+def check_render(page, engines):
+    """Layout problems found, or None when no browser could run."""
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
         print("render check skipped: Playwright not installed")
-        return []
+        return None
     found, ran, missing = {}, [], []  # problem -> list of "engine width"
 
     def add(problem, tag):
@@ -319,7 +322,7 @@ def check_render(page):
         path = os.path.join(tmp, "page.html")
         with open(path, "w") as f:
             f.write(page)
-        for engine in ("chromium", "firefox", "webkit"):
+        for engine in engines:
             try:
                 browser = launch(p, engine)
             except Exception as e:
@@ -358,8 +361,9 @@ def check_render(page):
                 pg.close()
             browser.close()
     if not ran:
-        print("render check skipped: no Playwright browser installed (python3 -m playwright install chromium firefox webkit)")
-    elif missing:
+        print(f"render check skipped: no Playwright browser installed (python3 -m playwright install {' '.join(engines)})")
+        return None
+    if missing:
         print(f"render check ran in {', '.join(ran)}; could not start: {'; '.join(missing)}")
     return [f"{prob} [{', '.join(tags)}]" for prob, tags in found.items()]
 
